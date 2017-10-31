@@ -3,13 +3,18 @@ import { curry } from "@typed/curry";
 import { SeedDrivenGenerator } from "@atomist/automation-client/operations/generate/SeedDrivenGenerator";
 import { Parameter } from "@atomist/automation-client/decorators";
 import { HandlerContext } from "@atomist/automation-client/HandlerContext";
-import { AnyProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
-import { chainEditors } from "@atomist/automation-client/operations/edit/projectEditorOps";
+import {
+    AnyProjectEditor, ProjectEditor,
+    SimpleProjectEditor
+} from "@atomist/automation-client/operations/edit/projectEditor";
+import { chainEditors, EditorChainable, ProjectOp } from "@atomist/automation-client/operations/edit/projectEditorOps";
 import {
     doUpdatePom, inferStructureAndMovePackage,
     removeTravisBuildFiles
 } from "@atomist/automation-client/operations/generate/java/JavaSeed";
 import { logger } from "@atomist/automation-client/internal/util/logger";
+import { addSpringBootStarter } from "../../editor/spring/addStarterEditor";
+import { start } from "repl";
 
 /**
  * Superclass for all Spring generators
@@ -102,11 +107,18 @@ export abstract class AbstractSpringGenerator extends SeedDrivenGenerator {
     }
 
     public projectEditor(ctx: HandlerContext, params: this): AnyProjectEditor<this> {
-        logger.debug("Starters: [%s]", params.starters.join());
-        return chainEditors(
+        const starterEditors: ProjectOp[] =
+            this.starters.map(starter =>
+                addSpringBootStarter("spring-boot-starter-" + starter));
+        logger.debug("Starters: [%s]. Editor count=%d", params.starters.join(), starterEditors.length);
+
+        const editors: EditorChainable[] = [
             removeTravisBuildFiles,
             curry(doUpdatePom)(params),
             curry(inferStructureAndMovePackage)(params.rootPackage),
+        ];
+        return chainEditors(
+            ...editors.concat(starterEditors)
         );
     }
 

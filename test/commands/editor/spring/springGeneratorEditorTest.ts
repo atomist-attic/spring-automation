@@ -8,29 +8,36 @@ import { setSpringBootVersionEditor } from "../../../../src/commands/editor/spri
 import { tempProject } from "../../../util/tempProject";
 import { springBootPom } from "../../reviewer/maven/Poms";
 import { addSpringBootStarter } from "../../../../src/commands/editor/spring/addStarterEditor";
-import { SimpleProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
+import { ProjectEditor, SimpleProjectEditor, toEditor } from "@atomist/automation-client/operations/edit/projectEditor";
+import { ZipCreator } from "../../../../src/commands/generator/initializr/ZipCreator";
 
-describe("addSpringBootStarterEditor", () => {
+describe("springGeneratorEditor", () => {
+
+    const zip = new ZipCreator();
+    zip.startersCsv = "web,security,foobar,baz";
+    zip.rootPackage = "com.foo.bar";
+    zip.serviceClassName = "MyApp";
+    const editor: ProjectEditor = toEditor(zip.projectEditor(null, zip));
 
     it("doesn't edit empty project", done => {
         const p = new InMemoryProject();
-        const sim: SimpleProjectEditor = addSpringBootStarter("starter-whatever");
-        sim(p, null, null)
-            .then(edited => {
-                assert(!!edited);
-                assert(edited === p);
+        editor(p, null, null)
+            .then(r => {
+                assert(r.edited);
+                assert(r.target === p);
                 done();
             }).catch(done);
     });
 
     it("reports editing Spring Boot project", done => {
-        const starterName = "thing-x";
-        const p = InMemoryProject.of({path: "pom.xml", content: FromInitializr });
-        addSpringBootStarter(starterName)(p)
-            .then(edited => {
-                const content = edited.findFileSync("pom.xml").getContentSync();
+        const p = InMemoryProject.of({path: "pom.xml", content: FromInitializr});
+        editor(p, null, null)
+            .then(r => {
+                const content = r.target.findFileSync("pom.xml").getContentSync();
                 console.log(content);
-                assert(content.includes(starterName));
+                assert(content.includes("foobar"));
+                assert(content.includes("baz"));
+
                 done();
             }).catch(done);
     });

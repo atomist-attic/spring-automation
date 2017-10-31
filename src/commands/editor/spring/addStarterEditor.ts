@@ -1,14 +1,26 @@
 import { Project } from "@atomist/automation-client/project/Project";
-import { AnyProjectEditor, SimpleProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
 import { doWithFiles } from "@atomist/automation-client/project/util/projectUtils";
+import { logger } from "@atomist/automation-client/internal/util/logger";
 
 // TODO this is naive as it doesn't allow for dependency management block
-export function addSpringBootStarter(artifact: string, group: string = "org.springframework.boot"): SimpleProjectEditor {
+export function addSpringBootStarter(artifact: string, group: string = "org.springframework.boot"): (p: Project) => Promise<Project> {
     return (p: Project) => {
         return doWithFiles(p, "pom.xml", pom => {
-            return pom.replace(/<dependencies>/, "<dependencies>\n" +
-                indent(dependencyStanza(artifact, group), "   ", 3)
-            );
+            console.log("Looking at POM");
+            return pom.getContent()
+                .then(content => {
+                    // Don't add if it's already there
+                    if (content.includes(artifact)) {
+                        logger.info("Starter [%s] already present. Nothing to do", artifact);
+                        return pom;
+                    }
+                    else {
+                        logger.info("Adding starter [%s]", artifact);
+                        return pom.replace(/<dependencies>/, "<dependencies>\n" +
+                            indent(dependencyStanza(artifact, group), "   ", 3)
+                        )
+                    }
+                });
         });
     }
 }
