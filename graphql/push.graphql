@@ -1,0 +1,79 @@
+subscription PushWithRepo {
+    Push {
+     builds {
+       buildUrl
+       name
+       provider
+       commit {
+         sha
+       }
+     }
+     before {
+       sha
+     }
+     after {
+       sha
+       statuses {
+         context
+         description
+         targetUrl
+       }
+     }
+     repo {
+       owner
+       name
+       channels {
+         name
+       }
+       labels {
+         name
+       }
+       org {
+         provider {
+           url
+           apiUrl
+           gitUrl
+         }
+       }
+     }
+     commits {
+       sha
+       resolves {
+         number
+         name
+         title
+       }
+       impact {
+         data
+         url
+       }
+       apps {
+         state
+         host
+         domain
+         data
+       }
+       tags {
+         name
+         release {
+           name
+         }
+         containers {
+           pods {
+             host
+             state
+             name
+           }
+         }
+       }
+       author {
+         login
+         person {
+           chatId {
+             screenName
+           }
+         }
+       }
+     }
+    }
+  }

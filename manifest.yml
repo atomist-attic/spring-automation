@@ -1,0 +1,9 @@
+applications:
+- name: automation-client-samples
+  command: $(npm bin)/atomist-client
+  memory: 128M
+  buildpack: https://github.com/cloudfoundry/nodejs-buildpack
+  env:
+    SUPPRESS_NO_CONFIG_WARNING: true
+  services:
+  - github-token

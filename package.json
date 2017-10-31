@@ -1,0 +1,81 @@
+{
+  "name": "@atomist/initializr-atomist",
+  "version": "0.1.0",
+  "description": "Atomist back end for Spring Initializr",
+  "author": "Atomist.",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/atomist/initializr-atomist.git"
+  },
+  "homepage": "https://github.com/atomist/initializr-atomist#readme",
+  "bugs": {
+    "url": "https://github.com/atomist/initializr-atomist/issues"
+  },
+  "keywords": [
+    "atomist",
+    "automation",
+    "spring",
+    "initializr"
+  ],
+  "dependencies": {
+    "@atomist/automation-client": "https://atomist.jfrog.io/atomist/npm-dev/@atomist/automation-client/-/@atomist/automation-client-0.2.6-20171030221341.tgz",
+    "@atomist/slack-messages": "^0.12.0",
+    "@types/jszip": "^3.1.2",
+    "app-root-path": "^2.0.1",
+    "cfenv": "^1.0.4",
+    "jszip": "^3.1.4"
+  },
+  "devDependencies": {
+    "@types/app-root-path": "^1.2.4",
+    "@types/mocha": "^2.2.41",
+    "@types/node": "^8.0.46",
+    "@types/power-assert": "^1.4.29",
+    "@types/tmp": "0.0.33",
+    "espower-typescript": "^8.0.2",
+    "graphql-code-generator": "^0.8.13",
+    "mocha": "^3.5.3",
+    "npm-run-all": "^4.1.1",
+    "power-assert": "^1.4.4",
+    "rimraf": "^2.6.2",
+    "supervisor": "^0.12.0",
+    "tmp": "0.0.33",
+    "ts-node": "^3.3.0",
+    "tslint": "^5.4.3",
+    "typedoc": "^0.8.0",
+    "typescript": "^2.5.3",
+    "typescript-formatter": "^6.0.0"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "autostart": "npm-run-all --print-label --parallel watch:compile watch:server",
+    "autotest": "supervisor --watch src,test --extensions ts --no-restart-on exit --quiet --exec npm -- test",
+    "build": "npm-run-all lint compile test",
+    "clean": "npm-run-all clean:js clean:build",
+    "clean:build": "rimraf *-v8.log profile.txt build",
+    "clean:dist": "npm-run-all clean clean:npm",
+    "clean:js": "rimraf '{src,test}/**/*.js'",
+    "clean:npm": "rimraf node_modules",
+    "compile": "npm-run-all gql:gen compile:ts",
+    "compile:ts": "tsc --project .",
+    "fmt": "tsfmt --replace",
+    "git:info": "git-info",
+    "gql:gen": "gql-gen --file node_modules/@atomist/automation-client/graph/schema.cortex.json --template typescript -m --out ./src/typings/ './graphql/**/*.graphql'",
+    "lint": "tslint --format verbose --project . --exclude '{build,node_modules}/**' '**/*.ts'",
+    "lint:fix": "npm run lint -- --fix",
+    "start": "npm-run-all git:info start:server",
+    "start:client": "atomist-client --open=true",
+    "start:server": "node --trace-warnings --optimize_for_size --always_compact --max_old_space_size=256 node_modules/.bin/atomist-client",
+    "test": "mocha --compilers ts:espower-typescript/guess 'test/**/*.ts'",
+    "test:one": "mocha --compilers ts:espower-typescript/guess \"test/**/${TEST:-*.ts}\"",
+    "typedoc": "typedoc --mode modules --excludeExternals",
+    "watch:compile": "tsc --project . --watch",
+    "watch:server": "supervisor --watch build --quiet --exec npm -- run start:server"
+  },
+  "engines": {
+    "node": "8.x.x",
+    "npm": "5.x.x"
+  }
+}

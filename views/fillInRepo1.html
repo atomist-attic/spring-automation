@@ -1,0 +1,24 @@
+
+
+You are creating new project <i>{{ name }}</i>!
+
+<br/>
+
+<form action="createRepo" method="GET">
+
+    <input type="hidden" name="id" id="id" value="{{ id }}" />
+
+    Org:
+    <input id="org" type="text"
+           value="atomist" name="org">
+<br>
+    Repo:
+    <input id="repo" type="text"
+           value="{{ name }}" name="repo">
+
+    <br>
+
+    <input type="submit" name="Create" value="Create Repo" />
+
+</form>
+
