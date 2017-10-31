@@ -23,7 +23,7 @@ export function addInitializrHandoffRoute(cache: ObjectStore, express: Express) 
         res.redirect(zipGeneratorUri(req.body));
     });
 
-    express.get("/serveFile", function(req, res) {
+    express.get("/serveFile", function (req, res) {
         const path = req.param("path");
         const name = req.param("name");
 
@@ -57,7 +57,7 @@ export function addInitializrHandoffRoute(cache: ObjectStore, express: Express) 
         const generator = new RepoCreator();
         generator.targetOwner = req.param("org");
         generator.targetRepo = req.param("repo");
-        generator.starters = initializrData || [];
+        generator.startersCsv = (initializrData.style || []).join();
         generator.rootPackage = initializrData.packageName;
         generator.artifactId = initializrData.artifactId;
         generator.groupId = initializrData.groupId;
@@ -72,7 +72,7 @@ export function addInitializrHandoffRoute(cache: ObjectStore, express: Express) 
 
 function zipGeneratorUri(initializrData: any): string {
     const generator = new ZipCreator();
-    generator.starters = initializrData || [];
+    generator.startersCsv = (initializrData.style || []).join();
     generator.rootPackage = initializrData.packageName;
     generator.targetRepo = "doesnt-matter";
     generator.artifactId = initializrData.artifactId;
@@ -86,10 +86,7 @@ function toCommandHandlerGetUrl(base: string, generator: object): string {
     const params = Object.getOwnPropertyNames(generator)
         .filter(p => typeof generator[p] !== "function")
         .map(p => {
-                let val = generator[p];
-                if (val.isArray) {
-                    val = "[" + val.join() + "]";
-                }
+                const val = generator[p];
                 return `${p}=${val}`;
             }
         );

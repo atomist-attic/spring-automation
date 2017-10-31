@@ -24,15 +24,14 @@ export function writeZip(p: Project, path: string): Promise<ZipWritingResult> {
             .then(files => Promise.all(
                 files.map(f => f.getContent()
                     .then(content => {
-                        logger.debug("Adding file [%s]", f.path);
+                        // logger.debug("Adding file [%s]", f.path);
                         return zip.file(f.path, content);
                     })))
             );
-
-    return addFiles.then(() => streamIt(p, path, zip));
+    return addFiles.then(() => streamZip(p, path, zip));
 }
 
-function streamIt(p: Project, path: string, zip: JsZip): Promise<ZipWritingResult> {
+function streamZip(p: Project, path: string, zip: JsZip): Promise<ZipWritingResult> {
     return new Promise((resolve, reject) => {
         zip.generateNodeStream({type: "nodebuffer", streamFiles: true})
             .pipe(fs.createWriteStream(path))

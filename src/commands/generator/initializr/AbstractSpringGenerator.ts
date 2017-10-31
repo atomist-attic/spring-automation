@@ -9,6 +9,7 @@ import {
     doUpdatePom, inferStructureAndMovePackage,
     removeTravisBuildFiles
 } from "@atomist/automation-client/operations/generate/java/JavaSeed";
+import { logger } from "@atomist/automation-client/internal/util/logger";
 
 /**
  * Superclass for all Spring generators
@@ -81,13 +82,18 @@ export abstract class AbstractSpringGenerator extends SeedDrivenGenerator {
     })
     public serviceClassName: string = "RestService";
 
+    // TODO should be an array parameter
     @Parameter({
         displayName: "starters",
         pattern: /.*/,
         required: true,
         //type: FreeChoices,
     })
-    public starters: string[];
+    public startersCsv: string = "";
+
+    get starters(): string[] {
+        return this.startersCsv.split(",");
+    }
 
     constructor() {
         super();
@@ -96,6 +102,7 @@ export abstract class AbstractSpringGenerator extends SeedDrivenGenerator {
     }
 
     public projectEditor(ctx: HandlerContext, params: this): AnyProjectEditor<this> {
+        logger.debug("Starters: [%s]", params.starters.join());
         return chainEditors(
             removeTravisBuildFiles,
             curry(doUpdatePom)(params),
