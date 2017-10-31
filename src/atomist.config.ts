@@ -1,10 +1,12 @@
+import { curry } from "@typed/curry";
+
 import { Configuration } from "@atomist/automation-client/configuration";
 import * as appRoot from "app-root-path";
 import { SpringBootVersionUpgrade } from "./commands/editor/spring/SpringBootVersionUpgrade";
 import { RepoCreator } from "./commands/generator/initializr/RepoCreator";
 import { ZipCreator } from "./commands/generator/initializr/ZipCreator";
 import { addInitializrHandoffRoute } from "./web/initializerHandoff";
-
+import { InMemoryStore } from "./web/InMemoryObjectStore";
 
 const pj = require(`${appRoot.path}/package.json`);
 
@@ -19,14 +21,12 @@ export const configuration: Configuration = {
         ZipCreator,
         SpringBootVersionUpgrade,
     ],
-    events: [
-    ],
-    ingestors: [
-    ],
+    events: [],
+    ingestors: [],
     token: GitHubToken,
     http: {
         enabled: true,
-        customizers: [addInitializrHandoffRoute],
+        customizers: [curry(addInitializrHandoffRoute)(InMemoryStore)],
         auth: {
             basic: {
                 enabled: false,
