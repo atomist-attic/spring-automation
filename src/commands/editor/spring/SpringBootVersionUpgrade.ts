@@ -24,7 +24,7 @@ export class SpringBootVersionUpgrade extends EditorCommandSupport {
         validInput: "Semantic version",
         required: false,
     })
-    public desiredBootVersion: string = "1.5.6.RELEASE";
+    public desiredBootVersion: string = "1.5.8.RELEASE";
 
     constructor() {
         // Check with an API call if the repo has a POM,
