@@ -15,7 +15,7 @@ export function addInitializrHandoffRoute(cache: ObjectStore, express: Express) 
     express.post("/requestRepoCreation", function (req, res) {
         logger.debug("POST for repo creation: BODY is [" + JSON.stringify(req.body) + "]");
         const id = cache.put(req.body);
-        res.redirect("fillInRepo?id=" + id)
+        res.redirect("fillInRepo/" + id)
     });
 
     express.post("/requestZipCreation", function (req, res) {
@@ -36,7 +36,7 @@ export function addInitializrHandoffRoute(cache: ObjectStore, express: Express) 
     });
 
     // Render the form that captures additional information for repo creation
-    express.get("/fillInRepo", function (req, res) {
+    express.get("/fillInRepo/:id", function (req, res) {
         const id = req.param("id");
         logger.debug("GET: pointer is [" + id + "]");
         return res.render("fillInRepo.html", {
