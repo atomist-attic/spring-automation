@@ -36,9 +36,10 @@ export class ZipCreator extends AbstractSpringGenerator {
             params)
             .then(r => {
                     const zr = r as ZipWritingResult;
+                    const encodedPath = encodeURIComponent(zr.path);
                     return {
                         code: 0,
-                        redirect: `/serveFile?path=${zr.path}&name=${params.serviceClassName}`,
+                        redirect: `serveFile?path=${encodedPath}&name=${params.serviceClassName}`,
                     } as RedirectResult;
                 },
             );

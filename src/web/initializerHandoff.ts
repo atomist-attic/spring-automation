@@ -5,6 +5,7 @@ import * as fs from "fs";
 import { RepoCreator } from "../commands/generator/initializr/RepoCreator";
 import { ZipCreator } from "../commands/generator/initializr/ZipCreator";
 import { InMemoryStore } from "./InMemoryObjectStore";
+import { RedirectResult } from "@atomist/automation-client/HandlerResult";
 
 const CreateZipPath = "command/zip-creator";
 
@@ -22,12 +23,29 @@ export function addInitializrHandoffRoute(express: exp.Express, ...handlers: exp
 
     express.post("/requestZipCreation", (req, res) => {
         logger.debug("POST for zip creation: BODY is [" + JSON.stringify(req.body) + "]");
-        res.redirect(zipGeneratorUri(req.body));
+        const initializrData = req.body;
+        // Use the generator directly as it doesn't need anything
+        const generator = new ZipCreator();
+        generator.startersCsv = (initializrData.style || []).join();
+        generator.rootPackage = initializrData.packageName;
+        generator.targetRepo = "doesnt-matter";
+        generator.artifactId = initializrData.artifactId;
+        generator.groupId = initializrData.groupId;
+        generator.version = initializrData.version;
+        generator.serviceClassName = initializrData.name;
+        return generator.handle(null, generator)
+            .then(hr => {
+                const rr = hr as RedirectResult;
+                logger.debug("Redirecting to [%s] for zip file", rr.redirect);
+                res.redirect(rr.redirect);
+            });
     });
 
     express.get("/serveFile", (req, res) => {
-        const path = req.params.path;
-        const name = req.params.name;
+        const path = req.query.path;
+        const name = req.query.name;
+
+        logger.info("Serving file from path [%s]", path);
 
         const readStream = fs.createReadStream(path);
         res.writeHead(200, {
@@ -59,12 +77,12 @@ export function addInitializrHandoffRoute(express: exp.Express, ...handlers: exp
         const repo = req.query.repo;
 
         axios.get(`https://api.github.com/repos/${owner}/${repo}`,
-            { headers: { Authorization: `token ${req.user.accessToken}`}})
+            {headers: {Authorization: `token ${req.user.accessToken}`}})
             .then(() => {
                 req.flash("error", `Repository ${owner}/${repo} already exists. Please use a different name!`);
                 return res.redirect(`/fillInRepo/${id}`);
             })
-            .catch( err => {
+            .catch(err => {
                 // Populate the generator itself to ensure we get the right names,
                 // then take out the data
                 const initializrData = InMemoryStore.get(id);
@@ -85,18 +103,6 @@ export function addInitializrHandoffRoute(express: exp.Express, ...handlers: exp
 
             });
     });
-}
-
-function zipGeneratorUri(initializrData: any): string {
-    const generator = new ZipCreator();
-    generator.startersCsv = (initializrData.style || []).join();
-    generator.rootPackage = initializrData.packageName;
-    generator.targetRepo = "doesnt-matter";
-    generator.artifactId = initializrData.artifactId;
-    generator.groupId = initializrData.groupId;
-    generator.version = initializrData.version;
-    generator.serviceClassName = initializrData.name;
-    return toCommandHandlerGetUrl(CreateZipPath, generator);
 }
 
 function toCommandHandlerGetUrl(base: string, generator: object): string {
