@@ -67,7 +67,7 @@
     "lint:fix": "npm run lint -- --fix",
     "start": "npm-run-all git:info start:server",
     "start:client": "atomist-client --open=true",
-    "start:server": "node --trace-warnings --optimize_for_size --always_compact --max_old_space_size=256 node_modules/.bin/atomist-client",
+    "start:server": "node $NODE_DEBUG_OPTION --trace-warnings --optimize_for_size --always_compact --max_old_space_size=256 node_modules/.bin/atomist-client",
     "test": "mocha --compilers ts:espower-typescript/guess 'test/**/*.ts'",
     "test:one": "mocha --compilers ts:espower-typescript/guess \"test/**/${TEST:-*.ts}\"",
     "typedoc": "typedoc --mode modules --excludeExternals",

@@ -2,7 +2,6 @@ import { curry } from "@typed/curry";
 
 import { Configuration } from "@atomist/automation-client/configuration";
 import * as appRoot from "app-root-path";
-import { SpringBootVersionUpgrade } from "./commands/editor/spring/SpringBootVersionUpgrade";
 import { RepoCreator } from "./commands/generator/initializr/RepoCreator";
 import { ZipCreator } from "./commands/generator/initializr/ZipCreator";
 import { addInitializrHandoffRoute } from "./web/initializerHandoff";
@@ -31,7 +30,7 @@ export const configuration: Configuration = {
     token: GitHubToken,
     http: {
         enabled: true,
-        customizers: [curry(addInitializrHandoffRoute)(InMemoryStore)],
+        customizers: [ addInitializrHandoffRoute ],
         auth: {
             basic: {
                 enabled: false,
@@ -43,11 +42,10 @@ export const configuration: Configuration = {
                 token: GitHubToken,
             },
             github: {
-                enabled: false,
+                enabled: true,
                 clientId: "092b3124ced86d5d1569",
                 clientSecret: "71d72f657d4402009bd8d728fc1967939c343793",
                 callbackUrl: "http://localhost:2866",
-                org: "atomisthqa",
                 adminOrg: "atomisthq",
             },
         },

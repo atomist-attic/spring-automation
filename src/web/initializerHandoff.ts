@@ -1,31 +1,32 @@
-import { Express } from "express";
+import * as exp from "express";
 import { logger } from "@atomist/automation-client/internal/util/logger";
 import { RepoCreator } from "../commands/generator/initializr/RepoCreator";
 import { ZipCreator } from "../commands/generator/initializr/ZipCreator";
 import * as fs from "fs";
-import { ObjectStore } from "./ObjectStore";
+import { InMemoryStore } from "./InMemoryObjectStore";
 
 const CreateZipPath = "command/zip-creator";
 
 const CreateRepoCommandPath = "command/repo-creator";
 
-export function addInitializrHandoffRoute(cache: ObjectStore, express: Express) {
+export function addInitializrHandoffRoute(express: exp.Express, ...handlers: exp.RequestHandler[]) {
+
     logger.debug("Adding express routes for Spring Initialzr");
 
-    express.post("/requestRepoCreation", function (req, res) {
+    express.post("/requestRepoCreation", (req, res) => {
         logger.debug("POST for repo creation: BODY is [" + JSON.stringify(req.body) + "]");
-        const id = cache.put(req.body);
-        res.redirect("fillInRepo/" + id)
+        const id = InMemoryStore.put(req.body);
+        res.redirect("fillInRepo/" + id);
     });
 
-    express.post("/requestZipCreation", function (req, res) {
+    express.post("/requestZipCreation", ...handlers, (req, res) => {
         logger.debug("POST for zip creation: BODY is [" + JSON.stringify(req.body) + "]");
         res.redirect(zipGeneratorUri(req.body));
     });
 
-    express.get("/serveFile", function (req, res) {
-        const path = req.param("path");
-        const name = req.param("name");
+    express.get("/serveFile", ...handlers, (req, res) => {
+        const path = req.params.path;
+        const name = req.params.name;
 
         const readStream = fs.createReadStream(path);
         res.writeHead(200, {
@@ -36,27 +37,28 @@ export function addInitializrHandoffRoute(cache: ObjectStore, express: Express) 
     });
 
     // Render the form that captures additional information for repo creation
-    express.get("/fillInRepo/:id", function (req, res) {
-        const id = req.param("id");
+    express.get("/fillInRepo/:id", ...handlers, (req, res) => {
+        const id = req.params.id;
         logger.debug("GET: pointer is [" + id + "]");
         return res.render("fillInRepo.html", {
             id,
-            ...cache.get(id)
+            ...InMemoryStore.get(id),
+            orgs: req.user.orgs,
         });
     });
 
     // Take parameters from our additional form and
     // do a GET redirect to the seed
-    express.get("/createRepo", function (req, res) {
-        const id = req.param("id");
+    express.get("/createRepo", ...handlers, (req, res) => {
+        const id = req.query.id;
         logger.debug("cache: pointer is [" + id + "]");
 
         // Populate the generator itself to ensure we get the right names,
         // then take out the data
-        const initializrData = cache.get(id);
+        const initializrData = InMemoryStore.get(id);
         const generator = new RepoCreator(null);
-        generator.targetOwner = req.param("org");
-        generator.targetRepo = req.param("repo");
+        generator.targetOwner = req.query.org;
+        generator.targetRepo = req.query.repo;
         generator.startersCsv = (initializrData.style || []).join();
         generator.rootPackage = initializrData.packageName;
         generator.artifactId = initializrData.artifactId;
@@ -65,8 +67,8 @@ export function addInitializrHandoffRoute(cache: ObjectStore, express: Express) 
         generator.serviceClassName = initializrData.name;
         generator.visibility = "public";
         const uri = toCommandHandlerGetUrl(CreateRepoCommandPath, generator) +
-            "&mp_targetOwner=johnsonr&" +
-            encodeURIComponent("s_github://user_token?scopes=repo,user") + "=" + process.env.GITHUB_TOKEN;
+            `&mp_targetOwner=${generator.targetOwner}&` +
+            encodeURIComponent("s_github://user_token?scopes=repo,user") + "=" + req.user.accessToken;
         return res.redirect(uri);
     });
 }

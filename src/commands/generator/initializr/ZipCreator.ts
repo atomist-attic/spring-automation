@@ -18,7 +18,8 @@ export class ZipCreator extends AbstractSpringGenerator {
     public githubToken = process.env.GITHUB_TOKEN;
 
     public handle(ctx: HandlerContext, params: this): Promise<HandlerResult> {
-        return generate(this.startingPoint(ctx, this),
+        // TODO cd adding any here doesn't make any sense but makes the compiler happy
+        return generate<any>(this.startingPoint(ctx, this),
             ctx,
             {token: params.githubToken},
             params.projectEditor(ctx, params),

@@ -31,61 +31,18 @@
         </div>
 
         <div class="container start-main">
-
-            <div class="row">
-                <div class="col-sm-12 col-md-6">
-                    <h2>Create a GitHub Repo</h2>
-
-                    <p>Target Repo</p>
-
-                    <div class="form-group groupid-form-group">
-                        <label for="org" class="control-label">Org</label>
-                        <select class="form-control" id="org" name="org">
-                            {{#orgs}}
-                            <option>{{.}}</option>
-                            {{/orgs}}
-                        </select>
-                    </div>
-                    <div class="form-group artifactid-form-group">
-                        <label for="repo" class="control-label">Repo</label>
-                        <input tabindex="5" id="repo" class="form-control" type="text"
-                               value="{{name}}"
-                               name="repo">
-                    </div>
-
+            <div class="text-center">
+                {{#message}}
+                <div class="alert alert-danger text-center" role="alert">
+                    {{message}}
                 </div>
-
-                <div class="col-sm-12 col-md-6">
-                    <h2>How it Works</h2>
-
-                    <p>We'll create a new GitHub repo containing your new Spring Boot project.
-                    </p>
-                    <p>Atomist and Pivotal will make pull requests when a newer
-                        version of Spring Boot comes out, to ensure you stay up to date.
-                    </p>
-
-                    <label>Keep my repo up to date</label>
-                    <input type="checkbox" name="Keep my repo alive" checked="true" />
-
-                    <p>You can go at any time to the <a href="https://www.atomist.com">Atomist Dashboard</a>
-                        to change update subscriptions.
-                    </p>
-
+                {{/message}}
+                <div class="card-body" style="margin-top: 20px">
+                    <h4 class="card-title">Login</h4>
+                    <p class="card-text">Please login with GitHub to create a repository.</p>
+                    <a href="/auth/github" class="btn btn-primary" style="vertical-align: text-top"><i class="fa fa-github fa-lg" aria-hidden="true"></i>&nbsp;Login with GitHub</a>
                 </div>
-
             </div>
-
-        </div>
-
-        <div class="row">
-            <p class="text-center">
-                <button tabindex="12" name="create-repo" type="submit" class="btn btn-lg btn-primary"
-                        role="button"
-                        formmethod="GET"
-                        formaction="/createRepo">
-                    Create Repo
-                </button>
-            </p>
         </div>
     </div>
 </form>
