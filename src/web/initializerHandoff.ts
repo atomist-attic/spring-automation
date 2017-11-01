@@ -1,8 +1,9 @@
-import * as exp from "express";
 import { logger } from "@atomist/automation-client/internal/util/logger";
+import axios from "axios";
+import * as exp from "express";
+import * as fs from "fs";
 import { RepoCreator } from "../commands/generator/initializr/RepoCreator";
 import { ZipCreator } from "../commands/generator/initializr/ZipCreator";
-import * as fs from "fs";
 import { InMemoryStore } from "./InMemoryObjectStore";
 
 const CreateZipPath = "command/zip-creator";
@@ -30,8 +31,8 @@ export function addInitializrHandoffRoute(express: exp.Express, ...handlers: exp
 
         const readStream = fs.createReadStream(path);
         res.writeHead(200, {
-            'Content-Type': 'application/zip',
-            'Content-disposition': `attachment; filename=${name}.zip`
+            "Content-Type": "application/zip",
+            "Content-disposition": `attachment; filename=${name}.zip`,
         });
         readStream.pipe(res);
     });
@@ -44,6 +45,7 @@ export function addInitializrHandoffRoute(express: exp.Express, ...handlers: exp
             id,
             ...InMemoryStore.get(id),
             orgs: req.user.orgs,
+            message: req.flash("error"),
         });
     });
 
@@ -53,23 +55,35 @@ export function addInitializrHandoffRoute(express: exp.Express, ...handlers: exp
         const id = req.query.id;
         logger.debug("cache: pointer is [" + id + "]");
 
-        // Populate the generator itself to ensure we get the right names,
-        // then take out the data
-        const initializrData = InMemoryStore.get(id);
-        const generator = new RepoCreator(null);
-        generator.targetOwner = req.query.org;
-        generator.targetRepo = req.query.repo;
-        generator.startersCsv = (initializrData.style || []).join();
-        generator.rootPackage = initializrData.packageName;
-        generator.artifactId = initializrData.artifactId;
-        generator.groupId = initializrData.groupId;
-        generator.version = initializrData.version;
-        generator.serviceClassName = initializrData.name;
-        generator.visibility = "public";
-        const uri = toCommandHandlerGetUrl(CreateRepoCommandPath, generator) +
-            `&mp_targetOwner=${generator.targetOwner}&` +
-            encodeURIComponent("s_github://user_token?scopes=repo,user") + "=" + req.user.accessToken;
-        return res.redirect(uri);
+        const owner = req.query.org;
+        const repo = req.query.repo;
+
+        axios.get(`https://api.github.com/repos/${owner}/${repo}`,
+            { headers: { Authorization: `token ${req.user.accessToken}`}})
+            .then(() => {
+                req.flash("error", `Repository ${owner}/${repo} already exists. Please use a different name!`);
+                return res.redirect(`/fillInRepo/${id}`);
+            })
+            .catch((err) => {
+                // Populate the generator itself to ensure we get the right names,
+                // then take out the data
+                const initializrData = InMemoryStore.get(id);
+                const generator = new RepoCreator(null);
+                generator.targetOwner = owner;
+                generator.targetRepo = repo;
+                generator.startersCsv = (initializrData.style || []).join();
+                generator.rootPackage = initializrData.packageName;
+                generator.artifactId = initializrData.artifactId;
+                generator.groupId = initializrData.groupId;
+                generator.version = initializrData.version;
+                generator.serviceClassName = initializrData.name;
+                generator.visibility = "public";
+                const uri = toCommandHandlerGetUrl(CreateRepoCommandPath, generator) +
+                    `&mp_targetOwner=${generator.targetOwner}&` +
+                    encodeURIComponent("s_github://user_token?scopes=repo,user") + "=" + req.user.accessToken;
+                return res.redirect(uri);
+
+            });
     });
 }
 
@@ -91,7 +105,7 @@ function toCommandHandlerGetUrl(base: string, generator: object): string {
         .map(p => {
                 const val = generator[p];
                 return `${p}=${val}`;
-            }
+            },
         );
 
     const uri = base + "?" + params.join("&");
