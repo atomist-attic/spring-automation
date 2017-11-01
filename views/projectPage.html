@@ -34,17 +34,23 @@
 
             <div class="row">
 
-                {{#message}}
+                {{#action}}
                 <div class="alert alert-danger text-center" role="alert" style="margin-top: 20px">
-                    {{message}}
+                    {{action}}
+                    <button tabindex="12" name="upgrade" type="submit" class="btn btn-sm"
+                            role="button"
+                            formmethod="POST"
+                            formaction="/upgrade">
+                        Update
+                    </button>
                 </div>
-                {{/message}}
+                {{/action}}
 
                 <div class="col-sm-12 col-md-6">
-                    <h2>Spring Boot Version</h2>
-                    <label class="control-label">1.5.8</label>
+                    <!--<h2>Project Overview</h2>-->
+                    <h3>Spring Boot <i>1.5.8</i></h3>
 
-                    <h2>Starters</h2>
+                    <h3>Starters</h3>
 
                     <ul>
                         <li>starter-web</li>
@@ -61,7 +67,7 @@
                 </div>
 
                 <div class="col-sm-12 col-md-6">
-                    <h2>Subscriptions</h2>
+                    <h3>Subscriptions</h3>
 
                     <p>Atomist and Pivotal will make pull requests when a newer
                         version of Spring Boot comes out, to ensure you stay up to date.
@@ -70,6 +76,10 @@
                     <label>Spring Boot Version</label>
                     <input type="checkbox" name="Keep Spring Boot up to date" checked="true" />
 
+                    <h3>Atomist Lifecycle</h3>
+                    <img src="/img/lifecycle1.png" width="350" height="85"/>
+
+                    <img src="/img/add_to_slack@2x.png" width="139" height="40" />
 
                 </div>
 
@@ -83,7 +93,7 @@
                         role="button"
                         formmethod="GET"
                         formaction="/createRepo">
-                    Create Repo
+                    Update Settings
                 </button>
             </p>
         </div>
@@ -91,8 +101,7 @@
 </form>
 <footer>
     <div class="container">
-        <p>start.spring.io is powered by <a href="https://github.com/spring-io/initializr/">Spring Initializr</a>
-            and <a href="https://www.atomist.com">Atomist</a> on <a href="https://run.pivotal.io">Pivotal Web Services</a></p>
+        <p>Powered by <a href="https://www.atomist.com">Atomist</a> on <a href="https://run.pivotal.io">Pivotal Web Services</a></p>
     </div>
 </footer>
 <script src="/js/jquery-3.1.1.min.js"></script>

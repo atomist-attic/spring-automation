@@ -1,5 +1,7 @@
 import { logger } from "@atomist/automation-client/internal/util/logger";
 import axios from "axios";
+import * as mustacheExpress from "mustache-express";
+
 import * as exp from "express";
 import * as fs from "fs";
 import { RepoCreator } from "../commands/generator/initializr/RepoCreator";
@@ -7,13 +9,17 @@ import { ZipCreator } from "../commands/generator/initializr/ZipCreator";
 import { InMemoryStore } from "./InMemoryObjectStore";
 import { RedirectResult } from "@atomist/automation-client/HandlerResult";
 
-const CreateZipPath = "command/zip-creator";
-
 const CreateRepoCommandPath = "command/repo-creator";
 
 export function addInitializrHandoffRoute(express: exp.Express, ...handlers: exp.RequestHandler[]) {
 
     logger.debug("Adding express routes for Spring Initialzr");
+
+    if (process.env.NODE_ENV !== "production") {
+        const engine = mustacheExpress();
+        engine.cache = null;
+        express.engine("html", engine);
+    }
 
     express.post("/requestRepoCreation", (req, res) => {
         logger.debug("POST for repo creation: BODY is [" + JSON.stringify(req.body) + "]");
