@@ -1,13 +1,11 @@
-import { curry } from "@typed/curry";
-
 import { Configuration } from "@atomist/automation-client/configuration";
 import * as appRoot from "app-root-path";
+import { UpgradeCreatedRepos } from "./commands/editor/spring/UpgradeCreatedRepos";
+import { ReposWeMadeRepoFinder } from "./commands/generator/initializr/createdReposRepoFinder";
 import { RepoCreator } from "./commands/generator/initializr/RepoCreator";
 import { ZipCreator } from "./commands/generator/initializr/ZipCreator";
 import { addInitializrHandoffRoute } from "./web/initializerHandoff";
 import { InMemoryStore } from "./web/InMemoryObjectStore";
-import { UpgradeCreatedRepos } from "./commands/editor/spring/UpgradeCreatedRepos";
-import { ReposWeMadeRepoFinder } from "./commands/generator/initializr/createdReposRepoFinder";
 
 const pj = require(`${appRoot.path}/package.json`);
 

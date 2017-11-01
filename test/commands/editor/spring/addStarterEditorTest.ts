@@ -3,12 +3,12 @@ import "mocha";
 import { InMemoryProject } from "@atomist/automation-client/project/mem/InMemoryProject";
 
 import { RepoId, SimpleRepoId } from "@atomist/automation-client/operations/common/RepoId";
+import { SimpleProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
 import * as assert from "power-assert";
+import { addSpringBootStarter } from "../../../../src/commands/editor/spring/addStarterEditor";
 import { setSpringBootVersionEditor } from "../../../../src/commands/editor/spring/setSpringBootVersionEditor";
 import { tempProject } from "../../../util/tempProject";
 import { springBootPom } from "../../reviewer/maven/Poms";
-import { addSpringBootStarter } from "../../../../src/commands/editor/spring/addStarterEditor";
-import { SimpleProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
 
 describe("addSpringBootStarterEditor", () => {
 

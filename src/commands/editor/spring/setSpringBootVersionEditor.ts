@@ -1,5 +1,9 @@
 import { logger } from "@atomist/automation-client/internal/util/logger";
-import { EditResult, ProjectEditor, successfulEdit } from "@atomist/automation-client/operations/edit/projectEditor";
+import {
+    EditResult,
+    ProjectEditor,
+    successfulEdit,
+} from "@atomist/automation-client/operations/edit/projectEditor";
 import { doWithAtMostOneMatch } from "@atomist/automation-client/project/util/parseUtils";
 import { assertContentIncludes } from "@atomist/automation-client/project/util/projectInvariants";
 import { parentStanzaOfGrammar } from "../../../grammars/mavenGrammars";

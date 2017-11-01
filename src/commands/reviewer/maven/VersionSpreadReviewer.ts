@@ -1,12 +1,18 @@
-import * as _ from "lodash";
-
-import { CommandHandler, Parameter, Tags } from "@atomist/automation-client/decorators";
-import { HandlerContext } from "@atomist/automation-client/HandlerContext";
+import {
+    CommandHandler,
+    Parameter,
+    Tags,
+} from "@atomist/automation-client/decorators";
 import { hasFile } from "@atomist/automation-client/internal/util/gitHub";
 import { ProjectReviewer } from "@atomist/automation-client/operations/review/projectReviewer";
 import { ReviewerCommandSupport } from "@atomist/automation-client/operations/review/ReviewerCommandSupport";
-import { clean, ProjectReview, ReviewResult } from "@atomist/automation-client/operations/review/ReviewResult";
+import {
+    clean,
+    ProjectReview,
+    ReviewResult,
+} from "@atomist/automation-client/operations/review/ReviewResult";
 import { findMatches } from "@atomist/automation-client/project/util/parseUtils";
+import * as _ from "lodash";
 import { dependencyOfGrammar } from "../../../grammars/mavenGrammars";
 import { VersionedArtifact } from "../../../grammars/VersionedArtifact";
 

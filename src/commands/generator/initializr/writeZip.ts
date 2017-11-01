@@ -1,10 +1,9 @@
-import * as JsZip from "jszip";
-
-import { Project } from "@atomist/automation-client/project/Project";
-import * as fs from "fs";
 import { ActionResult } from "@atomist/automation-client/action/ActionResult";
-import { toPromise } from "@atomist/automation-client/project/util/projectUtils";
 import { logger } from "@atomist/automation-client/internal/util/logger";
+import { Project } from "@atomist/automation-client/project/Project";
+import { toPromise } from "@atomist/automation-client/project/util/projectUtils";
+import * as fs from "fs";
+import * as JsZip from "jszip";
 
 export interface ZipWritingResult extends ActionResult<Project> {
 
@@ -26,7 +25,7 @@ export function writeZip(p: Project, path: string): Promise<ZipWritingResult> {
                     .then(content => {
                         // logger.debug("Adding file [%s]", f.path);
                         return zip.file(f.path, content);
-                    })))
+                    }))),
             );
     return addFiles.then(() => streamZip(p, path, zip));
 }

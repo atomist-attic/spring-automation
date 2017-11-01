@@ -1,4 +1,3 @@
-
 import { PropertiesGrammar } from "../../../grammars/mavenGrammars";
 
 /**

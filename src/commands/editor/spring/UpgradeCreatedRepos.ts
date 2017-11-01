@@ -1,11 +1,14 @@
-import { HandleCommand } from "@atomist/automation-client/HandleCommand";
-import { CommandHandler, Parameter } from "@atomist/automation-client/decorators";
-import { HandlerContext } from "@atomist/automation-client/HandlerContext";
-import { HandlerResult } from "@atomist/automation-client/HandlerResult";
-import { editAll } from "@atomist/automation-client/operations/edit/editAll";
-import { setSpringBootVersionEditor } from "./setSpringBootVersionEditor";
+import {
+    CommandHandler,
+    HandleCommand,
+    HandlerContext,
+    HandlerResult,
+    Parameter,
+} from "@atomist/automation-client/Handlers";
 import { RepoFinder } from "@atomist/automation-client/operations/common/repoFinder";
+import { editAll } from "@atomist/automation-client/operations/edit/editAll";
 import { PullRequest } from "@atomist/automation-client/operations/edit/editModes";
+import { setSpringBootVersionEditor } from "./setSpringBootVersionEditor";
 
 @CommandHandler("update spring boot version on all created repos",
     "upgrade boot repos")

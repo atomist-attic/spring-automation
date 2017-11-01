@@ -1,9 +1,10 @@
+import { logger } from "@atomist/automation-client/internal/util/logger";
 import { Project } from "@atomist/automation-client/project/Project";
 import { doWithFiles } from "@atomist/automation-client/project/util/projectUtils";
-import { logger } from "@atomist/automation-client/internal/util/logger";
 
 // TODO this is naive as it doesn't allow for dependency management block
-export function addSpringBootStarter(artifact: string, group: string = "org.springframework.boot"): (p: Project) => Promise<Project> {
+export function addSpringBootStarter(artifact: string,
+                                     group: string = "org.springframework.boot"): (p: Project) => Promise<Project> {
     return (p: Project) => {
         return doWithFiles(p, "pom.xml", pom => {
             console.log("Looking at POM");
@@ -13,16 +14,15 @@ export function addSpringBootStarter(artifact: string, group: string = "org.spri
                     if (content.includes(artifact)) {
                         logger.info("Starter [%s] already present. Nothing to do", artifact);
                         return pom;
-                    }
-                    else {
+                    } else {
                         logger.info("Adding starter [%s]", artifact);
                         return pom.replace(/<dependencies>/, "<dependencies>\n" +
-                            indent(dependencyStanza(artifact, group), "   ", 3)
-                        )
+                            indent(dependencyStanza(artifact, group), "   ", 3),
+                        );
                     }
                 });
         });
-    }
+    };
 }
 
 function dependencyStanza(artifact: string, group: string = "org.springframework.boot") {
@@ -32,12 +32,12 @@ function dependencyStanza(artifact: string, group: string = "org.springframework
 </dependency>`;
 }
 
-function indent(what: string, indent: string, n: number): string {
+function indent(what: string, indentToUse: string, n: number): string {
     return what.split("\n")
         .map(line => {
             let pad = "";
             for (let i = 0; i < n; i++) {
-                pad += indent;
+                pad += indentToUse;
             }
             return pad + line;
         })

@@ -1,4 +1,3 @@
-
 export interface IdentifiedArtifact {
 
     group: string;

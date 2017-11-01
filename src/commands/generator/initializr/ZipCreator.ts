@@ -1,10 +1,19 @@
-import { CommandHandler } from "@atomist/automation-client/decorators";
-import { HandlerContext } from "@atomist/automation-client/HandlerContext";
-import { HandlerResult, RedirectResult } from "@atomist/automation-client/HandlerResult";
-import { generate, ProjectPersister } from "@atomist/automation-client/operations/generate/generatorUtils";
-import { AbstractSpringGenerator } from "./AbstractSpringGenerator";
-import { writeZip, ZipWritingResult } from "./writeZip";
+import {
+    CommandHandler,
+    HandlerContext,
+    HandlerResult,
+    RedirectResult,
+} from "@atomist/automation-client/Handlers";
+import {
+    generate,
+    ProjectPersister,
+} from "@atomist/automation-client/operations/generate/generatorUtils";
 import { Project } from "@atomist/automation-client/project/Project";
+import { AbstractSpringGenerator } from "./AbstractSpringGenerator";
+import {
+    writeZip,
+    ZipWritingResult,
+} from "./writeZip";
 
 @CommandHandler("generate spring boot seed")
 export class ZipCreator extends AbstractSpringGenerator {
@@ -31,7 +40,7 @@ export class ZipCreator extends AbstractSpringGenerator {
                         code: 0,
                         redirect: `/serveFile?path=${zr.path}&name=${params.serviceClassName}`,
                     } as RedirectResult;
-                }
+                },
             );
     }
 }

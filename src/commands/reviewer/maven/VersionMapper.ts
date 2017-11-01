@@ -1,18 +1,24 @@
-import * as _ from "lodash";
-
-import { CommandHandler, Secret, Tags } from "@atomist/automation-client/decorators";
-import { HandleCommand } from "@atomist/automation-client/HandleCommand";
-import { HandlerContext } from "@atomist/automation-client/HandlerContext";
-import { HandlerResult } from "@atomist/automation-client/HandlerResult";
+import {
+    CommandHandler,
+    HandleCommand,
+    HandlerContext,
+    HandlerResult,
+    Secret,
+    Secrets,
+    Tags,
+} from "@atomist/automation-client/Handlers";
 import { hasFile } from "@atomist/automation-client/internal/util/gitHub";
 import { LocalOrRemoteRepoOperation } from "@atomist/automation-client/operations/common/LocalOrRemoteRepoOperation";
 import { doWithAllRepos } from "@atomist/automation-client/operations/common/repoUtils";
 import { Project } from "@atomist/automation-client/project/Project";
 import { findMatches } from "@atomist/automation-client/project/util/parseUtils";
-import { ArtifactContainer, DependencyGrammar } from "../../../grammars/mavenGrammars";
+import * as _ from "lodash";
+import {
+    ArtifactContainer,
+    DependencyGrammar,
+} from "../../../grammars/mavenGrammars";
 import { VersionedArtifact } from "../../../grammars/VersionedArtifact";
 import { expandProperties } from "./utils";
-import { Secrets } from "@atomist/automation-client/Handlers";
 
 @CommandHandler("Reviewer that reports the range of versions of all Maven dependencies", "version map")
 @Tags("atomist", "maven", "library")

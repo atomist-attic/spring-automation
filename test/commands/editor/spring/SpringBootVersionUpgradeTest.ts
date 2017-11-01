@@ -1,6 +1,6 @@
-import "mocha";
 import { ProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
 import { InMemoryProject } from "@atomist/automation-client/project/mem/InMemoryProject";
+import "mocha";
 import * as assert from "power-assert";
 import { SpringBootVersionUpgrade } from "../../../../src/commands/editor/spring/SpringBootVersionUpgrade";
 import { NonSpringPom, springBootPom } from "../../reviewer/maven/Poms";

@@ -1,4 +1,8 @@
-import { CommandHandler, Parameter, Tags } from "@atomist/automation-client/decorators";
+import {
+    CommandHandler,
+    Parameter,
+    Tags,
+} from "@atomist/automation-client/decorators";
 import { hasFile } from "@atomist/automation-client/internal/util/gitHub";
 import { ProjectReviewer } from "@atomist/automation-client/operations/review/projectReviewer";
 import { ReviewerCommandSupport } from "@atomist/automation-client/operations/review/ReviewerCommandSupport";

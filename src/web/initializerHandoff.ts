@@ -64,7 +64,7 @@ export function addInitializrHandoffRoute(express: exp.Express, ...handlers: exp
                 req.flash("error", `Repository ${owner}/${repo} already exists. Please use a different name!`);
                 return res.redirect(`/fillInRepo/${id}`);
             })
-            .catch((err) => {
+            .catch( err => {
                 // Populate the generator itself to ensure we get the right names,
                 // then take out the data
                 const initializrData = InMemoryStore.get(id);

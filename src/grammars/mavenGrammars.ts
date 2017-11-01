@@ -1,5 +1,8 @@
 import { Microgrammar } from "@atomist/microgrammar/Microgrammar";
-import { atLeastOne, zeroOrMore } from "@atomist/microgrammar/Rep";
+import {
+    atLeastOne,
+    zeroOrMore,
+} from "@atomist/microgrammar/Rep";
 import { VersionedArtifact } from "./VersionedArtifact";
 
 export const ElementName = /^[a-zA-Z_.0-9\-]+/;

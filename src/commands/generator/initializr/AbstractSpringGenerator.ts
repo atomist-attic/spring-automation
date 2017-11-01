@@ -1,16 +1,17 @@
-import { curry } from "@typed/curry";
-
-import { SeedDrivenGenerator } from "@atomist/automation-client/operations/generate/SeedDrivenGenerator";
-import { Parameter } from "@atomist/automation-client/decorators";
-import { HandlerContext } from "@atomist/automation-client/HandlerContext";
+import {
+    HandlerContext,
+    Parameter,
+} from "@atomist/automation-client/Handlers";
+import { logger } from "@atomist/automation-client/internal/util/logger";
 import { AnyProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
 import { chainEditors, EditorChainable, ProjectOp } from "@atomist/automation-client/operations/edit/projectEditorOps";
 import {
     doUpdatePom,
     inferStructureAndMovePackage,
-    removeTravisBuildFiles
+    removeTravisBuildFiles,
 } from "@atomist/automation-client/operations/generate/java/JavaSeed";
-import { logger } from "@atomist/automation-client/internal/util/logger";
+import { SeedDrivenGenerator } from "@atomist/automation-client/operations/generate/SeedDrivenGenerator";
+import { curry } from "@typed/curry";
 import { addSpringBootStarter } from "../../editor/spring/addStarterEditor";
 
 /**
@@ -89,7 +90,7 @@ export abstract class AbstractSpringGenerator extends SeedDrivenGenerator {
         displayName: "starters",
         pattern: /.*/,
         required: true,
-        //type: FreeChoices,
+        // type: FreeChoices,
     })
     public startersCsv: string = "";
 
@@ -116,7 +117,7 @@ export abstract class AbstractSpringGenerator extends SeedDrivenGenerator {
             curry(inferStructureAndMovePackage)(params.rootPackage),
         ];
         return chainEditors(
-            ...editors.concat(starterEditors)
+            ...editors.concat(starterEditors),
         );
     }
 

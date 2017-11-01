@@ -1,11 +1,22 @@
-import { CommandHandler, Parameter, Secret, Tags } from "@atomist/automation-client/decorators";
+import {
+    CommandHandler,
+    Parameter,
+    Secret,
+    Secrets,
+    Tags,
+} from "@atomist/automation-client/Handlers";
 import { hasFile } from "@atomist/automation-client/internal/util/gitHub";
-import { EditMode, PullRequest } from "@atomist/automation-client/operations/edit/editModes";
+import {
+    EditMode,
+    PullRequest,
+} from "@atomist/automation-client/operations/edit/editModes";
 import { EditorCommandSupport } from "@atomist/automation-client/operations/edit/EditorCommandSupport";
-import { EditResult, ProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
+import {
+    EditResult,
+    ProjectEditor,
+} from "@atomist/automation-client/operations/edit/projectEditor";
 import { Project } from "@atomist/automation-client/project/Project";
 import { setSpringBootVersionEditor } from "./setSpringBootVersionEditor";
-import { Secrets } from "@atomist/automation-client/Handlers";
 
 /**
  * Upgrade the version of Spring Boot projects to a desired version
