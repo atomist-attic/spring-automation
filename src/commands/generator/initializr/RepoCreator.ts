@@ -37,15 +37,14 @@ export class RepoCreator extends AbstractSpringGenerator implements RepoId {
     }
 
     constructor(private store: ObjectStore,
-                private collaborator?: string,
-                private collaboratorToken?: string) {
+                private collaborator?: string) {
         super();
     }
 
     public handle(ctx: HandlerContext, params: this): Promise<HandlerResult> {
         return generate(this.startingPoint(ctx, this),
             ctx,
-            {token: params.collaboratorToken},
+            {token: params.githubToken},
             params.projectEditor(ctx, params),
             GitHubProjectPersister,
             params)
@@ -68,7 +67,7 @@ export class RepoCreator extends AbstractSpringGenerator implements RepoId {
             axios.post(
                 `${ref.apiBase}repos/${ref.owner}/${ref.repo}/collaborators/${this.collaborator}`,
                 {permission: "push"},
-                {headers: {Authorization: `token ${this.collaboratorToken}`}})
+                {headers: {Authorization: `token ${this.githubToken}`}})
                 .catch(err => {
                     logger.warn("Unable to install %s as a collaborator on %s:%s - Failed with %s", this.collaborator, ref.owner, ref.repo, err)
                 }) :
