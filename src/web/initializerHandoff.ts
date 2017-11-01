@@ -1,3 +1,4 @@
+import { RedirectResult } from "@atomist/automation-client/HandlerResult";
 import { logger } from "@atomist/automation-client/internal/util/logger";
 import axios from "axios";
 import * as mustacheExpress from "mustache-express";
@@ -7,7 +8,6 @@ import * as fs from "fs";
 import { RepoCreator } from "../commands/generator/initializr/RepoCreator";
 import { ZipCreator } from "../commands/generator/initializr/ZipCreator";
 import { InMemoryStore } from "./InMemoryObjectStore";
-import { RedirectResult } from "@atomist/automation-client/HandlerResult";
 
 const CreateRepoCommandPath = "command/repo-creator";
 
