@@ -1,21 +1,20 @@
-import {
-    CommandHandler,
-    HandlerContext,
-    HandlerResult,
-    MappedParameter,
-    MappedParameters,
-    Secret,
-    Secrets,
-} from "@atomist/automation-client/Handlers";
+import axios from "axios";
+
+import { CommandHandler, MappedParameter, Secret } from "@atomist/automation-client/decorators";
+import { HandlerContext } from "@atomist/automation-client/HandlerContext";
+import { HandlerResult } from "@atomist/automation-client/HandlerResult";
+import { MappedParameters, Secrets } from "@atomist/automation-client/Handlers";
 import { logger } from "@atomist/automation-client/internal/util/logger";
 import { GitHubRepoRef } from "@atomist/automation-client/operations/common/GitHubRepoRef";
 import { RepoId } from "@atomist/automation-client/operations/common/RepoId";
 import { generate } from "@atomist/automation-client/operations/generate/generatorUtils";
 import { GitHubProjectPersister } from "@atomist/automation-client/operations/generate/gitHubProjectPersister";
-import axios from "axios";
 import { ObjectStore } from "../../../web/ObjectStore";
 import { AbstractSpringGenerator } from "./AbstractSpringGenerator";
 
+/**
+ * Creates a GitHub Repo and installs Atomist collaborator if necessary
+ */
 @CommandHandler("generate spring boot seed")
 export class RepoCreator extends AbstractSpringGenerator implements RepoId {
 
@@ -34,7 +33,8 @@ export class RepoCreator extends AbstractSpringGenerator implements RepoId {
     }
 
     constructor(private store: ObjectStore,
-                private collaborator?: string) {
+                private collaborator?: string,
+                private collaboratorToken?: string) {
         super();
     }
 
@@ -62,7 +62,7 @@ export class RepoCreator extends AbstractSpringGenerator implements RepoId {
     private addAtomistCollaborator(params: this, ref: GitHubRepoRef): Promise<any> {
         if (!!params.collaborator) {
             const url = `${ref.apiBase}/repos/${ref.owner}/${ref.repo}/collaborators/${params.collaborator}`;
-            logger.info("Attempting to install %s as a collaborator on %s:%s calling URL '%s'",
+            logger.info("Attempting to install %s as a collaborator on %s:%s calling URL [%s]",
                 params.collaborator, ref.owner, ref.repo, url);
             return axios.put(
                 url,
@@ -71,10 +71,28 @@ export class RepoCreator extends AbstractSpringGenerator implements RepoId {
                 .catch(err => {
                     logger.warn("Unable to install %s as a collaborator on %s:%s - Failed with %s",
                         params.collaborator, ref.owner, ref.repo, err);
-                });
+                })
+                .then(res => this.acceptInvitation(params.collaboratorToken, ref, res));
         } else {
             logger.warn("No collaborator configured on %s:%s - Not installing", ref.owner, ref.repo);
             return Promise.resolve(true);
+        }
+    }
+
+    private acceptInvitation(collaboratorToken: string, ref: GitHubRepoRef,
+                             response: boolean | any /* AxiosResponse from add collaborator */): Promise<any> {
+        if (response) {
+            const invitationId = response.data.id;
+            logger.debug("Accepting invitation %s", invitationId);
+            return axios.patch(`${ref.apiBase}/user/repository_invitations/${invitationId}`, "",
+                {headers: {Authorization: `token ${collaboratorToken}`}}).then(yay => {
+                logger.debug(`invitation accepted!`);
+                return yay;
+            }).catch(err => {
+                logger.warn("Failure accepting invitation to %s/%s: %s", ref.owner, ref.repo, err);
+            });
+        } else {
+            return Promise.resolve(false);
         }
     }
 
