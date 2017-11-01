@@ -15,6 +15,7 @@ export function addInitializrHandoffRoute(express: exp.Express, ...handlers: exp
 
     logger.debug("Adding express routes for Spring Initialzr");
 
+    // TODO remove this after updating to latest client
     if (process.env.NODE_ENV !== "production") {
         const engine = mustacheExpress();
         engine.cache = null;
