@@ -21,7 +21,7 @@ export const configuration: Configuration = {
     version: pj.version,
     teamIds: ["T5964N9B7"],
     commands: [
-        () => new RepoCreator(InMemoryStore, AtomistUser),
+        () => new RepoCreator(InMemoryStore, AtomistUser, AtomistToken),
         ZipCreator,
         () => new UpgradeCreatedRepos(ReposWeMadeRepoFinder, AtomistToken),
     ],
