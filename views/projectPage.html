@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Project {{owner}}/{{repo}}</title>
+    <link href="//fonts.googleapis.com/css?family=Varela+Round|Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="/css/spring.css"/>
+    <link rel="shortcut icon" type="image/x-icon" href="../public/img/favicon.png"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {{#trackingCode}}
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-KZM7GF6');</script>
+    {{/trackingCode}}
+</head>
+<body>
+<form id="form" action="createRepo" method="get" role="form">
+
+    <input type="hidden" name="id" id="id" value="{{ id }}" />
+
+    <div class="container-fluid">
+        <div class="row start-header">
+            <div class="container">
+                <img src ="https://www.atomist.com/img/Atomist-Logo.png" height="108" width="87" />
+
+                <h1>Project Details <small>{{owner}}/{{repo}}</small></h1>
+            </div>
+        </div>
+
+        <div class="container start-main">
+
+            <div class="row">
+
+                {{#message}}
+                <div class="alert alert-danger text-center" role="alert" style="margin-top: 20px">
+                    {{message}}
+                </div>
+                {{/message}}
+
+                <div class="col-sm-12 col-md-6">
+                    <h2>Spring Boot Version</h2>
+                    <label class="control-label">1.5.8</label>
+
+                    <h2>Starters</h2>
+
+                    <ul>
+                        <li>starter-web</li>
+                        <li>starter-security</li>
+                    </ul>
+
+                    <!--<div class="form-group artifactid-form-group">-->
+                        <!--<label for="repo" class="control-label">Repo</label>-->
+                        <!--<input tabindex="5" id="repo" class="form-control" type="text"-->
+                               <!--value="{{repo}}"-->
+                               <!--name="repo">-->
+                    <!--</div>-->
+
+                </div>
+
+                <div class="col-sm-12 col-md-6">
+                    <h2>Subscriptions</h2>
+
+                    <p>Atomist and Pivotal will make pull requests when a newer
+                        version of Spring Boot comes out, to ensure you stay up to date.
+                    </p>
+
+                    <label>Spring Boot Version</label>
+                    <input type="checkbox" name="Keep Spring Boot up to date" checked="true" />
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+            <p class="text-center">
+                <button tabindex="12" name="create-repo" type="submit" class="btn btn-lg btn-primary"
+                        role="button"
+                        formmethod="GET"
+                        formaction="/createRepo">
+                    Create Repo
+                </button>
+            </p>
+        </div>
+    </div>
+</form>
+<footer>
+    <div class="container">
+        <p>start.spring.io is powered by <a href="https://github.com/spring-io/initializr/">Spring Initializr</a>
+            and <a href="https://www.atomist.com">Atomist</a> on <a href="https://run.pivotal.io">Pivotal Web Services</a></p>
+    </div>
+</footer>
+<script src="/js/jquery-3.1.1.min.js"></script>
+<script src="/js/typeahead.bundle.min.js"></script>
+<script src="/js/mousetrap.min.js"></script>
+<script src="/js/start.js"></script>
+</body>
+</html>

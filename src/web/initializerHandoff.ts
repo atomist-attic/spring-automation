@@ -20,12 +20,12 @@ export function addInitializrHandoffRoute(express: exp.Express, ...handlers: exp
         res.redirect("fillInRepo/" + id);
     });
 
-    express.post("/requestZipCreation", ...handlers, (req, res) => {
+    express.post("/requestZipCreation", (req, res) => {
         logger.debug("POST for zip creation: BODY is [" + JSON.stringify(req.body) + "]");
         res.redirect(zipGeneratorUri(req.body));
     });
 
-    express.get("/serveFile", ...handlers, (req, res) => {
+    express.get("/serveFile", (req, res) => {
         const path = req.params.path;
         const name = req.params.name;
 

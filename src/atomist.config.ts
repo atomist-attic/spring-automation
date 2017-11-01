@@ -6,6 +6,7 @@ import { RepoCreator } from "./commands/generator/initializr/RepoCreator";
 import { ZipCreator } from "./commands/generator/initializr/ZipCreator";
 import { addInitializrHandoffRoute } from "./web/initializerHandoff";
 import { InMemoryStore } from "./web/InMemoryObjectStore";
+import { springBootProjectPage } from "./web/springBootProjectPage";
 
 const pj = require(`${appRoot.path}/package.json`);
 
@@ -28,7 +29,7 @@ export const configuration: Configuration = {
     token: GitHubToken,
     http: {
         enabled: true,
-        customizers: [ addInitializrHandoffRoute ],
+        customizers: [ addInitializrHandoffRoute, springBootProjectPage ],
         auth: {
             basic: {
                 enabled: false,
