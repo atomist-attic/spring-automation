@@ -30,6 +30,6 @@ export function springBootProjectPage(express: exp.Express, ...handlers: exp.Req
 
 export interface ProjectInfo extends RepoId {
 
-    action? : string;
+    action?: string;
 
 }
