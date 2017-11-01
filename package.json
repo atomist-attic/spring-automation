@@ -58,7 +58,7 @@
     "clean:dist": "npm-run-all clean clean:npm",
     "clean:js": "rimraf '{src,test}/**/*.js'",
     "clean:npm": "rimraf node_modules",
-    "compile": "npm-run-all gql:gen compile:ts",
+    "compile": "npm-run-all compile:ts",
     "compile:ts": "tsc --project .",
     "fmt": "tsfmt --replace",
     "git:info": "git-info",
