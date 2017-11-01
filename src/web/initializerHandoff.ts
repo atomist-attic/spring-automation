@@ -63,6 +63,7 @@ export function addInitializrHandoffRoute(cache: ObjectStore, express: Express) 
         generator.groupId = initializrData.groupId;
         generator.version = initializrData.version;
         generator.serviceClassName = initializrData.name;
+        generator.visibility = "public";
         const uri = toCommandHandlerGetUrl(CreateRepoCommandPath, generator) +
             "&mp_targetOwner=johnsonr&" +
             encodeURIComponent("s_github://user_token?scopes=repo,user") + "=" + process.env.GITHUB_TOKEN;

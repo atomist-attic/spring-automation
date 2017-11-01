@@ -99,6 +99,7 @@ export abstract class AbstractSpringGenerator extends SeedDrivenGenerator {
 
     constructor() {
         super();
+        this.visibility = "public";
         this.sourceOwner = "atomist-seeds";
         this.sourceRepo = "spring-rest-seed";
     }

@@ -68,7 +68,10 @@ export class RepoCreator extends AbstractSpringGenerator implements RepoId {
             axios.post(
                 `${ref.apiBase}repos/${ref.owner}/${ref.repo}/collaborators/${this.collaborator}`,
                 {permission: "push"},
-                {headers: {Authorization: `token ${this.collaboratorToken}`}}) :
+                {headers: {Authorization: `token ${this.collaboratorToken}`}})
+                .catch(err => {
+                    logger.warn("Unable to install %s as a collaborator on %s:%s - Failed with %s", this.collaborator, ref.owner, ref.repo, err)
+                }) :
             Promise.resolve(true);
     }
 
