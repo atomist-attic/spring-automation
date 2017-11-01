@@ -3,18 +3,15 @@ import { curry } from "@typed/curry";
 import { SeedDrivenGenerator } from "@atomist/automation-client/operations/generate/SeedDrivenGenerator";
 import { Parameter } from "@atomist/automation-client/decorators";
 import { HandlerContext } from "@atomist/automation-client/HandlerContext";
-import {
-    AnyProjectEditor, ProjectEditor,
-    SimpleProjectEditor
-} from "@atomist/automation-client/operations/edit/projectEditor";
+import { AnyProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
 import { chainEditors, EditorChainable, ProjectOp } from "@atomist/automation-client/operations/edit/projectEditorOps";
 import {
-    doUpdatePom, inferStructureAndMovePackage,
+    doUpdatePom,
+    inferStructureAndMovePackage,
     removeTravisBuildFiles
 } from "@atomist/automation-client/operations/generate/java/JavaSeed";
 import { logger } from "@atomist/automation-client/internal/util/logger";
 import { addSpringBootStarter } from "../../editor/spring/addStarterEditor";
-import { start } from "repl";
 
 /**
  * Superclass for all Spring generators

@@ -1,3 +1,5 @@
+import axios from "axios";
+
 import { CommandHandler, MappedParameter, Secret } from "@atomist/automation-client/decorators";
 import { HandlerContext } from "@atomist/automation-client/HandlerContext";
 import { HandlerResult } from "@atomist/automation-client/HandlerResult";
@@ -14,6 +16,8 @@ import { ProjectOperationCredentials } from "@atomist/automation-client/operatio
 import { NodeFsLocalProject } from "@atomist/automation-client/project/local/NodeFsLocalProject";
 import { logger } from "@atomist/automation-client/internal/util/logger";
 import { LocalProject } from "@atomist/automation-client/project/local/LocalProject";
+import { ObjectStore } from "../../../web/ObjectStore";
+import { GitHubRepoRef } from "@atomist/automation-client/operations/common/GitHubRepoRef";
 
 @CommandHandler("generate spring boot seed")
 export class RepoCreator extends AbstractSpringGenerator implements RepoId {
@@ -32,23 +36,42 @@ export class RepoCreator extends AbstractSpringGenerator implements RepoId {
         return this.targetRepo;
     }
 
-    constructor() {
+    constructor(private store: ObjectStore,
+                private collaborator?: string,
+                private collaboratorToken?: string) {
         super();
-        // TODO set source seed
     }
 
     public handle(ctx: HandlerContext, params: this): Promise<HandlerResult> {
         return generate(this.startingPoint(ctx, this),
             ctx,
-            {token: params.githubToken},
+            {token: params.collaboratorToken},
             params.projectEditor(ctx, params),
             GitHubProjectPersister,
             params)
+            .then(r => {
+                // Store the repo we created
+                const ref = new GitHubRepoRef(params.owner, params.repo);
+                params.store.put(ref);
+                logger.info("Remembering we created repo %j", ref);
+                return ref;
+            })
+            .then(this.addAtomistCollaborator)
             .then(r => ({
                 code: 0,
                 redirect: `https://github.com/${params.targetOwner}/${params.targetRepo}`,
             }));
     }
+
+    private addAtomistCollaborator(ref: GitHubRepoRef): Promise<any> {
+        return !!this.collaborator ?
+            axios.post(
+                `${ref.apiBase}repos/${ref.owner}/${ref.repo}/collaborators/${this.collaborator}`,
+                {permission: "push"},
+                {headers: {Authorization: `token ${this.collaboratorToken}`}}) :
+            Promise.resolve(true);
+    }
+
 }
 
 // TODO this can be replaced by client library version

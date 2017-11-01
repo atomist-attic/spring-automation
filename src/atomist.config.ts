@@ -7,19 +7,24 @@ import { RepoCreator } from "./commands/generator/initializr/RepoCreator";
 import { ZipCreator } from "./commands/generator/initializr/ZipCreator";
 import { addInitializrHandoffRoute } from "./web/initializerHandoff";
 import { InMemoryStore } from "./web/InMemoryObjectStore";
+import { UpgradeCreatedRepos } from "./commands/editor/spring/UpgradeCreatedRepos";
+import { ReposWeMadeRepoFinder } from "./commands/generator/initializr/createdReposRepoFinder";
 
 const pj = require(`${appRoot.path}/package.json`);
 
 const GitHubToken = process.env.GITHUB_TOKEN;
 
+const AtomistUser: string = "atomist-bot";
+const AtomistToken: string = process.env.ATOMIST_GITHUB_TOKEN;
+
 export const configuration: Configuration = {
     name: pj.name,
     version: pj.version,
-    teamIds: ["T5964N9B7"], // <-- run @atomist pwd in your slack team to obtain the team id
+    teamIds: ["T5964N9B7"],
     commands: [
-        RepoCreator,
+        () => new RepoCreator(InMemoryStore, AtomistUser, AtomistToken),
         ZipCreator,
-        SpringBootVersionUpgrade,
+        () => new UpgradeCreatedRepos(ReposWeMadeRepoFinder, AtomistToken),
     ],
     events: [],
     ingestors: [],

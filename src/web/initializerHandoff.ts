@@ -54,7 +54,7 @@ export function addInitializrHandoffRoute(cache: ObjectStore, express: Express) 
         // Populate the generator itself to ensure we get the right names,
         // then take out the data
         const initializrData = cache.get(id);
-        const generator = new RepoCreator();
+        const generator = new RepoCreator(null);
         generator.targetOwner = req.param("org");
         generator.targetRepo = req.param("repo");
         generator.startersCsv = (initializrData.style || []).join();
