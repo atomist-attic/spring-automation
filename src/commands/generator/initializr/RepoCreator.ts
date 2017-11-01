@@ -57,13 +57,15 @@ export class RepoCreator extends AbstractSpringGenerator implements RepoId {
 
     private addAtomistCollaborator(params: this, ref: GitHubRepoRef): Promise<any> {
         if (!!params.collaborator) {
-            logger.info("Attempting to install %s as a collaborator on %s:%s", this.collaborator, ref.owner, ref.repo);
-            return axios.post(
-                `${ref.apiBase}/repos/${ref.owner}/${ref.repo}/collaborators/${this.collaborator}`,
+            const url = `${ref.apiBase}/repos/${ref.owner}/${ref.repo}/collaborators/${params.collaborator}`;
+            logger.info("Attempting to install %s as a collaborator on %s:%s calling URL [%s]",
+                params.collaborator, ref.owner, ref.repo, url);
+            return axios.put(
+                url,
                 {permission: "push"},
                 {headers: {Authorization: `token ${params.githubToken}`}})
                 .catch(err => {
-                    logger.warn("Unable to install %s as a collaborator on %s:%s - Failed with %s", this.collaborator, ref.owner, ref.repo, err)
+                    logger.warn("Unable to install %s as a collaborator on %s:%s - Failed with %s", params.collaborator, ref.owner, ref.repo, err)
                 })
         } else {
             logger.warn("No collaborator configured on %s:%s - Not installing", ref.owner, ref.repo);
