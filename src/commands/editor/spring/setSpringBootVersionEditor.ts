@@ -20,7 +20,7 @@ export function setSpringBootVersionEditor(desiredBootVersion: string): ProjectE
         return doWithAtMostOneMatch(p, "pom.xml",
             parentStanzaOfGrammar(SpringBootStarter), m => {
                 if (m.version.value !== desiredBootVersion) {
-                    logger.info(`Updating Spring Boot version from [%s] to [%s]`,
+                    logger.info("Updating Spring Boot version from [%s] to [%s]",
                         m.version.value, desiredBootVersion);
                     m.version.value = desiredBootVersion;
                     edited = true;
