@@ -2,7 +2,15 @@ import * as exp from "express";
 import { GitCommandGitProject } from "@atomist/automation-client/project/git/GitCommandGitProject";
 import { GitHubRepoRef } from "@atomist/automation-client/operations/common/GitHubRepoRef";
 import { build, deploy } from "../commands/generator/build/DefaultDeploymentChain";
-import { diagnosticDump } from "@atomist/automation-client/project/util/diagnosticUtils";
+import { CloudFoundryInfo, PivotalWebServices } from "../commands/generator/build/DeploymentChain";
+
+const CloudFoundryTarget: CloudFoundryInfo = {
+    ...PivotalWebServices,
+    username: "rod@atomist.com",
+    password: "sfatomist2016!X",
+    space: "development",
+    org: "springrod",
+};
 
 export function addDeployRoutes(express: exp.Express, ...handlers: exp.RequestHandler[]) {
 
@@ -17,7 +25,7 @@ export function addDeployRoutes(express: exp.Express, ...handlers: exp.RequestHa
         );
 
         return clone.then(build)
-            .then(deploy)
+            .then(ar => deploy(ar.target, CloudFoundryTarget))
             .then(res.json);
     });
 }

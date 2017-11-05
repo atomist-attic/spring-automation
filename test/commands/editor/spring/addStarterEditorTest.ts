@@ -1,14 +1,9 @@
 import "mocha";
 
 import { InMemoryProject } from "@atomist/automation-client/project/mem/InMemoryProject";
-
-import { RepoId, SimpleRepoId } from "@atomist/automation-client/operations/common/RepoId";
 import { SimpleProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
 import * as assert from "power-assert";
 import { addSpringBootStarter } from "../../../../src/commands/editor/spring/addStarterEditor";
-import { setSpringBootVersionEditor } from "../../../../src/commands/editor/spring/setSpringBootVersionEditor";
-import { tempProject } from "../../../util/tempProject";
-import { springBootPom } from "../../reviewer/maven/Poms";
 
 describe("addSpringBootStarterEditor", () => {
 
@@ -37,7 +32,7 @@ describe("addSpringBootStarterEditor", () => {
 
 });
 
-const FromInitializr = `<?xml version="1.0" encoding="UTF-8"?>
+export const FromInitializr = `<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>

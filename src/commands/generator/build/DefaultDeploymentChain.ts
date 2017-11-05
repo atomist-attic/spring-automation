@@ -1,8 +1,9 @@
-import { Deployment, DeploymentChain } from "./DeploymentChain";
+import { AppInfo, CloudFoundryInfo, Deployment } from "./DeploymentChain";
 import { LocalProject } from "@atomist/automation-client/project/local/LocalProject";
 import { runCommand } from "@atomist/automation-client/action/cli/commandLine";
 import { ActionResult, successOn } from "@atomist/automation-client/action/ActionResult";
 import { logger } from "@atomist/automation-client/internal/util/logger";
+import { identification } from "../../../../test/commands/editor/spring/pomParser";
 
 export function build<P extends LocalProject>(p: P): Promise<ActionResult<P>> {
     return runCommand("mvn package", {
@@ -16,41 +17,48 @@ export function build<P extends LocalProject>(p: P): Promise<ActionResult<P>> {
         .then(r => successOn(p));
 }
 
-export function deploy<P extends LocalProject>(ar: ActionResult<P>): Promise<Deployment> {
+function toJar(ai: AppInfo) {
+    return `target/${ai.name}-${ai.version}.jar`;
+}
 
-    const api = "https://api.run.pivotal.io";
-    const username = "rod@atomist.com";
-    const password = "sfatomist2016!X";
-    const space = "development";
-    const org = "springrod";
+export function deploy<P extends LocalProject>(p: P, cfi: CloudFoundryInfo): Promise<Deployment> {
 
-    // TODO get names from Maven pom.
-    const name = "pong-matcher-spring";
-    const version = "1.0.0";
+    // const ai: AppInfo = {
+    //     name: "pong-matcher-spring",
+    //     version: "1.0.0",
+    // };
 
-    logger.info("Deploying app [%s] to Cloud Foundry at [%s]", name, api);
+    const appId: Promise<AppInfo> =
+        p.findFile("pom.xml")
+            .then(pom => pom.getContent()
+                .then(content => identification(content)))
+            .then(va => ({...va, name: va.artifact}));
 
-    return runCommand(`cf login -a ${api} -o ${org} -u ${username} -p "${password}" -s ${space}`,
-        {cwd: ar.target.baseDir})// [-o ORG] [-s SPACE]`)
-        .then(_ => {
-            console.log("Successfully logged into Cloud Foundry as [%s]", username);
-            return _;
-        })
-        .then(() =>
-            // TODO function to return name
-            runCommand(`cf push ${name} -p target/${name}-${version}.BUILD-SNAPSHOT.jar --random-route`,
-                {cwd: ar.target.baseDir})
-                .catch(err => {
-                    logger.warn("Failed to deploy to cloud foundry: %j", err);
-                    return Promise.reject(err);
-                })
-                .then(r => ({
-                    success: r.success,
-                    log: r.stdout,
-                    target: ar.target,
-                    url: toUrl(name),
-                }))
-        );
+
+    return appId.then(ai => {
+        logger.info("Deploying app [%j] to Cloud Foundry [%j]", ai, cfi);
+        return runCommand(`cf login -a ${cfi.api} -o ${cfi.org} -u ${cfi.username} -p "${cfi.password}" -s ${cfi.space}`,
+            {cwd: p.baseDir})// [-o ORG] [-s SPACE]`)
+            .then(_ => {
+                console.log("Successfully logged into Cloud Foundry as [%s]", cfi.username);
+                return _;
+            })
+            .then(() =>
+                // TODO function to return name
+                runCommand(`cf push ${ai.name} -p ${toJar(ai)} --random-route`,
+                    {cwd: p.baseDir})
+                    .catch(err => {
+                        logger.warn("Failed to deploy to cloud foundry: %j", err);
+                        return Promise.reject(err);
+                    })
+                    .then(r => ({
+                        success: r.success,
+                        log: r.stdout,
+                        target: p,
+                        url: toUrl(name),
+                    }))
+            )
+    });
 }
 
 function toUrl(name: string) {

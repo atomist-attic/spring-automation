@@ -7,7 +7,7 @@ import { ZipCreator } from "./commands/generator/initializr/ZipCreator";
 import { addInitializrHandoffRoute } from "./web/initializerHandoff";
 import { InMemoryStore } from "./web/InMemoryObjectStore";
 import { springBootProjectPage } from "./web/springBootProjectPage";
-import { addDeployRoutes, deploy } from "./web/addDeployRoutes";
+import { addDeployRoutes } from "./web/addDeployRoutes";
 
 const pj = require(`${appRoot.path}/package.json`);
 

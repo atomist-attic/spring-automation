@@ -21,10 +21,12 @@
   "dependencies": {
     "@atomist/automation-client": "https://atomist.jfrog.io/atomist/npm-dev/@atomist/automation-client/-/@atomist/automation-client-0.2.6-nortissej.test-cleanup.20171101015343.tgz",
     "@atomist/slack-messages": "^0.12.0",
+    "@types/jsdom": "^11.0.3",
     "@types/jszip": "^3.1.2",
     "app-root-path": "^2.0.1",
     "cfenv": "^1.0.4",
-    "jszip": "^3.1.4"
+    "jszip": "^3.1.4",
+    "xml2js": "^0.4.19"
   },
   "devDependencies": {
     "@types/app-root-path": "^1.2.4",
