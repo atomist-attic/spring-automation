@@ -54,12 +54,19 @@
                     <h3>Spring Boot <i>1.5.8</i></h3>
                     Maven
 
+
                     <h3>Starters</h3>
 
                     <ul>
                         <li>starter-web</li>
                         <li>starter-security</li>
                     </ul>
+
+                    <iframe id="deployment" width="609" scrolling="yes" height="410" frameborder="2"
+                            align="middle" name="canal" src=""></iframe>
+
+                    <input id="deploy" type="button" onclick="deployinate()" value="Deploy to Cloud Foundry and Make James $$!" />
+
 
                     <!--<div class="form-group artifactid-form-group">-->
                         <!--<label for="repo" class="control-label">Repo</label>-->
@@ -112,5 +119,15 @@
 <script src="/js/typeahead.bundle.min.js"></script>
 <script src="/js/mousetrap.min.js"></script>
 <script src="/js/start.js"></script>
+
+
+
+<script>
+     function deployinate() {
+         document.getElementById('deployment').src = "/deploy/{{owner}}/{{repo}}";
+     }
+
+</script>
+
 </body>
 </html>
