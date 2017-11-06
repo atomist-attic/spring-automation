@@ -4,22 +4,14 @@ import { runCommand } from "@atomist/automation-client/action/cli/commandLine";
 import { ActionResult, successOn } from "@atomist/automation-client/action/ActionResult";
 import { logger } from "@atomist/automation-client/internal/util/logger";
 import { identification } from "../../../../test/commands/editor/spring/pomParser";
-import { spawn } from "child_process";
+import { ChildProcess, spawn } from "child_process";
 import { addManifest, toJar } from "../../editor/pcf/addManifestEditor";
 import { VersionedArtifact } from "../../../grammars/VersionedArtifact";
 
-export function build<P extends LocalProject>(p: P, log: ProgressLog): Promise<ActionResult<P>> {
-    log.write("Running Maven build...\n");
-    return runCommand("mvn package", {
+export function build<P extends LocalProject>(p: P): ChildProcess {
+    return spawn("mvn", ["package"], {
         cwd: p.baseDir,
-        maxBuffer: 1024 * 1000,
-    })
-        .then(r => {
-            logger.info("Maven build completed OK");
-            log.write("Maven build completed OK...\n");
-            return r;
-        })
-        .then(r => successOn(p));
+    });
 }
 
 export function deploy<P extends LocalProject>(p: P, cfi: CloudFoundryInfo, log: ProgressLog): Promise<Deployment> {

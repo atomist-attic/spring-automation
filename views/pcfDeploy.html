@@ -54,7 +54,7 @@
                     <p>Deployment progress...
                     </p>
 
-                    <iframe id="deployment" width="480" scrolling="yes" height="350" frameborder="2"
+                    <iframe id="deployment" width="480" scrolling="yes" height="340" frameborder="2"
                             align="middle" name="canal" src=""></iframe>
                 </div>
 
@@ -79,10 +79,8 @@
      function deployinate() {
          const output = document.getElementById('deployment');
          output.src = "/deploy/{{owner}}/{{repo}}";
-         output.contentWindow.document.body.style.backgroundColor="blue";
-
-         output.contentDocument.body.style.fontFamily = "Courier";
-
+//         output.contentWindow.document.body.style.backgroundColor="blue";
+//         output.contentDocument.body.style.fontFamily = "Courier";
      }
 
 </script>

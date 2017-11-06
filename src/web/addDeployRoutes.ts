@@ -4,6 +4,7 @@ import { GitHubRepoRef } from "@atomist/automation-client/operations/common/GitH
 import { build, deploy } from "../commands/generator/build/DefaultDeploymentChain";
 import { CloudFoundryInfo, PivotalWebServices } from "../commands/generator/build/DeploymentChain";
 import * as fs from "fs";
+import { LocalProject } from "@atomist/automation-client/project/local/LocalProject";
 
 const CloudFoundryTarget: CloudFoundryInfo = {
     ...PivotalWebServices,
@@ -31,8 +32,18 @@ export function addDeployRoutes(express: exp.Express, ...handlers: exp.RequestHa
         );
 
         return clone
-            .then(p => build(p, res))
-            .then(ar => deploy(ar.target, CloudFoundryTarget, res))
+            .then(p => {
+                return new Promise<LocalProject>((resolve, reject) => {
+                    const childProcess = build(p);
+                    res.write("Running Maven build...\n");
+                    childProcess.stdout.on("data", what => res.write(what));
+                    childProcess.on("error", err => reject(err));
+                    childProcess.on("exit", code => {
+                        return code === 0 ? resolve(p) : reject("Build failure");
+                    });
+                })
+            })
+            .then(p => deploy(p, CloudFoundryTarget, res))
             .then(deployment => {
                 res.write(`Build of project completed OK\n`);
                 res.write(`Deployment to ${CloudFoundryTarget.api} org '${CloudFoundryTarget.org}' in progress...\n`);
