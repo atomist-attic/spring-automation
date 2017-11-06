@@ -30,7 +30,8 @@ export function addDeployRoutes(express: exp.Express, ...handlers: exp.RequestHa
             new GitHubRepoRef(owner, repo)
         );
 
-        return clone.then(p => build(p, res))
+        return clone
+            .then(p => build(p, res))
             .then(ar => deploy(ar.target, CloudFoundryTarget, res))
             .then(deployment => {
                 res.write(`Build of project completed OK\n`);
@@ -38,10 +39,11 @@ export function addDeployRoutes(express: exp.Express, ...handlers: exp.RequestHa
                 deployment.childProcess.addListener("close", () => res.end());
                 //deployment.childProcess.addListener("exit", closeListener);
                 deployment.childProcess.stdout.on("data", what => res.write(what));
-
+            })
+            .catch(err => {
+                res.write("Failure: " + err);
             });
     });
-
 
     express.get("/stream", (req, res) => {
         res.writeHead(200, {"Content-Type": "text/event-stream"});

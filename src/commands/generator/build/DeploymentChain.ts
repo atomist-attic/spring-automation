@@ -6,6 +6,10 @@ export interface ProgressLog {
     write(what: string): void;
 }
 
+export const DevNullProgressLog: ProgressLog = {
+    write(what: string) {}
+};
+
 export interface Deployment {
 
     childProcess: ChildProcess;

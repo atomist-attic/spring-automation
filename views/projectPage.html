@@ -62,7 +62,14 @@
                         <li>starter-security</li>
                     </ul>
 
-                    <a href="/pcfDeploy/{{owner}}/{{repo}}">Deploy to PCF</a>
+                    <form>
+                        <button tabindex="12" name="deploy" type="submit" class="btn btn-lg btn-primary"
+                                role="button"
+                                formmethod="GET"
+                                formaction="/pcfDeploy/{{owner}}/{{repo}}">
+                            Deploy to Pivotal Cloud Foundry
+                        </button>
+                    </form>
 
                 </div>
 
