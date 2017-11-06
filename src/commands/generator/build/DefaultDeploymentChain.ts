@@ -54,11 +54,6 @@ export function deploy<P extends LocalProject>(p: P, cfi: CloudFoundryInfo, log:
                     {
                         cwd: p.baseDir,
                     });
-                // .catch(err => {
-                //     logger.warn("Failed to deploy to cloud foundry: %j", err);
-                //     return Promise.reject(err);
-                // })
-                childProcess.on("error", err => console.log(err));
                 return {
                     childProcess,
                     url: toUrl(ai.name),

@@ -40,9 +40,10 @@ export function addDeployRoutes(express: exp.Express, ...handlers: exp.RequestHa
             .then(deployment => {
                 res.write(`Build of project completed OK\n`);
                 res.write(`Deployment to ${CloudFoundryTarget.api} org '${CloudFoundryTarget.org}' in progress...\n`);
-                deployment.childProcess.addListener("close", closeListener);
-                deployment.childProcess.addListener("exit", closeListener);
-                return res.pipe(deployment.childProcess.stdout);
+                deployment.childProcess.addListener("close", () => res.end());
+                //deployment.childProcess.addListener("exit", closeListener);
+                deployment.childProcess.stdout.on("data", what => res.write(what));
+
             });
     });
 

@@ -20,23 +20,23 @@ describe("spawn cf client", () => {
             });
 
         //cp.stdout.pipe(process.stdout);
-        cp.on("message", data => console.log("Data is " + data));
+        cp.stdout.on("data", data => console.log("Data is " + data));
         cp.on("error", err => {
             cp.stderr.pipe(process.stderr);
             done(err);
         });
         cp.on("close", e => {
             //console.log(cp.stdout);
-            console.log("Text");
-            cp.stdout.pipe(process.stdout);
+            console.log("close");
+            //cp.stdout.pipe(process.stdout);
             //console.log(cp.stderr);
             done();
         });
         cp.on("exit", e => {
+            console.log("EXIT");
             //console.log(cp.stdout);
-            cp.stdout.pipe(process.stdout);
+            //cp.stdout.pipe(process.stdout);
             //console.log(cp.stderr);
-            done();
         });
     }).timeout(100000);
 
