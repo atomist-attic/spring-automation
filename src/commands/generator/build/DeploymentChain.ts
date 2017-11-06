@@ -1,9 +1,14 @@
 import { LocalProject } from "@atomist/automation-client/project/local/LocalProject";
 import { ActionResult } from "@atomist/automation-client/action/ActionResult";
+import { ChildProcess } from "child_process";
 
-export interface Deployment extends ActionResult<LocalProject> {
+export interface ProgressLog {
+    write(what: string): void;
+}
 
-    log: string;
+export interface Deployment {
+
+    childProcess: ChildProcess;
     url: string;
 }
 
