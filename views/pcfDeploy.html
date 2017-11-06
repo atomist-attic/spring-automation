@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Project {{owner}}/{{repo}}</title>
+    <link href="//fonts.googleapis.com/css?family=Varela+Round|Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="/css/spring.css"/>
+    <link rel="shortcut icon" type="image/x-icon" href="../public/img/favicon.png"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {{#trackingCode}}
+    <script>(function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({
+            'gtm.start':
+                new Date().getTime(), event: 'gtm.js'
+        });
+        var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+        j.async = true;
+        j.src =
+            'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+        f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-KZM7GF6');</script>
+    {{/trackingCode}}
+</head>
+<body>
+<form id="form" action="createRepo" method="get" role="form">
+
+    <input type="hidden" name="id" id="id" value="{{ id }}"/>
+
+    <div class="container-fluid">
+        <div class="row start-header">
+            <div class="container">
+                <img src="https://www.atomist.com/img/Atomist-Logo.png" height="108" width="87"/>
+
+                <h1>Deployment
+                    <small>{{owner}}/{{repo}}</small>
+                </h1>
+            </div>
+        </div>
+
+        <div class="container start-main">
+
+            <div class="row">
+
+                <div class="col-sm-12 col-md-4">
+                    <!--<h2>Project Overview</h2>-->
+
+                    <h3>Pivotal Cloud Foundry</h3>
+
+                    <p class="text-center">
+                        <button tabindex="12" name="create-repo" class="btn btn-lg btn-primary"
+                                type="button"
+                                onclick="deployinate()">
+                            Deploy to Cloud Foundry
+                        </button>
+                    </p>
+
+                    <div class="row" align="center" id="image_holder">
+                        <img id="image_placeholder"
+                             width="250"
+                             height="250"
+                             alt="Deployment status"
+                             src="https://cdn.psychologytoday.com/sites/default/files/styles/image-article_inline_full/public/field_blog_entry_teaser_image/Woman.Waiting_0.jpg?itok=gG2yX57q"
+                        </img>
+                    </div>
+
+                </div>
+
+                <div class="col-sm-12 col-md-6" hidden="true" id="output_pane">
+                    <h3>Deployment progress...</h3>
+
+                    <iframe id="deployment" width="650" scrolling="yes" height="340" frameborder="2"
+                            align="middle" name="canal" src=""></iframe>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+</form>
+<footer>
+    <div class="container">
+        <p>Powered by <a href="https://www.atomist.com">Atomist</a> on <a href="https://run.pivotal.io">Pivotal Web
+            Services</a></p>
+    </div>
+</footer>
+<script src="/js/jquery-3.1.1.min.js"></script>
+<script src="/js/typeahead.bundle.min.js"></script>
+<script src="/js/mousetrap.min.js"></script>
+<script src="/js/start.js"></script>
+
+<script>
+
+    const WorkingImage = "https://cdn.dribbble.com/users/59947/screenshots/3492457/busy-dribbble.gif";
+    const SuccessImage = "https://www.cloudfoundry.org/wp-content/uploads/2015/11/CF_rabbit_Blacksmith_rgb_trans_back-269x300.png";
+
+    const checkYes = "https://media.istockphoto.com/photos/check-mark-picture-id179342378?k=6&m=179342378&s=612x612&w=0&h=sFdAqOZ3cmnRm6_3sj1BO5MNumn4gkHVMC1AdHISdL0=";
+    const checkNo = "https://thumbs.dreamstime.com/t/check-icon-checkmark-checkbox-no-voting-symbol-flat-vector-illustration-79862389.jpg";
+
+    function deployinate() {
+        const outputPane = document.getElementById('output_pane');
+        outputPane.hidden = false;
+
+        const output = document.getElementById('deployment');
+        const statusImage = document.getElementById("image_placeholder");
+
+        const imageHolder = document.getElementById("image_holder");
+
+        statusImage.src = WorkingImage;
+
+        output.onload = function () {
+
+            const innerDoc = (output.contentDocument) ? output.contentDocument : output.contentWindow.document;
+            const returnedString = innerDoc.documentElement.outerHTML;
+
+            //console.log(returnedString);
+            const failed = returnedString.match(/Build failure: Failure/);
+            if (!failed) {
+                imageHolder.innerHTML = `<img src="${checkYes}"
+                    width="100" height="100"
+/>
+Running app<br/>Pivotal console`;
+            } else {
+                imageHolder.innerHTML = `<img src="${checkNo}"
+                    width="100" height="100"
+/>`;
+            }
+        };
+        //output.src = "http://www.abc.net.au";
+        output.src = "/deploy/{{owner}}/{{repo}}";
+//         output.contentWindow.document.body.style.backgroundColor="blue";
+//         output.contentDocument.body.style.fontFamily = "Courier";
+    }
+
+</script>
+
+
+</body>
+</html>

@@ -48,7 +48,12 @@
 
                 <div class="col-sm-12 col-md-6">
                     <!--<h2>Project Overview</h2>-->
+
+                    <a href="https://github.com/{{owner}}/{{repo}}">GitHub project</a>
+
                     <h3>Spring Boot <i>1.5.8</i></h3>
+                    Maven
+
 
                     <h3>Starters</h3>
 
@@ -57,12 +62,14 @@
                         <li>starter-security</li>
                     </ul>
 
-                    <!--<div class="form-group artifactid-form-group">-->
-                        <!--<label for="repo" class="control-label">Repo</label>-->
-                        <!--<input tabindex="5" id="repo" class="form-control" type="text"-->
-                               <!--value="{{repo}}"-->
-                               <!--name="repo">-->
-                    <!--</div>-->
+                    <form>
+                        <button tabindex="12" name="deploy" type="submit" class="btn btn-lg btn-primary"
+                                role="button"
+                                formmethod="GET"
+                                formaction="/pcfDeploy/{{owner}}/{{repo}}">
+                            Deploy to Pivotal Cloud Foundry
+                        </button>
+                    </form>
 
                 </div>
 
@@ -73,8 +80,8 @@
                         version of Spring Boot comes out, to ensure you stay up to date.
                     </p>
 
-                    <label>Spring Boot Version</label>
                     <input type="checkbox" name="Keep Spring Boot up to date" checked="true" />
+                    <label>Spring Boot Version</label>
 
                     <h3>Atomist Lifecycle</h3>
                     <img src="/img/lifecycle1.png" width="350" height="85"/>
@@ -108,5 +115,6 @@
 <script src="/js/typeahead.bundle.min.js"></script>
 <script src="/js/mousetrap.min.js"></script>
 <script src="/js/start.js"></script>
+
 </body>
 </html>
