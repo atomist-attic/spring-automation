@@ -68,6 +68,16 @@
 
                 </div>
 
+                <div class="col-sm-12 col-md-6" id="explanation">
+                    <h3>How it works</h3>
+
+                    We can deploy your Spring Boot application Pivotal Cloud Foundry.
+                    When the deployment is complete, we'll give you a link to the
+                    running application and the Pivotal Cloud Foundry console you
+                    can use to administer it.
+
+                </div>
+
                 <div class="col-sm-12 col-md-6" hidden="true" id="output_pane">
                     <h3>Deployment progress...</h3>
 
@@ -101,7 +111,10 @@
     const checkNo = "https://thumbs.dreamstime.com/t/check-icon-checkmark-checkbox-no-voting-symbol-flat-vector-illustration-79862389.jpg";
 
     function deployinate() {
+        const explanation = document.getElementById("explanation");
+
         const outputPane = document.getElementById('output_pane');
+        explanation.hidden = true;
         outputPane.hidden = false;
 
         const output = document.getElementById('deployment');
@@ -112,7 +125,6 @@
         statusImage.src = WorkingImage;
 
         output.onload = function () {
-
             const innerDoc = (output.contentDocument) ? output.contentDocument : output.contentWindow.document;
             const returnedString = innerDoc.documentElement.outerHTML;
 
