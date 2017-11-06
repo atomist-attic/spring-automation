@@ -52,14 +52,8 @@ export function addDeployRoutes(express: exp.Express, ...handlers: exp.RequestHa
                 deployment.childProcess.stdout.on("data", what => res.write(what));
             })
             .catch(err => {
-                res.write("Failure: " + err);
+                res.end(`${err}: Failure`);
             });
-    });
-
-    express.get("/stream", (req, res) => {
-        res.writeHead(200, {"Content-Type": "text/event-stream"});
-        const stream = fs.createReadStream("/Users/rodjohnson/.atomist-working/cloudfoundry-samples/pong_matcher_spring/pom.xml");
-        return stream.pipe(res);
     });
 
 }
