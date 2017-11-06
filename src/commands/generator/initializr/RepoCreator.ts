@@ -55,7 +55,7 @@ export class RepoCreator extends AbstractSpringGenerator implements RepoId {
             .then(ref => this.addAtomistCollaborator(params, ref))
             .then(r => ({
                 code: 0,
-                redirect: `https://github.com/${params.targetOwner}/${params.targetRepo}`,
+                redirect: `/projects/${params.targetOwner}/${params.targetRepo}`,
             }));
     }
 

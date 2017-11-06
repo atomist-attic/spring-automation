@@ -30,11 +30,6 @@ export function addDeployRoutes(express: exp.Express, ...handlers: exp.RequestHa
             new GitHubRepoRef(owner, repo)
         );
 
-        function closeListener(code) {
-            res.write(code === 0 ? "Success" : "Failure");
-            res.end();
-        }
-
         return clone.then(p => build(p, res))
             .then(ar => deploy(ar.target, CloudFoundryTarget, res))
             .then(deployment => {
