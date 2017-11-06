@@ -103,6 +103,11 @@ export function addInitializrHandoffRoute(express: exp.Express, ...handlers: exp
                 generator.version = initializrData.version;
                 generator.serviceClassName = initializrData.name;
                 generator.visibility = "public";
+                if (!!initializrData.sourceOwner && !!initializrData.sourceRepo) {
+                    generator.sourceOwner = initializrData.sourceOwner;
+                    generator.sourceRepo = initializrData.sourceRepo;
+                    generator.sourceBranch = initializrData.sourceBranch || "master";
+                }
                 const uri = toCommandHandlerGetUrl(CreateRepoCommandPath, generator) +
                     `&mp_targetOwner=${generator.targetOwner}&` +
                     encodeURIComponent("s_github://user_token?scopes=repo,user") + "=" + req.user.accessToken;

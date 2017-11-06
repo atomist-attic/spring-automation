@@ -43,6 +43,10 @@
                 <div class="col-sm-12 col-md-6">
                     <h2>Create a GitHub Repo</h2>
 
+                    {{#sourceRepo}}
+                        Source: {{sourceOwner}}/{{sourceRepo}}
+                    {{/sourceRepo}}
+
                     <p>Target Repo</p>
 
                     <div class="form-group groupid-form-group">

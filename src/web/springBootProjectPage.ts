@@ -12,7 +12,6 @@ export function springBootProjectPage(express: exp.Express, ...handlers: exp.Req
     logger.debug("Adding express routes for Spring Boot project page");
 
     express.get("/projects/:owner/:repo", ...handlers, (req, res) => {
-        //const id = InMemoryStore.put(req.body);
 
         // req.user.accessToken
 
@@ -27,7 +26,6 @@ export function springBootProjectPage(express: exp.Express, ...handlers: exp.Req
     });
 
     express.get("/pcfDeploy/:owner/:repo", ...handlers, (req, res) => {
-        //const id = InMemoryStore.put(req.body);
 
         // req.user.accessToken
 
