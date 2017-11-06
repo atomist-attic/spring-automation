@@ -6,7 +6,6 @@ import { HandlerResult } from "@atomist/automation-client/HandlerResult";
 import { MappedParameters, Secrets } from "@atomist/automation-client/Handlers";
 import { logger } from "@atomist/automation-client/internal/util/logger";
 import { GitHubRepoRef } from "@atomist/automation-client/operations/common/GitHubRepoRef";
-import { RepoId } from "@atomist/automation-client/operations/common/RepoId";
 import { generate } from "@atomist/automation-client/operations/generate/generatorUtils";
 import { GitHubProjectPersister } from "@atomist/automation-client/operations/generate/gitHubProjectPersister";
 import { ObjectStore } from "../../../web/ObjectStore";
@@ -16,21 +15,13 @@ import { AbstractSpringGenerator } from "./AbstractSpringGenerator";
  * Creates a GitHub Repo and installs Atomist collaborator if necessary
  */
 @CommandHandler("generate spring boot seed")
-export class RepoCreator extends AbstractSpringGenerator implements RepoId {
+export class RepoCreator extends AbstractSpringGenerator {
 
     @Secret(Secrets.userToken(["repo", "user"]))
     protected githubToken;
 
     @MappedParameter(MappedParameters.GitHubOwner)
     public targetOwner: string;
-
-    get owner() {
-        return this.targetOwner;
-    }
-
-    get repo() {
-        return this.targetRepo;
-    }
 
     constructor(private store: ObjectStore,
                 private collaborator?: string,
@@ -55,6 +46,7 @@ export class RepoCreator extends AbstractSpringGenerator implements RepoId {
             .then(ref => this.addAtomistCollaborator(params, ref))
             .then(r => ({
                 code: 0,
+                // Redirect to our local project page
                 redirect: `/projects/${params.targetOwner}/${params.targetRepo}`,
             }));
     }

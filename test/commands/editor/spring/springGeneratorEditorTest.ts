@@ -1,15 +1,9 @@
 import "mocha";
 
 import { InMemoryProject } from "@atomist/automation-client/project/mem/InMemoryProject";
-
-import { RepoId, SimpleRepoId } from "@atomist/automation-client/operations/common/RepoId";
-import { ProjectEditor, SimpleProjectEditor, toEditor } from "@atomist/automation-client/operations/edit/projectEditor";
+import { ProjectEditor, toEditor } from "@atomist/automation-client/operations/edit/projectEditor";
 import * as assert from "power-assert";
-import { addSpringBootStarter } from "../../../../src/commands/editor/spring/addStarterEditor";
-import { setSpringBootVersionEditor } from "../../../../src/commands/editor/spring/setSpringBootVersionEditor";
 import { ZipCreator } from "../../../../src/commands/generator/initializr/ZipCreator";
-import { tempProject } from "../../../util/tempProject";
-import { springBootPom } from "../../reviewer/maven/Poms";
 
 describe("springGeneratorEditor", () => {
 

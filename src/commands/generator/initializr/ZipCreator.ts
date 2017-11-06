@@ -1,21 +1,9 @@
-import {
-    CommandHandler,
-    HandlerContext,
-    HandlerResult,
-    RedirectResult,
-} from "@atomist/automation-client/Handlers";
-import {
-    generate,
-    ProjectPersister,
-} from "@atomist/automation-client/operations/generate/generatorUtils";
-import { Project } from "@atomist/automation-client/project/Project";
+import { HandlerContext, HandlerResult, RedirectResult, } from "@atomist/automation-client/Handlers";
+import { generate, } from "@atomist/automation-client/operations/generate/generatorUtils";
 import { AbstractSpringGenerator } from "./AbstractSpringGenerator";
-import {
-    writeZip,
-    ZipWritingResult,
-} from "./writeZip";
+import { ZipWritingResult, } from "./writeZip";
+import { ZipPersister } from "./zipPersister";
 
-@CommandHandler("generate spring boot seed")
 export class ZipCreator extends AbstractSpringGenerator {
 
     public targetOwner;
@@ -23,7 +11,7 @@ export class ZipCreator extends AbstractSpringGenerator {
     // Override to kill decorator
     public targetRepo;
 
-    // Use the server's token
+    // Use the server's token. We only need to read the source repo
     public githubToken = process.env.GITHUB_TOKEN;
 
     public handle(ctx: HandlerContext, params: this): Promise<HandlerResult> {
@@ -35,6 +23,8 @@ export class ZipCreator extends AbstractSpringGenerator {
             ZipPersister,
             params)
             .then(r => {
+                    // Return the zip path if we can.
+                    // We may test it without the zip result
                     const zr = r as ZipWritingResult;
                     const encodedPath = encodeURIComponent(zr.path);
                     return {
@@ -46,7 +36,3 @@ export class ZipCreator extends AbstractSpringGenerator {
     }
 }
 
-export const ZipPersister: ProjectPersister = (p: Project) => {
-    const path = "/Users/rodjohnson/temp/thing2.zip";
-    return writeZip(p, path);
-};

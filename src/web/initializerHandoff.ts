@@ -1,7 +1,6 @@
 import { RedirectResult } from "@atomist/automation-client/HandlerResult";
 import { logger } from "@atomist/automation-client/internal/util/logger";
 import axios from "axios";
-import * as mustacheExpress from "mustache-express";
 
 import * as exp from "express";
 import * as fs from "fs";
@@ -14,13 +13,6 @@ const CreateRepoCommandPath = "command/repo-creator";
 export function addInitializrHandoffRoute(express: exp.Express, ...handlers: exp.RequestHandler[]) {
 
     logger.debug("Adding express routes for Spring Initialzr");
-
-    // TODO remove this after updating to latest client
-    if (process.env.NODE_ENV !== "production") {
-        const engine = mustacheExpress();
-        engine.cache = null;
-        express.engine("html", engine);
-    }
 
     express.post("/requestRepoCreation", (req, res) => {
         logger.debug("POST for repo creation: BODY is [" + JSON.stringify(req.body) + "]");

@@ -1,23 +1,24 @@
-import {
-    HandlerContext,
-    Parameter,
-} from "@atomist/automation-client/Handlers";
+import { HandlerContext, Parameter, } from "@atomist/automation-client/Handlers";
 import { logger } from "@atomist/automation-client/internal/util/logger";
 import { AnyProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
 import { chainEditors, EditorChainable, ProjectOp } from "@atomist/automation-client/operations/edit/projectEditorOps";
 import {
-    doUpdatePom,
-    inferStructureAndMovePackage,
+    doUpdatePom, inferStructureAndMovePackage,
     removeTravisBuildFiles,
 } from "@atomist/automation-client/operations/generate/java/JavaSeed";
 import { SeedDrivenGenerator } from "@atomist/automation-client/operations/generate/SeedDrivenGenerator";
 import { curry } from "@typed/curry";
 import { addSpringBootStarter } from "../../editor/spring/addStarterEditor";
+import { cleanReadMe, RemoveSeedFiles } from "@atomist/automation-client/operations/generate/UniversalSeed";
+import { inferSpringStructureAndRename } from "@atomist/automation-client/operations/generate/java/SpringBootSeed";
+import { RepoId } from "@atomist/automation-client/operations/common/RepoId";
+import { camelize } from "tslint/lib/utils";
 
 /**
- * Superclass for all Spring generators
+ * Superclass for all Spring Boot generators. Defines editing behavior
+ * and common parameters.
  */
-export abstract class AbstractSpringGenerator extends SeedDrivenGenerator {
+export abstract class AbstractSpringGenerator extends SeedDrivenGenerator implements RepoId {
 
     @Parameter({
         displayName: "Maven Artifact ID",
@@ -83,7 +84,16 @@ export abstract class AbstractSpringGenerator extends SeedDrivenGenerator {
         maxLength: 50,
         required: false,
     })
-    public serviceClassName: string = "RestService";
+    private _serviceClassName: string;
+
+    get serviceClassName() {
+        if (!!this._serviceClassName) {
+            return this._serviceClassName;
+        } else {
+            const appName = camelize(this.artifactId);
+            return appName.charAt(0).toUpperCase() + appName.substr(1);
+        }
+    }
 
     // TODO should be an array parameter
     @Parameter({
@@ -98,11 +108,21 @@ export abstract class AbstractSpringGenerator extends SeedDrivenGenerator {
         return this.startersCsv.split(",");
     }
 
+    get owner() {
+        return this.targetOwner;
+    }
+
+    get repo() {
+        return this.targetRepo;
+    }
+
     constructor() {
         super();
         this.visibility = "public";
         this.sourceOwner = "atomist-seeds";
         this.sourceRepo = "spring-rest-seed";
+        // Stable version that has a controller
+        this.sourceBranch = "b3d23de0b23745994f44f192866cc0bb3c4a2224";
     }
 
     public projectEditor(ctx: HandlerContext, params: this): AnyProjectEditor<this> {
@@ -112,9 +132,12 @@ export abstract class AbstractSpringGenerator extends SeedDrivenGenerator {
         logger.debug("Starters: [%s]. Editor count=%d", params.starters.join(), starterEditors.length);
 
         const editors: EditorChainable[] = [
+            RemoveSeedFiles,
+            curry(cleanReadMe)(this.description),
             removeTravisBuildFiles,
             curry(doUpdatePom)(params),
-            curry(inferStructureAndMovePackage)(params.rootPackage),
+            curry(inferStructureAndMovePackage)(this.rootPackage),
+            curry(inferSpringStructureAndRename)(this.serviceClassName),
         ];
         return chainEditors(
             ...editors.concat(starterEditors),

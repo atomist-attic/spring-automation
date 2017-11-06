@@ -1,6 +1,6 @@
 import { ObjectStore } from "./ObjectStore";
 
-class InMemoryObjectStore implements ObjectStore {
+export class InMemoryObjectStore implements ObjectStore {
 
     private cache = {};
 
