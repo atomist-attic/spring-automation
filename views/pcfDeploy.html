@@ -17,7 +17,7 @@
     {{/trackingCode}}
 </head>
 <body>
-<form id="form" action="createRepo" method="get" role="form">
+<form id="form" role="form">
 
     <input type="hidden" name="id" id="id" value="{{ id }}" />
 
@@ -26,7 +26,7 @@
             <div class="container">
                 <img src ="https://www.atomist.com/img/Atomist-Logo.png" height="108" width="87" />
 
-                <h1>Project Details <small>{{owner}}/{{repo}}</small></h1>
+                <h1>Deploy to Cloud Foundry <small>{{owner}}/{{repo}}</small></h1>
             </div>
         </div>
 
@@ -34,69 +34,34 @@
 
             <div class="row">
 
-                {{#action}}
-                <div class="alert alert-danger text-center" role="alert" style="margin-top: 20px">
-                    {{action}}
-                    <button tabindex="12" name="upgrade" type="submit" class="btn btn-sm"
-                            role="button"
-                            formmethod="POST"
-                            formaction="/upgrade">
-                        Update
-                    </button>
-                </div>
-                {{/action}}
-
                 <div class="col-sm-12 col-md-6">
                     <!--<h2>Project Overview</h2>-->
 
-                    <a href="https://github.com/{{owner}}/{{repo}}">GitHub project</a>
+                    <h3>Pivotal Cloud Foundry</h3>
 
-                    <h3>Spring Boot <i>1.5.8</i></h3>
-                    Maven
-
-
-                    <h3>Starters</h3>
-
-                    <ul>
-                        <li>starter-web</li>
-                        <li>starter-security</li>
-                    </ul>
-
-                    <a href="/pcfDeploy/{{owner}}/{{repo}}">Deploy to PCF</a>
-
+                    <p class="text-center">
+                        <button tabindex="12" name="create-repo" class="btn btn-lg btn-primary"
+                                type="button"
+                                onclick="deployinate()">
+                            Deploy to Pivotal Cloud Foundry
+                        </button>
+                    </p>
                 </div>
 
                 <div class="col-sm-12 col-md-6">
-                    <h3>Subscriptions</h3>
+                    <h3>Output</h3>
 
-                    <p>Atomist and Pivotal will make pull requests when a newer
-                        version of Spring Boot comes out, to ensure you stay up to date.
+                    <p>Deployment progress...
                     </p>
 
-                    <input type="checkbox" name="Keep Spring Boot up to date" checked="true" />
-                    <label>Spring Boot Version</label>
-
-                    <h3>Atomist Lifecycle</h3>
-                    <img src="/img/lifecycle1.png" width="350" height="85"/>
-
-                    <img src="/img/add_to_slack@2x.png" width="139" height="40" />
-
+                    <iframe id="deployment" width="480" scrolling="yes" height="350" frameborder="2"
+                            align="middle" name="canal" src=""></iframe>
                 </div>
 
             </div>
 
         </div>
 
-        <div class="row">
-            <p class="text-center">
-                <button tabindex="12" name="create-repo" type="submit" class="btn btn-lg btn-primary"
-                        role="button"
-                        formmethod="GET"
-                        formaction="/createRepo">
-                    Update Settings
-                </button>
-            </p>
-        </div>
     </div>
 </form>
 <footer>
@@ -108,6 +73,19 @@
 <script src="/js/typeahead.bundle.min.js"></script>
 <script src="/js/mousetrap.min.js"></script>
 <script src="/js/start.js"></script>
+
+<script>
+
+     function deployinate() {
+         const output = document.getElementById('deployment');
+         output.src = "/deploy/{{owner}}/{{repo}}";
+         output.contentWindow.document.body.style.backgroundColor="blue";
+
+         output.contentDocument.body.style.fontFamily = "Courier";
+
+     }
+
+</script>
 
 </body>
 </html>

@@ -26,6 +26,20 @@ export function springBootProjectPage(express: exp.Express, ...handlers: exp.Req
         return res.render("projectPage.html", pinfo);
     });
 
+    express.get("/pcfDeploy/:owner/:repo", ...handlers, (req, res) => {
+        //const id = InMemoryStore.put(req.body);
+
+        // req.user.accessToken
+
+        const owner = req.params.owner;
+        const repo = req.params.repo;
+        const pinfo: ProjectInfo = {
+            owner,
+            repo,
+        };
+        return res.render("pcfDeploy.html", pinfo);
+    });
+
 }
 
 export interface ProjectInfo extends RepoId {
