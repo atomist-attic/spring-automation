@@ -1,5 +1,5 @@
-import { LocalProject } from "@atomist/automation-client/project/local/LocalProject";
 import { ActionResult } from "@atomist/automation-client/action/ActionResult";
+import { LocalProject } from "@atomist/automation-client/project/local/LocalProject";
 import { ChildProcess } from "child_process";
 
 export interface ProgressLog {
@@ -7,7 +7,7 @@ export interface ProgressLog {
 }
 
 export const DevNullProgressLog: ProgressLog = {
-    write(what: string) {}
+    write(what: string) {},
 };
 
 export interface Deployment {
@@ -25,7 +25,6 @@ export interface CloudFoundryInfo {
     org: string;
 
 }
-
 
 /**
  * Info to send up for a cloud foundry deployment

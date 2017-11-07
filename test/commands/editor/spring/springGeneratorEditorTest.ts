@@ -1,7 +1,7 @@
 import "mocha";
 
-import { InMemoryProject } from "@atomist/automation-client/project/mem/InMemoryProject";
 import { ProjectEditor, toEditor } from "@atomist/automation-client/operations/edit/projectEditor";
+import { InMemoryProject } from "@atomist/automation-client/project/mem/InMemoryProject";
 import * as assert from "power-assert";
 import { ZipCreator } from "../../../../src/commands/generator/initializr/ZipCreator";
 

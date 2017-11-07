@@ -1,18 +1,18 @@
-import { HandlerContext, Parameter, } from "@atomist/automation-client/Handlers";
+import { HandlerContext, Parameter } from "@atomist/automation-client/Handlers";
 import { logger } from "@atomist/automation-client/internal/util/logger";
+import { RepoId } from "@atomist/automation-client/operations/common/RepoId";
 import { AnyProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
 import { chainEditors, EditorChainable, ProjectOp } from "@atomist/automation-client/operations/edit/projectEditorOps";
 import {
     doUpdatePom, inferStructureAndMovePackage,
     removeTravisBuildFiles,
 } from "@atomist/automation-client/operations/generate/java/JavaSeed";
-import { SeedDrivenGenerator } from "@atomist/automation-client/operations/generate/SeedDrivenGenerator";
-import { curry } from "@typed/curry";
-import { addSpringBootStarter } from "../../editor/spring/addStarterEditor";
-import { cleanReadMe, RemoveSeedFiles } from "@atomist/automation-client/operations/generate/UniversalSeed";
 import { inferSpringStructureAndRename } from "@atomist/automation-client/operations/generate/java/SpringBootSeed";
-import { RepoId } from "@atomist/automation-client/operations/common/RepoId";
+import { SeedDrivenGenerator } from "@atomist/automation-client/operations/generate/SeedDrivenGenerator";
+import { cleanReadMe, RemoveSeedFiles } from "@atomist/automation-client/operations/generate/UniversalSeed";
+import { curry } from "@typed/curry";
 import { camelize } from "tslint/lib/utils";
+import { addSpringBootStarter } from "../../editor/spring/addStarterEditor";
 
 /**
  * Superclass for all Spring Boot generators. Defines editing behavior

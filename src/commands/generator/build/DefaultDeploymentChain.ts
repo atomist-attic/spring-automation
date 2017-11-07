@@ -1,12 +1,12 @@
-import { AppInfo, CloudFoundryInfo, Deployment, ProgressLog } from "./DeploymentChain";
-import { LocalProject } from "@atomist/automation-client/project/local/LocalProject";
-import { runCommand } from "@atomist/automation-client/action/cli/commandLine";
 import { ActionResult, successOn } from "@atomist/automation-client/action/ActionResult";
+import { runCommand } from "@atomist/automation-client/action/cli/commandLine";
 import { logger } from "@atomist/automation-client/internal/util/logger";
-import { identification } from "../../../../test/commands/editor/spring/pomParser";
+import { LocalProject } from "@atomist/automation-client/project/local/LocalProject";
 import { ChildProcess, spawn } from "child_process";
-import { addManifest, toJar } from "../../editor/pcf/addManifestEditor";
+import { identification } from "../../../../test/commands/editor/spring/pomParser";
 import { VersionedArtifact } from "../../../grammars/VersionedArtifact";
+import { addManifest, toJar } from "../../editor/pcf/addManifestEditor";
+import { AppInfo, CloudFoundryInfo, Deployment, ProgressLog } from "./DeploymentChain";
 
 export function build<P extends LocalProject>(p: P): ChildProcess {
     return spawn("mvn", ["package"], {
