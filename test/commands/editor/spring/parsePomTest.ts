@@ -18,4 +18,3 @@ describe("POM parsing", () => {
     });
 
 });
-

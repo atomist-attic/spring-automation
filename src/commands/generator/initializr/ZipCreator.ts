@@ -1,7 +1,7 @@
-import { HandlerContext, HandlerResult, RedirectResult, } from "@atomist/automation-client/Handlers";
-import { generate, } from "@atomist/automation-client/operations/generate/generatorUtils";
+import { HandlerContext, HandlerResult, RedirectResult } from "@atomist/automation-client/Handlers";
+import { generate } from "@atomist/automation-client/operations/generate/generatorUtils";
 import { AbstractSpringGenerator } from "./AbstractSpringGenerator";
-import { ZipWritingResult, } from "./writeZip";
+import { ZipWritingResult } from "./writeZip";
 import { ZipPersister } from "./zipPersister";
 
 export class ZipCreator extends AbstractSpringGenerator {
@@ -35,4 +35,3 @@ export class ZipCreator extends AbstractSpringGenerator {
             );
     }
 }
-

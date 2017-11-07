@@ -1,5 +1,5 @@
-import { VersionedArtifact } from "../../../../src/grammars/VersionedArtifact";
 import { promisify } from "util";
+import { VersionedArtifact } from "../../../../src/grammars/VersionedArtifact";
 
 const xml2js = require("xml2js");
 
@@ -19,7 +19,7 @@ export function identification(pom: string): Promise<VersionedArtifact> {
                     group: parsed.project.groupId[0],
                     artifact: parsed.project.artifactId[0],
                     version: parsed.project.version[0],
-                }
+                };
             } else {
                 return Promise.reject("Pom is invalid");
             }

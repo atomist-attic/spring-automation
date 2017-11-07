@@ -1,6 +1,6 @@
 
-import "mocha";
 import { spawn } from "child_process";
+import "mocha";
 import * as os from "os";
 
 describe("spawn cf client", () => {

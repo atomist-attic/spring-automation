@@ -3,15 +3,15 @@ import * as tmp from "tmp";
 import * as fs from "fs-extra";
 
 import { successOn } from "@atomist/automation-client/action/ActionResult";
-import { LocalProject } from "@atomist/automation-client/project/local/LocalProject";
-import { Project } from "@atomist/automation-client/project/Project";
-import { generate, ProjectPersister } from "@atomist/automation-client/operations/generate/generatorUtils";
-import { NodeFsLocalProject } from "@atomist/automation-client/project/local/NodeFsLocalProject";
-import { AbstractSpringGenerator } from "../../../../src/commands/generator/initializr/AbstractSpringGenerator";
 import { HandlerContext } from "@atomist/automation-client/HandlerContext";
 import { HandlerResult } from "@atomist/automation-client/HandlerResult";
+import { generate, ProjectPersister } from "@atomist/automation-client/operations/generate/generatorUtils";
 import { succeed } from "@atomist/automation-client/operations/support/contextUtils";
+import { LocalProject } from "@atomist/automation-client/project/local/LocalProject";
+import { NodeFsLocalProject } from "@atomist/automation-client/project/local/NodeFsLocalProject";
+import { Project } from "@atomist/automation-client/project/Project";
 import { diagnosticDump } from "@atomist/automation-client/project/util/diagnosticUtils";
+import { AbstractSpringGenerator } from "../../../../src/commands/generator/initializr/AbstractSpringGenerator";
 
 export class TestGenerator extends AbstractSpringGenerator {
 

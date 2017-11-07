@@ -1,10 +1,10 @@
 import { CommandResult, runCommand } from "@atomist/automation-client/action/cli/commandLine";
 import { LocalProject } from "@atomist/automation-client/project/local/LocalProject";
 import { Project } from "@atomist/automation-client/project/Project";
+import { toPromise } from "@atomist/automation-client/project/util/projectUtils";
 import "mocha";
 import * as assert from "power-assert";
 import { TestGenerator } from "./TestGenerator";
-import { toPromise } from "@atomist/automation-client/project/util/projectUtils";
 
 export const GishPath = "src/main/java/com/smashing/pumpkins/Gish.java";
 

@@ -1,10 +1,10 @@
-import * as exp from "express";
-import { GitCommandGitProject } from "@atomist/automation-client/project/git/GitCommandGitProject";
 import { GitHubRepoRef } from "@atomist/automation-client/operations/common/GitHubRepoRef";
+import { GitCommandGitProject } from "@atomist/automation-client/project/git/GitCommandGitProject";
+import { LocalProject } from "@atomist/automation-client/project/local/LocalProject";
+import * as exp from "express";
+import * as fs from "fs";
 import { build, deploy } from "../commands/generator/build/DefaultDeploymentChain";
 import { CloudFoundryInfo, PivotalWebServices } from "../commands/generator/build/DeploymentChain";
-import * as fs from "fs";
-import { LocalProject } from "@atomist/automation-client/project/local/LocalProject";
 
 const CloudFoundryTarget: CloudFoundryInfo = {
     ...PivotalWebServices,
@@ -28,7 +28,7 @@ export function addDeployRoutes(express: exp.Express, ...handlers: exp.RequestHa
         res.write(`Cloning GitHub project ${owner}/${repo}...\n`);
         const clone = GitCommandGitProject.cloned(
             {token: req.user.accessToken},
-            new GitHubRepoRef(owner, repo)
+            new GitHubRepoRef(owner, repo),
         );
 
         return clone
@@ -41,7 +41,7 @@ export function addDeployRoutes(express: exp.Express, ...handlers: exp.RequestHa
                     childProcess.on("exit", code => {
                         return code === 0 ? resolve(p) : reject("Build failure");
                     });
-                })
+                });
             })
             .then(p => deploy(p, CloudFoundryTarget, res))
             .then(deployment => {

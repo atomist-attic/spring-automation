@@ -1,6 +1,6 @@
-import { VersionedArtifact } from "../../../grammars/VersionedArtifact";
 import { logger } from "@atomist/automation-client/internal/util/logger";
 import { Project } from "@atomist/automation-client/project/Project";
+import { VersionedArtifact } from "../../../grammars/VersionedArtifact";
 import { DevNullProgressLog, ProgressLog } from "../../generator/build/DeploymentChain";
 
 /**
@@ -8,7 +8,7 @@ import { DevNullProgressLog, ProgressLog } from "../../generator/build/Deploymen
  * @param {VersionedArtifact} va
  */
 export function addManifest<P extends Project>(va: VersionedArtifact,
-                                               log: ProgressLog = DevNullProgressLog): (p:P) => Promise<P> {
+                                               log: ProgressLog = DevNullProgressLog): (p: P) => Promise<P> {
     return p =>
         p.findFile("manifest.yml")
             .catch(() => {

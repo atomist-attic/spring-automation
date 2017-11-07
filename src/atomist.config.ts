@@ -4,10 +4,10 @@ import { UpgradeCreatedRepos } from "./commands/editor/spring/UpgradeCreatedRepo
 import { ReposWeMadeRepoFinder } from "./commands/generator/initializr/createdReposRepoFinder";
 import { RepoCreator } from "./commands/generator/initializr/RepoCreator";
 import { ZipCreator } from "./commands/generator/initializr/ZipCreator";
+import { addDeployRoutes } from "./web/addDeployRoutes";
 import { addInitializrHandoffRoute } from "./web/initializerHandoff";
 import { InMemoryStore } from "./web/InMemoryObjectStore";
 import { springBootProjectPage } from "./web/springBootProjectPage";
-import { addDeployRoutes } from "./web/addDeployRoutes";
 
 const pj = require(`${appRoot.path}/package.json`);
 
@@ -33,7 +33,7 @@ export const configuration: Configuration = {
         customizers: [
             addInitializrHandoffRoute,
             springBootProjectPage,
-            addDeployRoutes
+            addDeployRoutes,
         ],
         auth: {
             basic: {
