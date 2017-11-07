@@ -47,7 +47,7 @@ export class RepoCreator extends AbstractSpringGenerator {
             .then(r => ({
                 code: 0,
                 // Redirect to our local project page
-                redirect: `/projects/${params.targetOwner}/${params.targetRepo}`,
+                redirect: `/projects/github/${params.targetOwner}/${params.targetRepo}`,
             }));
     }
 

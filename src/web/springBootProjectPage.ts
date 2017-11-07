@@ -6,7 +6,7 @@ export function springBootProjectPage(express: exp.Express, ...handlers: exp.Req
 
     logger.debug("Adding express routes for Spring Boot project page");
 
-    express.get("/projects/:owner/:repo", ...handlers, (req, res) => {
+    express.get("/projects/github/:owner/:repo", ...handlers, (req, res) => {
 
         // req.user.accessToken
 
@@ -20,7 +20,7 @@ export function springBootProjectPage(express: exp.Express, ...handlers: exp.Req
         return res.render("projectPage.html", pinfo);
     });
 
-    express.get("/pcfDeploy/:owner/:repo", ...handlers, (req, res) => {
+    express.get("/deploy/pcf/github/:owner/:repo", ...handlers, (req, res) => {
 
         // req.user.accessToken
 
