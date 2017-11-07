@@ -1,4 +1,3 @@
-import { ActionResult, successOn } from "@atomist/automation-client/action/ActionResult";
 import { runCommand } from "@atomist/automation-client/action/cli/commandLine";
 import { logger } from "@atomist/automation-client/internal/util/logger";
 import { LocalProject } from "@atomist/automation-client/project/local/LocalProject";
@@ -9,7 +8,10 @@ import { addManifest, toJar } from "../../editor/pcf/addManifestEditor";
 import { AppInfo, CloudFoundryInfo, Deployment, ProgressLog } from "./DeploymentChain";
 
 export function build<P extends LocalProject>(p: P): ChildProcess {
-    return spawn("mvn", ["package"], {
+    return spawn("mvn", [
+        "package",
+        "-DskipTests",
+    ], {
         cwd: p.baseDir,
     });
 }
