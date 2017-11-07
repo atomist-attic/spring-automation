@@ -37,7 +37,7 @@ export class TestGenerator extends AbstractSpringGenerator {
         const dir = tmp.dirSync();
         fs.removeSync(dir.name + "/" + p.name);
         return diagnosticDump("before persistence")(p)
-            .then(p => NodeFsLocalProject.copy(p, dir.name)
+            .then(p1 => NodeFsLocalProject.copy(p1, dir.name)
                 .then(lp => {
                     this.created = lp;
                     return successOn(lp);

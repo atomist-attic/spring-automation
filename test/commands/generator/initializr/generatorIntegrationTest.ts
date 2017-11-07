@@ -1,7 +1,6 @@
 import { CommandResult, runCommand } from "@atomist/automation-client/action/cli/commandLine";
 import { LocalProject } from "@atomist/automation-client/project/local/LocalProject";
 import { Project } from "@atomist/automation-client/project/Project";
-import { toPromise } from "@atomist/automation-client/project/util/projectUtils";
 import "mocha";
 import * as assert from "power-assert";
 import { TestGenerator } from "./TestGenerator";
@@ -41,14 +40,10 @@ describe("initializr generator integration test", () => {
     function verify<P extends Project>(p: P): Promise<P> {
         assert(!p.findFileSync(GishPath));
         const f = p.findFileSync("src/main/java/com/the/smiths/MyCustomApplication.java");
-        return toPromise(p.streamFiles())
-            .then(files => {
-                files.forEach(f => console.log(f.path));
-                assert(f);
-                const content = f.getContentSync();
-                assert(content.includes("class MyCustom"));
-                return p;
-            });
+        assert(f);
+        const content = f.getContentSync();
+        assert(content.includes("class MyCustom"));
+        return Promise.resolve(p);
     }
 
     // Use Maven to compile the project

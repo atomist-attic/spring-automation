@@ -15,7 +15,7 @@ export function springBootProjectPage(express: exp.Express, ...handlers: exp.Req
         const pinfo: ProjectInfo = {
             owner,
             repo,
-            //action: "Old version of Spring Boot",
+            // action: "Old version of Spring Boot",
         };
         return res.render("projectPage.html", pinfo);
     });

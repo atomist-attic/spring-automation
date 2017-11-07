@@ -1,5 +1,3 @@
-import { ActionResult } from "@atomist/automation-client/action/ActionResult";
-import { LocalProject } from "@atomist/automation-client/project/local/LocalProject";
 import { ChildProcess } from "child_process";
 
 export interface ProgressLog {
@@ -7,7 +5,9 @@ export interface ProgressLog {
 }
 
 export const DevNullProgressLog: ProgressLog = {
-    write(what: string) {},
+    write() {
+        // Do nothing
+    },
 };
 
 export interface Deployment {
@@ -35,16 +35,7 @@ export interface AppInfo {
     version: string;
 }
 
-export const PivotalWebServices = { //: Partial<CloudFoundryInfo> = {
+export const PivotalWebServices = { // : Partial<CloudFoundryInfo> = {
 
     api: "https://api.run.pivotal.io",
 };
-
-// TODO maybe don't need this
-export interface DeploymentChain {
-
-    build<P extends LocalProject>(p: P): Promise<ActionResult<P>>;
-
-    deploy<P extends LocalProject>(p: P): Promise<Deployment>;
-
-}

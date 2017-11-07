@@ -44,17 +44,11 @@
 
             <div class="row">
 
-                <div class="col-sm-12 col-md-4">
+                <div class="col-sm-11 col-md-4">
 
                     <h3>Pivotal Cloud Foundry</h3>
 
-                    <p class="text-center">
-                        <button tabindex="12" name="create-repo" class="btn btn-lg btn-primary"
-                                type="button"
-                                onclick="deployinate('{{owner}}', '{{repo}}')">
-                            Deploy to Cloud Foundry
-                        </button>
-                    </p>
+                    <br/>
 
                     <div class="row" align="center" id="image_holder">
                         <img id="image_placeholder"
@@ -67,23 +61,40 @@
 
                 </div>
 
-                <div class="col-sm-12 col-md-6" id="explanation">
-                    <h3>How it works</h3>
+                <!--<div class="col-sm-1 col-md-1" id="center-ped">-->
+                <!--</div>-->
 
-                    <i>We've checked, and this is a 12 factor app. Congratulations!</i>
+                <div class="col-sm-12 col-md-6" id="explanation">
+                    <h3>{{owner}}/{{repo}} is Cloud Ready!</h3>
+
+                    <p><b>
+                        We've checked, and {{repo}} is a <a href="http://shop.oreilly.com/product/0636920038252.do">cloud native</a> app. Congratulations!</b>
+                    </p>
                     <p></p>
 
-                    We can deploy your Spring Boot application Pivotal Cloud Foundry.
-                    When the deployment is complete, we'll give you a link to the
+                    <p>Let's deploy your Spring Boot application on Pivotal Cloud Foundry.
+                    </p>
+
+                    <p>
+                    When the deployment is complete, you'll get a link to the
                     running application and the Pivotal Cloud Foundry console you
                     can use to administer it.
+                    </p>
+
+                    <p class="text-left">
+                        <button tabindex="12" name="create-repo" class="btn btn-lg btn-primary"
+                                type="button"
+                                onclick="deployinate('{{owner}}', '{{repo}}')">
+                            Deploy to Cloud Foundry
+                        </button>
+                    </p>
 
                 </div>
 
                 <div class="col-sm-12 col-md-6" hidden="true" id="output_pane">
                     <h3>Deployment progress...</h3>
 
-                    <iframe id="deployment" width="650" scrolling="yes" height="340" frameborder="2"
+                    <iframe id="deployment" width="660" scrolling="yes" height="340" frameborder="2"
                             align="middle" name="canal" src=""></iframe>
 
                 </div>

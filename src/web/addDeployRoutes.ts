@@ -21,7 +21,7 @@ export function addDeployRoutes(express: exp.Express, ...handlers: exp.RequestHa
         const repo = req.params.repo;
 
         const progressLog: ProgressLog = res;
-            //new ColorEscapingProgressLog(res);
+            // new ColorEscapingProgressLog(res);
 
         res.writeHead(200, {
             "Content-Type": "text/event-stream",
@@ -51,7 +51,7 @@ export function addDeployRoutes(express: exp.Express, ...handlers: exp.RequestHa
                 res.write(`Build of project completed OK\n`);
                 res.write(`Deployment to ${CloudFoundryTarget.api} org '${CloudFoundryTarget.org}' in progress...\n`);
                 deployment.childProcess.addListener("close", () => res.end());
-                //deployment.childProcess.addListener("exit", closeListener);
+                // deployment.childProcess.addListener("exit", closeListener);
                 deployment.childProcess.stdout.on("data", what => progressLog.write(what.toString()));
             })
             .catch(err => {

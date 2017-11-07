@@ -12,8 +12,6 @@ export function identification(pom: string): Promise<VersionedArtifact> {
     const parser = new xml2js.Parser();
     return promisify(parser.parseString)(pom)
         .then(parsed => {
-            //console.log(parsed);
-            //console.log("aid=" + parsed.project.artifactId);
             if (!!parsed.project) {
                 return {
                     group: parsed.project.groupId[0],

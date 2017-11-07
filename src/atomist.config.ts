@@ -22,7 +22,6 @@ export const configuration: Configuration = {
     teamIds: ["T5964N9B7"],
     commands: [
         () => new RepoCreator(InMemoryStore, AtomistUser, AtomistToken),
-        //ZipCreator,
         () => new UpgradeCreatedRepos(ReposWeMadeRepoFinder, AtomistToken),
     ],
     events: [],

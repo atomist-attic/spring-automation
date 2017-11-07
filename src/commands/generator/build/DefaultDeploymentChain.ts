@@ -16,10 +16,10 @@ export function build<P extends LocalProject>(p: P): ChildProcess {
     });
 }
 
-export function deploy<P extends LocalProject>(p: P, cfi: CloudFoundryInfo, log: ProgressLog): Promise<Deployment> {
+export function deploy<P extends LocalProject>(proj: P, cfi: CloudFoundryInfo, log: ProgressLog): Promise<Deployment> {
     log.write("Analyzing application...\n");
     const appId: Promise<AppInfo & VersionedArtifact> =
-        p.findFile("pom.xml")
+        proj.findFile("pom.xml")
             .then(pom => pom.getContent()
                 .then(content => identification(content)))
             .then(va => ({...va, name: va.artifact}));
@@ -28,8 +28,9 @@ export function deploy<P extends LocalProject>(p: P, cfi: CloudFoundryInfo, log:
         logger.info("Deploying app [%j] to Cloud Foundry [%j]", ai, cfi);
         log.write(`Logging into Cloud Foundry as ${cfi.username}...\n`);
 
-        return addManifest<LocalProject>(ai, log)(p)
-            .then(p => runCommand(`cf login -a ${cfi.api} -o ${cfi.org} -u ${cfi.username} -p "${cfi.password}" -s ${cfi.space}`,
+        return addManifest<LocalProject>(ai, log)(proj)
+            .then(p => runCommand(
+                `cf login -a ${cfi.api} -o ${cfi.org} -u ${cfi.username} -p "${cfi.password}" -s ${cfi.space}`,
                 {cwd: p.baseDir})// [-o ORG] [-s SPACE]`)
                 .then(_ => {
                     console.log("Successfully logged into Cloud Foundry as [%s]", cfi.username);
