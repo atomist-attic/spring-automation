@@ -3,6 +3,8 @@ import { ProjectPersister } from "@atomist/automation-client/operations/generate
 import { Project } from "@atomist/automation-client/project/Project";
 import { writeZip } from "./writeZip";
 
+import * as tmp from "tmp";
+
 /**
  * Persist to a randomly named zip file
  * @param {Project} p
@@ -10,7 +12,8 @@ import { writeZip } from "./writeZip";
  * @constructor
  */
 export const ZipPersister: ProjectPersister = (p: Project) => {
-    // TODO fix this
-    const path = "/Users/rodjohnson/temp/thing2.zip";
-    return writeZip(p, path);
+    // TODO shouldn't be synchronous
+    // TODO what about concurrency?
+    const path = tmp.fileSync({ keep: false});
+    return writeZip(p, path.name);
 };
