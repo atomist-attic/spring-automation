@@ -45,14 +45,13 @@
             <div class="row">
 
                 <div class="col-sm-12 col-md-4">
-                    <!--<h2>Project Overview</h2>-->
 
                     <h3>Pivotal Cloud Foundry</h3>
 
                     <p class="text-center">
                         <button tabindex="12" name="create-repo" class="btn btn-lg btn-primary"
                                 type="button"
-                                onclick="deployinate()">
+                                onclick="deployinate('{{owner}}', '{{repo}}')">
                             Deploy to Cloud Foundry
                         </button>
                     </p>
@@ -70,6 +69,9 @@
 
                 <div class="col-sm-12 col-md-6" id="explanation">
                     <h3>How it works</h3>
+
+                    <i>We've checked, and this is a 12 factor app. Congratulations!</i>
+                    <p></p>
 
                     We can deploy your Spring Boot application Pivotal Cloud Foundry.
                     When the deployment is complete, we'll give you a link to the
@@ -102,60 +104,7 @@
 <script src="/js/mousetrap.min.js"></script>
 <script src="/js/start.js"></script>
 
-<script>
-
-    const WorkingImage = "https://cdn.dribbble.com/users/59947/screenshots/3492457/busy-dribbble.gif";
-    const SuccessImage = "https://www.cloudfoundry.org/wp-content/uploads/2015/11/CF_rabbit_Blacksmith_rgb_trans_back-269x300.png";
-
-    const checkYes = "https://media.istockphoto.com/photos/check-mark-picture-id179342378?k=6&m=179342378&s=612x612&w=0&h=sFdAqOZ3cmnRm6_3sj1BO5MNumn4gkHVMC1AdHISdL0=";
-    const checkNo = "https://thumbs.dreamstime.com/t/check-icon-checkmark-checkbox-no-voting-symbol-flat-vector-illustration-79862389.jpg";
-
-    function deployinate() {
-        const explanation = document.getElementById("explanation");
-        const outputPane = document.getElementById('output_pane');
-        explanation.hidden = true;
-        outputPane.hidden = false;
-
-        const output = document.getElementById('deployment');
-        const statusImage = document.getElementById("image_placeholder");
-
-        const imageHolder = document.getElementById("image_holder");
-
-        statusImage.src = WorkingImage;
-
-        output.onload = function () {
-            const innerDoc = (output.contentDocument) ? output.contentDocument : output.contentWindow.document;
-            const returnedString = innerDoc.documentElement.outerHTML;
-
-            //console.log(returnedString);
-            const failed = returnedString.match(/Build failure: Failure/);
-            if (!failed) {
-                const url = computeUrl(returnedString);
-
-                imageHolder.innerHTML = `<img src="${checkYes}"
-                    width="100" height="100"
-/>
-<p></p>
-<a href="${url}/person/Juergen">Running app</a>
-<br/><a href="https://console.run.pivotal.io">Pivotal Console</a>`;
-            } else {
-                imageHolder.innerHTML = `<img src="${checkNo}"
-                    width="100" height="100"
-/>`;
-            }
-        };
-        //output.src = "http://www.abc.net.au";
-        output.src = "/deploy/{{owner}}/{{repo}}";
-//         output.contentWindow.document.body.style.backgroundColor="blue";
-//         output.contentDocument.body.style.fontFamily = "Courier";
-    }
-
- function computeUrl(s) {
-        return /urls:\s+([A-Za-z0-9.\-]+)/.exec(s)[1];
- }
-
-
-</script>
+<script src="/js/deploy.js"></script>
 
 </body>
 </html>

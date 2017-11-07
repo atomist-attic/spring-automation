@@ -23,6 +23,7 @@
     "@atomist/slack-messages": "^0.12.0",
     "@types/jsdom": "^11.0.3",
     "@types/jszip": "^3.1.2",
+    "ansi-to-html": "^0.6.3",
     "app-root-path": "^2.0.1",
     "cfenv": "^1.0.4",
     "jszip": "^3.1.4",
