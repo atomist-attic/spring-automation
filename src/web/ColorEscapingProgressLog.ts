@@ -1,6 +1,6 @@
 import { ProgressLog } from "../commands/generator/build/DeploymentChain";
 
-const Convert = require('ansi-to-html');
+const Convert = require("ansi-to-html");
 const convert = new Convert();
 
 export class ColorEscapingProgressLog implements ProgressLog {
