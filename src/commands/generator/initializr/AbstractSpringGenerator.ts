@@ -84,15 +84,12 @@ export abstract class AbstractSpringGenerator extends SeedDrivenGenerator implem
         maxLength: 50,
         required: false,
     })
-    private _serviceClassName: string;
+    public serviceClassName: string;
 
-    get serviceClassName() {
-        if (!!this._serviceClassName) {
-            return this._serviceClassName;
-        } else {
-            const appName = camelize(this.artifactId);
-            return appName.charAt(0).toUpperCase() + appName.substr(1);
-        }
+    get serviceClassNameToUse() {
+        return (!!this.serviceClassName) ?
+            toInitialCap(this.serviceClassName) :
+            toInitialCap(camelize(this.artifactId));
     }
 
     // TODO should be an array parameter
@@ -137,11 +134,15 @@ export abstract class AbstractSpringGenerator extends SeedDrivenGenerator implem
             removeTravisBuildFiles,
             curry(doUpdatePom)(params),
             curry(inferStructureAndMovePackage)(this.rootPackage),
-            curry(inferSpringStructureAndRename)(this.serviceClassName),
+            curry(inferSpringStructureAndRename)(this.serviceClassNameToUse),
         ];
         return chainEditors(
             ...editors.concat(starterEditors),
         );
     }
 
+}
+
+function toInitialCap(s: string) {
+    return s.charAt(0).toUpperCase() + s.substr(1);
 }
