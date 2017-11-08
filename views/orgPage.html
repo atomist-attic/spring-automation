@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Project {{owner}}/{{repo}}</title>
+    <link href="//fonts.googleapis.com/css?family=Varela+Round|Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="/css/spring.css"/>
+    <link rel="shortcut icon" type="image/x-icon" href="../public/img/favicon.png"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {{#trackingCode}}
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-KZM7GF6');</script>
+    {{/trackingCode}}
+</head>
+<body>
+<form id="form" action="createRepo" method="get" role="form">
+
+    <input type="hidden" name="id" id="id" value="{{ id }}" />
+
+    <div class="container-fluid">
+        <div class="row start-header">
+            <div class="container">
+                <img src="https://www.atomist.com/img/Atomist-Logo.png" height="108" width="87" />
+
+                <a href="https://github.com/{{owner}}">
+                    <img src="https://assets-cdn.github.com/images/modules/logos_page/Octocat.png"
+                         align="right"
+                         width="116" height="90"/>
+                </a>
+
+                <h1>Organization Details <small><a href="/orgs/github/{{owner}}">{{owner}}</a></small></h1>
+            </div>
+        </div>
+
+        <div class="container start-main">
+
+            <div class="row">
+
+                {{#action}}
+                <div class="alert alert-danger text-center" role="alert" style="margin-top: 20px">
+                    {{action}}
+                    <button tabindex="12" name="upgrade" type="submit" class="btn btn-sm"
+                            role="button"
+                            formmethod="POST"
+                            formaction="/upgrade">
+                        Update
+                    </button>
+                </div>
+                {{/action}}
+
+                <div class="col-sm-12 col-md-6">
+
+                    <h3>92 Projects</h3>
+                    <ul>
+                        <li>Spring Boot (68 projects)</li>
+                        <li>Node.js (13 projects)</li>
+                        <li>Java library (4 projects)</li>
+                        <li>Unknown (7 projects)</li>
+                    </ul>
+
+                    <h3>Action Items</h3>
+                    <ul>
+                        <li><a href="x">Security risk (2 projects)</a>
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiM7afLD5hifp88MptU2r1jOzWhnHjA0MqhrAApd7utQxDi-5m"
+                            width="30" height="30"/>
+                        </li>
+                        <li>
+                            Old version of Spring Boot (34 projects)
+                            <img src="https://cdn2.iconfinder.com/data/icons/business-seo-vol-5/512/1-94-512.png" width="30" height="30"/>
+
+                        <li>Unready for Spring Boot 2.0.0 (6 projects)</li>
+                    </ul>
+
+                    <h3>Standards</h3>
+                    <ul>
+                        <li>Spring Boot - <b>1.5.9</b></li>
+                        <li>Java version - <b>1.8.0_144</b></li>
+                        <li>Node.js - <b>8.5.0</b></li>
+                        <li>Cloud Foundry deployment</li>
+                    </ul>
+
+                    <h3>Preferences</h3>
+                    <p><a href="whocares">Set version goals</a></p>
+
+                    <p><a href="whocares">Custom seeds (6)</a></p>
+
+                    <h3>Advanced</h3>
+                    <a href="whocares"> Add custom automations</a>
+                </div>
+
+                <div class="col-sm-12 col-md-6">
+                    <h3>Subscribe to Updates</h3>
+
+                    <p>Keep your projects consistent and up to date.
+                        Opt in to receive pull requests from Atomist and Pivotal when new versions are released.
+                    </p>
+
+                    <p>
+                    <input type="checkbox" name="Keep Spring Boot up to date" checked="true" />
+                    <label>Spring Boot Version</label>
+                    </p>
+
+                    <p>
+                    <input type="checkbox" name="Update Java version" checked="true" />
+                    <label>Java Version</label>
+                    </p>
+
+                    <h3>Subscribe to Quality Checks</h3>
+
+                    <p>Keep your projects consistent and up to date.
+                        Opt in to receive pull requests from Atomist and Pivotal when new versions are released.
+                    </p>
+
+                    <p>
+                        <input type="checkbox" name="Keep Spring Boot up to date" checked="true" />
+                        <label>Cloud Native App</label>
+                    </p>
+
+                    <p>
+                        <input type="checkbox" name="Update Java version" checked="true" />
+                        <label>Spring Boot 2.0.0 readiness</label>
+                    </p>
+
+                    <h3>Atomist Lifecycle</h3>
+                    <img src="/img/lifecycle1.png" width="350" height="85"/>
+
+                    <img src="/img/add_to_slack@2x.png" width="139" height="40" />
+
+                    <p/>
+                    <p/>
+                    <div class="row">
+                        <p >
+                            <button tabindex="12" name="update-settings"
+                                    type="submit" class="btn btn-lg"
+                                    role="button"
+                                    formmethod="GET"
+                                    formaction="/updateSettings">
+                                Update Settings
+                            </button>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+</form>
+<footer>
+    <div class="container">
+        <p>Powered by <a href="https://www.atomist.com">Atomist</a> on <a href="https://run.pivotal.io">Pivotal Web Services</a></p>
+    </div>
+</footer>
+<script src="/js/jquery-3.1.1.min.js"></script>
+<script src="/js/typeahead.bundle.min.js"></script>
+<script src="/js/mousetrap.min.js"></script>
+<script src="/js/start.js"></script>
+
+</body>
+</html>

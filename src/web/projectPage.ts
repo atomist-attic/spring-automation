@@ -2,9 +2,9 @@ import { logger } from "@atomist/automation-client/internal/util/logger";
 import { RepoId } from "@atomist/automation-client/operations/common/RepoId";
 import * as exp from "express";
 
-export function springBootProjectPage(express: exp.Express, ...handlers: exp.RequestHandler[]) {
+export function projectPage(express: exp.Express, ...handlers: exp.RequestHandler[]) {
 
-    logger.debug("Adding express routes for Spring Boot project page");
+    logger.debug("Adding express routes for project page");
 
     express.get("/projects/github/:owner/:repo", ...handlers, (req, res) => {
 
