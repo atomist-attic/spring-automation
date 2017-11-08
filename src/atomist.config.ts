@@ -7,8 +7,8 @@ import { ZipCreator } from "./commands/generator/initializr/ZipCreator";
 import { addDeployRoutes } from "./web/addDeployRoutes";
 import { addInitializrHandoffRoute } from "./web/initializerHandoff";
 import { InMemoryStore } from "./web/InMemoryObjectStore";
-import { projectPage } from "./web/projectPage";
 import { orgPage } from "./web/orgPage";
+import { projectPage } from "./web/projectPage";
 
 const pj = require(`${appRoot.path}/package.json`);
 
