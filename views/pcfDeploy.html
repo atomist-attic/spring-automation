@@ -35,7 +35,7 @@
                 <img src="https://www.atomist.com/img/Atomist-Logo.png" height="108" width="87"/>
 
                 <h1>Deployment
-                    <small>{{owner}}/{{repo}}</small>
+                    <small><a href="/orgs/github/{{owner}}">{{owner}}</a>/<a href="/projects/github/{{owner}}/{{repo}}">{{repo}}</a></small>
                 </h1>
             </div>
         </div>
@@ -80,6 +80,24 @@
                     running application and the Pivotal Cloud Foundry console you
                     can use to administer it.
                     </p>
+
+                    <div class="form-group groupid-form-group">
+                        <label for="org" class="control-label">Org</label>
+                        <select class="form-control" id="org" name="org">
+                            {{#orgs}}
+                            <option>{{.}}</option>
+                            {{/orgs}}
+                        </select>
+                    </div>
+
+                    <div class="form-group groupid-form-group">
+                        <label for="space" class="control-label">Space</label>
+                        <select class="form-control" id="space" name="space">
+                            {{#spaces}}
+                            <option>{{.}}</option>
+                            {{/spaces}}
+                        </select>
+                    </div>
 
                     <p class="text-left">
                         <button tabindex="12" name="create-repo" class="btn btn-lg btn-primary"

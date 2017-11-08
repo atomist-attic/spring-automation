@@ -4,7 +4,6 @@ import { LocalProject } from "@atomist/automation-client/project/local/LocalProj
 import * as exp from "express";
 import { build, deploy } from "../commands/generator/build/DefaultDeploymentChain";
 import { CloudFoundryInfo, PivotalWebServices, ProgressLog } from "../commands/generator/build/DeploymentChain";
-import { ColorEscapingProgressLog } from "./ColorEscapingProgressLog";
 
 const CloudFoundryTarget: CloudFoundryInfo = {
     ...PivotalWebServices,
@@ -16,7 +15,25 @@ const CloudFoundryTarget: CloudFoundryInfo = {
 
 export function addDeployRoutes(express: exp.Express, ...handlers: exp.RequestHandler[]) {
 
-    express.get("/deploy/:owner/:repo/", ...handlers, (req, res) => {
+    express.get("/deploy/pcf/github/:owner/:repo", ...handlers, (req, res) => {
+
+        // req.user.accessToken
+
+        // Look up spaces
+
+        const owner = req.params.owner;
+        const repo = req.params.repo;
+        const pinfo = {
+            owner,
+            repo,
+            orgs: [ "springrod" ],
+            spaces: [ "development "],
+        };
+        return res.render("pcfDeploy.html", pinfo);
+    });
+
+    // TODO change this route
+    express.get("/doDeploy/pcf/github/:owner/:repo/", ...handlers, (req, res) => {
         const owner = req.params.owner;
         const repo = req.params.repo;
 
@@ -48,7 +65,7 @@ export function addDeployRoutes(express: exp.Express, ...handlers: exp.RequestHa
             })
             .then(p => deploy(p, CloudFoundryTarget, progressLog))
             .then(deployment => {
-                res.write(`Build of project completed OK\n`);
+                res.write(`Build of project completed OK\n\n`);
                 res.write(`Deployment to ${CloudFoundryTarget.api} org '${CloudFoundryTarget.org}' in progress...\n`);
                 deployment.childProcess.addListener("close", () => res.end());
                 // deployment.childProcess.addListener("exit", closeListener);

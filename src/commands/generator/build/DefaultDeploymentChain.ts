@@ -25,7 +25,7 @@ export function deploy<P extends LocalProject>(proj: P, cfi: CloudFoundryInfo, l
             .then(va => ({...va, name: va.artifact}));
 
     return appId.then(ai => {
-        logger.info("Deploying app [%j] to Cloud Foundry [%j]", ai, cfi);
+        logger.info("\n\nDeploying app [%j] to Cloud Foundry [%j]", ai, cfi);
         log.write(`Logging into Cloud Foundry as ${cfi.username}...\n`);
 
         return addManifest<LocalProject>(ai, log)(proj)
@@ -34,7 +34,8 @@ export function deploy<P extends LocalProject>(proj: P, cfi: CloudFoundryInfo, l
                 {cwd: p.baseDir})// [-o ORG] [-s SPACE]`)
                 .then(_ => {
                     console.log("Successfully logged into Cloud Foundry as [%s]", cfi.username);
-                    return _;
+                    // Turn off color so we don't have unpleasant escape codes in web stream
+                    return runCommand("cf config --color false", {cwd: p.baseDir});
                 })
                 .then(() => {
                     const childProcess = spawn("cf",
