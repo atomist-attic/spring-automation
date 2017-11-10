@@ -4,6 +4,7 @@ import { LocalProject } from "@atomist/automation-client/project/local/LocalProj
 import * as exp from "express";
 import { build, deploy } from "../commands/generator/build/DefaultDeploymentChain";
 import { CloudFoundryInfo, PivotalWebServices, ProgressLog } from "../commands/generator/build/DeploymentChain";
+import { ColorEscapeSuppressingProgressLog } from "./ColorEscapeSuppressingProgressLog";
 
 const CloudFoundryTarget: CloudFoundryInfo = {
     ...PivotalWebServices,
@@ -37,7 +38,7 @@ export function addDeployRoutes(express: exp.Express, ...handlers: exp.RequestHa
         const owner = req.params.owner;
         const repo = req.params.repo;
 
-        const progressLog: ProgressLog = res;
+        const progressLog: ProgressLog = new ColorEscapeSuppressingProgressLog(res);
             // new ColorEscapingProgressLog(res);
 
         res.writeHead(200, {
