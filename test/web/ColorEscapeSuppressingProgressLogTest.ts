@@ -1,8 +1,8 @@
 import "mocha";
 import * as assert from "power-assert";
 import { ProgressLog } from "../../src/commands/generator/build/DeploymentChain";
-import { ColorEscapingProgressLog } from "../../src/web/ColorEscapingProgressLog";
 import { ColorEscapeSuppressingProgressLog } from "../../src/web/ColorEscapeSuppressingProgressLog";
+import { ColorEscapingProgressLog } from "../../src/web/ColorEscapingProgressLog";
 
 class SavingLog implements ProgressLog {
 
