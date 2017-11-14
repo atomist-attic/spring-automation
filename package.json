@@ -19,8 +19,7 @@
     "initializr"
   ],
   "dependencies": {
-    "@atomist/automation-client": "https://atomist.jfrog.io/atomist/npm-dev/@atomist/automation-client/-/@atomist/automation-client-0.2.6-20171107023920.tgz",
-    "@atomist/slack-messages": "^0.12.0",
+    "@atomist/automation-client": "0.3.1",
     "@types/jsdom": "^11.0.3",
     "@types/jszip": "^3.1.2",
     "ansi-to-html": "^0.6.3",

@@ -1,10 +1,5 @@
-import {
-    CommandHandler,
-    Parameter,
-    Secret,
-    Secrets,
-    Tags,
-} from "@atomist/automation-client/Handlers";
+
+import { CommandHandler, Parameter, Secret, Secrets, Tags } from "@atomist/automation-client";
 import { hasFile } from "@atomist/automation-client/internal/util/gitHub";
 import {
     EditMode,

@@ -1,4 +1,4 @@
-import { HandlerContext, HandlerResult, RedirectResult } from "@atomist/automation-client/Handlers";
+import { HandlerContext, HandlerResult, RedirectResult } from "@atomist/automation-client";
 import { generate } from "@atomist/automation-client/operations/generate/generatorUtils";
 import { AbstractSpringGenerator } from "./AbstractSpringGenerator";
 import { ZipWritingResult } from "./writeZip";

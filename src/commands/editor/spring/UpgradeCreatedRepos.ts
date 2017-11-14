@@ -1,10 +1,4 @@
-import {
-    CommandHandler,
-    HandleCommand,
-    HandlerContext,
-    HandlerResult,
-    Parameter,
-} from "@atomist/automation-client/Handlers";
+import { CommandHandler, HandleCommand, HandlerContext, HandlerResult, Parameter } from "@atomist/automation-client";
 import { RepoFinder } from "@atomist/automation-client/operations/common/repoFinder";
 import { editAll } from "@atomist/automation-client/operations/edit/editAll";
 import { PullRequest } from "@atomist/automation-client/operations/edit/editModes";

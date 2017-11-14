@@ -1,4 +1,4 @@
-import { HandlerContext, Parameter } from "@atomist/automation-client/Handlers";
+import { HandlerContext, Parameter } from "@atomist/automation-client";
 import { logger } from "@atomist/automation-client/internal/util/logger";
 import { RepoId } from "@atomist/automation-client/operations/common/RepoId";
 import { AnyProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";

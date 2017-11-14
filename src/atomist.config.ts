@@ -3,7 +3,6 @@ import * as appRoot from "app-root-path";
 import { UpgradeCreatedRepos } from "./commands/editor/spring/UpgradeCreatedRepos";
 import { ReposWeMadeRepoFinder } from "./commands/generator/initializr/createdReposRepoFinder";
 import { RepoCreator } from "./commands/generator/initializr/RepoCreator";
-import { ZipCreator } from "./commands/generator/initializr/ZipCreator";
 import { addDeployRoutes } from "./web/addDeployRoutes";
 import { addInitializrHandoffRoute } from "./web/initializerHandoff";
 import { InMemoryStore } from "./web/InMemoryObjectStore";
@@ -26,7 +25,6 @@ export const configuration: Configuration = {
         () => new UpgradeCreatedRepos(ReposWeMadeRepoFinder, AtomistToken),
     ],
     events: [],
-    ingestors: [],
     token: GitHubToken,
     http: {
         enabled: true,
