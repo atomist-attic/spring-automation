@@ -45,6 +45,6 @@ export class NodeGenerator extends AbstractRepoCreator {
     }
 
     public projectEditor(ctx: HandlerContext, params: this): AnyProjectEditor<this> {
-        return updatePackageJsonIdentification(params.appName, params.version);
+        return updatePackageJsonIdentification(params.appName, params.version, params.description);
     }
 }

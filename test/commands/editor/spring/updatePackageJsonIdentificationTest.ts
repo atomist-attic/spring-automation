@@ -9,7 +9,7 @@ describe("updatePackageJsonIdentification", () => {
 
     it("doesn't edit empty project", done => {
         const p = new InMemoryProject();
-        const sim: SimpleProjectEditor = updatePackageJsonIdentification("x", "y");
+        const sim: SimpleProjectEditor = updatePackageJsonIdentification("x", "y", "v");
         sim(p, null, null)
             .then(edited => {
                 assert(!!edited);
@@ -21,7 +21,7 @@ describe("updatePackageJsonIdentification", () => {
     it("changes name", done => {
         const p = InMemoryProject.of({path: "package.json", content: SimplePackageJson });
         const name = "thing1";
-        updatePackageJsonIdentification(name, "0.0.0")(p, undefined, undefined)
+        updatePackageJsonIdentification(name, name, "0.0.0")(p, undefined, undefined)
             .then(() => {
                 const content = p.findFileSync("package.json").getContentSync();
                 console.log(content);
@@ -35,13 +35,28 @@ describe("updatePackageJsonIdentification", () => {
     it("changes version", done => {
         const p = InMemoryProject.of({path: "package.json", content: SimplePackageJson });
         const version = "0.1.0";
-        updatePackageJsonIdentification("somename", version)(p, undefined, undefined)
+        updatePackageJsonIdentification("somename", "", version)(p, undefined, undefined)
             .then(() => {
                 const content = p.findFileSync("package.json").getContentSync();
                 console.log(content);
                 assert(content.includes(version));
                 const parsed = JSON.parse(content);
                 assert(parsed.version === version);
+                done();
+            }).catch(done);
+    });
+
+    it("changes description", done => {
+        const p = InMemoryProject.of({path: "package.json", content: SimplePackageJson });
+        const version = "0.1.0";
+        const description = "whatever you say";
+        updatePackageJsonIdentification("somename", description, version)(p, undefined, undefined)
+            .then(() => {
+                const content = p.findFileSync("package.json").getContentSync();
+                console.log(content);
+                assert(content.includes(description));
+                const parsed = JSON.parse(content);
+                assert(parsed.description === description);
                 done();
             }).catch(done);
     });

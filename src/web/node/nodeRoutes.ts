@@ -39,6 +39,7 @@ export function addNodeRoutes(express: exp.Express, ...handlers: exp.RequestHand
                 generator.targetOwner = req.query.targetOwner;
                 generator.targetRepo = req.query.targetRepo;
                 generator.appName = req.query.appName;
+                generator.description = req.query.description || generator.appName;
 
                 generator.visibility = "public";
                 // generator.sourceOwner = req.query.sourceOwner;
