@@ -1,11 +1,11 @@
-import { SimpleProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
-import { Microgrammar } from "@atomist/microgrammar/Microgrammar";
+import { ProjectOp } from "@atomist/automation-client/operations/edit/projectEditorOps";
 import { doWithAtMostOneMatch } from "@atomist/automation-client/project/util/parseUtils";
+import { Microgrammar } from "@atomist/microgrammar/Microgrammar";
 
 export function updatePackageJsonIdentification(appName: string,
                                                 description: string,
                                                 version: string,
-                                                author: string): SimpleProjectEditor {
+                                                author: string): ProjectOp {
     return project => {
         return doWithAtMostOneMatch(project, "package.json", nameGrammar, m => {
             m.value = appName;

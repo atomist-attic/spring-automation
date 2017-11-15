@@ -1,9 +1,11 @@
-import { CommandHandler } from "@atomist/automation-client/decorators";
-import { ObjectStore } from "../../../web/ObjectStore";
-import { AbstractRepoCreator } from "../common/AbstractRepoCreator";
 import { HandlerContext, Parameter } from "@atomist/automation-client";
+import { CommandHandler } from "@atomist/automation-client/decorators";
 import { AnyProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
+import { chainEditors } from "@atomist/automation-client/operations/edit/projectEditorOps";
+import { ObjectStore } from "../../../web/ObjectStore";
 import { updatePackageJsonIdentification } from "../../editor/node/updatePackageJsonIdentification";
+import { updateReadme } from "../../editor/node/updateReadme";
+import { AbstractRepoCreator } from "../common/AbstractRepoCreator";
 
 /**
  * Creates a GitHub Repo and installs Atomist collaborator if necessary
@@ -45,6 +47,9 @@ export class NodeGenerator extends AbstractRepoCreator {
     }
 
     public projectEditor(ctx: HandlerContext, params: this): AnyProjectEditor<this> {
-        return updatePackageJsonIdentification(params.appName, params.version, params.description, params.targetOwner);
+        return chainEditors(
+            updatePackageJsonIdentification(params.appName, params.version, params.description, params.targetOwner),
+            updateReadme(params.appName, params.description),
+        );
     }
 }

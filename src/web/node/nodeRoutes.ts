@@ -3,8 +3,8 @@ import { logger } from "@atomist/automation-client/internal/util/logger";
 import axios from "axios";
 
 import * as exp from "express";
-import { InMemoryStore } from "../InMemoryObjectStore";
 import { NodeGenerator } from "../../commands/generator/node/NodeGenerator";
+import { InMemoryStore } from "../InMemoryObjectStore";
 import { toCommandHandlerGetUrl } from "../spring/initializerHandoff";
 
 const CreateRepoCommandPath = "/command/node-generator";

@@ -21,7 +21,7 @@ describe("updatePackageJsonIdentification", () => {
     it("changes name", done => {
         const p = InMemoryProject.of({path: "package.json", content: SimplePackageJson });
         const name = "thing1";
-        updatePackageJsonIdentification(name, name, "0.0.0", "a")(p, undefined, undefined)
+        updatePackageJsonIdentification(name, name, "0.0.0", "a")(p)
             .then(() => {
                 const content = p.findFileSync("package.json").getContentSync();
                 console.log(content);
@@ -35,7 +35,7 @@ describe("updatePackageJsonIdentification", () => {
     it("changes version", done => {
         const p = InMemoryProject.of({path: "package.json", content: SimplePackageJson });
         const version = "0.1.0";
-        updatePackageJsonIdentification("somename", "", version, "a")(p, undefined, undefined)
+        updatePackageJsonIdentification("somename", "", version, "a")(p)
             .then(() => {
                 const content = p.findFileSync("package.json").getContentSync();
                 console.log(content);
@@ -50,7 +50,7 @@ describe("updatePackageJsonIdentification", () => {
         const p = InMemoryProject.of({path: "package.json", content: SimplePackageJson });
         const version = "0.1.0";
         const description = "whatever you say";
-        updatePackageJsonIdentification("somename", description, version, "a")(p, undefined, undefined)
+        updatePackageJsonIdentification("somename", description, version, "a")(p)
             .then(() => {
                 const content = p.findFileSync("package.json").getContentSync();
                 console.log(content);
@@ -65,7 +65,7 @@ describe("updatePackageJsonIdentification", () => {
         const p = InMemoryProject.of({path: "package.json", content: SimplePackageJson });
         const version = "0.1.0";
         const author = "vonnegut";
-        updatePackageJsonIdentification("somename", "descr", version, author)(p, undefined, undefined)
+        updatePackageJsonIdentification("somename", "descr", version, author)(p)
             .then(() => {
                 const content = p.findFileSync("package.json").getContentSync();
                 console.log(content);

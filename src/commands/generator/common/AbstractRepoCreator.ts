@@ -5,11 +5,11 @@ import { MappedParameter, Secret } from "@atomist/automation-client/decorators";
 import { HandlerContext } from "@atomist/automation-client/HandlerContext";
 import { logger } from "@atomist/automation-client/internal/util/logger";
 import { GitHubRepoRef } from "@atomist/automation-client/operations/common/GitHubRepoRef";
+import { RepoId } from "@atomist/automation-client/operations/common/RepoId";
 import { generate } from "@atomist/automation-client/operations/generate/generatorUtils";
 import { GitHubProjectPersister } from "@atomist/automation-client/operations/generate/gitHubProjectPersister";
-import { ObjectStore } from "../../../web/ObjectStore";
 import { SeedDrivenGenerator } from "@atomist/automation-client/operations/generate/SeedDrivenGenerator";
-import { RepoId } from "@atomist/automation-client/operations/common/RepoId";
+import { ObjectStore } from "../../../web/ObjectStore";
 
 /**
  * Creates a GitHub Repo and installs Atomist collaborator if necessary

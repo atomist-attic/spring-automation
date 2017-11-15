@@ -3,13 +3,13 @@ import * as appRoot from "app-root-path";
 import { UpgradeCreatedRepos } from "./commands/editor/spring/UpgradeCreatedRepos";
 import { ReposWeMadeRepoFinder } from "./commands/generator/initializr/createdReposRepoFinder";
 import { SpringRepoCreator } from "./commands/generator/initializr/SpringRepoCreator";
-import { addDeployRoutes } from "./web/spring/addDeployRoutes";
-import { addInitializrHandoffRoute } from "./web/spring/initializerHandoff";
+import { NodeGenerator } from "./commands/generator/node/NodeGenerator";
 import { InMemoryStore } from "./web/InMemoryObjectStore";
+import { addNodeRoutes } from "./web/node/nodeRoutes";
 import { orgPage } from "./web/orgPage";
 import { projectPage } from "./web/projectPage";
-import { addNodeRoutes } from "./web/node/nodeRoutes";
-import { NodeGenerator } from "./commands/generator/node/NodeGenerator";
+import { addDeployRoutes } from "./web/spring/addDeployRoutes";
+import { addInitializrHandoffRoute } from "./web/spring/initializerHandoff";
 
 const pj = require(`${appRoot.path}/package.json`);
 
