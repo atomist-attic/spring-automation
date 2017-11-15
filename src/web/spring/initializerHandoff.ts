@@ -4,9 +4,9 @@ import axios from "axios";
 
 import * as exp from "express";
 import * as fs from "fs";
-import { RepoCreator } from "../commands/generator/initializr/RepoCreator";
-import { ZipCreator } from "../commands/generator/initializr/ZipCreator";
-import { InMemoryStore } from "./InMemoryObjectStore";
+import { SpringRepoCreator } from "../../commands/generator/initializr/SpringRepoCreator";
+import { ZipCreator } from "../../commands/generator/initializr/ZipCreator";
+import { InMemoryStore } from "../InMemoryObjectStore";
 
 const CreateRepoCommandPath = "command/repo-creator";
 
@@ -17,7 +17,7 @@ export function addInitializrHandoffRoute(express: exp.Express, ...handlers: exp
     express.post("/requestRepoCreation", (req, res) => {
         logger.debug("POST for repo creation: BODY is [" + JSON.stringify(req.body) + "]");
         const id = InMemoryStore.put(req.body);
-        res.redirect("fillInRepo/" + id);
+        res.redirect("spring/fillInRepo/" + id);
     });
 
     express.post("/requestZipCreation", (req, res) => {
@@ -55,10 +55,10 @@ export function addInitializrHandoffRoute(express: exp.Express, ...handlers: exp
     });
 
     // Render the form that captures additional information for repo creation
-    express.get("/fillInRepo/:id", ...handlers, (req, res) => {
+    express.get("/spring/fillInRepo/:id", ...handlers, (req, res) => {
         const id = req.params.id;
         logger.debug("GET: pointer is [" + id + "]");
-        return res.render("fillInRepo.html", {
+        return res.render("spring/fillInRepo.html", {
             id,
             ...InMemoryStore.get(id),
             orgs: req.user.orgs,
@@ -85,7 +85,7 @@ export function addInitializrHandoffRoute(express: exp.Express, ...handlers: exp
                 // Populate the generator itself to ensure we get the right names,
                 // then take out the data
                 const initializrData = InMemoryStore.get(id);
-                const generator = new RepoCreator(null);
+                const generator = new SpringRepoCreator(null);
                 generator.targetOwner = owner;
                 generator.targetRepo = repo;
                 generator.startersCsv = (initializrData.style || []).join();

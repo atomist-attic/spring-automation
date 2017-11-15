@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Spring Initializr</title>
+    <title>Node Joy</title>
     <link href="//fonts.googleapis.com/css?family=Varela+Round|Montserrat:400,700" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css"/>
     <link rel="stylesheet" href="/css/spring.css"/>
-    <link rel="shortcut icon" type="image/x-icon" href="../public/img/favicon.png"/>
+    <link rel="shortcut icon" type="image/x-icon" href="../../public/img/favicon.png"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {{#trackingCode}}
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -17,7 +17,7 @@
     {{/trackingCode}}
 </head>
 <body>
-<form id="form" action="createRepo" method="get" role="form">
+<form id="form" action="/node/createRepo" method="get" role="form">
 
     <input type="hidden" name="id" id="id" value="{{ id }}" />
 
@@ -30,7 +30,7 @@
                          align="right"
                          width="116" height="90"/>
                 </a>
-                <h1>Spring Initializr <small>create a repo with Atomist</small></h1>
+                <h1>Node.js <small>create a repo with Atomist</small></h1>
             </div>
         </div>
 
@@ -52,36 +52,48 @@
                         <br/>
                     {{/sourceRepo}}
 
-                    <p>Target Repo</p>
+                    <h3>Target Repo</h3>
 
                     <div class="form-group groupid-form-group">
-                        <label for="org" class="control-label">Org</label>
-                        <select class="form-control" id="org" name="org">
+                        <label for="targetOwner" class="control-label">Org</label>
+                        <select class="form-control" id="targetOwner" name="targetOwner">
                             {{#orgs}}
                             <option>{{.}}</option>
                             {{/orgs}}
                         </select>
                     </div>
                     <div class="form-group artifactid-form-group">
-                        <label for="repo" class="control-label">Repo</label>
-                        <input tabindex="5" id="repo" class="form-control" type="text"
+                        <label for="targetRepo" class="control-label">Repo</label>
+                        <input tabindex="5" id="targetRepo" class="form-control" type="text"
                                value="{{name}}"
-                               name="repo">
+                               name="targetRepo">
                     </div>
+
+                    <div class="form-group artifactid-form-group">
+                        <label for="appName" class="control-label">Application name</label>
+                        <input tabindex="5" id="appName" class="form-control" type="text"
+                               value="{{name}}"
+                               name="appName">
+                    </div>
+
+                    <h3>Settings</h3>
+
+                    <input type="checkbox" name="tslint" checked="true" />
+                    <label>Lint using tslint</label>
 
                 </div>
 
                 <div class="col-sm-12 col-md-6">
                     <h2>How it Works</h2>
 
-                    <p>We'll create a new GitHub repo containing your new Spring Boot project.
+                    <p>We'll create a new GitHub repo containing your new Node.js project.
                     </p>
-                    <p>Atomist and Pivotal will make pull requests when a newer
-                        version of Spring Boot comes out, to ensure you stay up to date.
+                    <p>Atomist will make pull requests
+                        when new dependencies come out, to ensure you stay up to date.
                     </p>
 
-                    <label>Keep my repo up to date</label>
                     <input type="checkbox" name="Keep my repo alive" checked="true" />
+                    <label>Keep my repo up to date</label>
 
                     <p>You can go at any time to the
                         Atomist Dashboard
@@ -99,7 +111,7 @@
                 <button tabindex="12" name="create-repo" type="submit" class="btn btn-lg btn-primary"
                         role="button"
                         formmethod="GET"
-                        formaction="/createRepo">
+                        formaction="/node/createRepo">
                     Create Repo
                 </button>
             </p>
@@ -108,8 +120,7 @@
 </form>
 <footer>
     <div class="container">
-        <p>start.spring.io is powered by <a href="https://github.com/spring-io/initializr/">Spring Initializr</a>
-            and <a href="https://www.atomist.com">Atomist</a> on <a href="https://run.pivotal.io">Pivotal Web Services</a></p>
+        <p>Powered by <a href="https://www.atomist.com">Atomist</a></p>
     </div>
 </footer>
 <script src="/js/jquery-3.1.1.min.js"></script>

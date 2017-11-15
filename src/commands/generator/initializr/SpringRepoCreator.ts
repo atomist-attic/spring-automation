@@ -11,11 +11,13 @@ import { GitHubProjectPersister } from "@atomist/automation-client/operations/ge
 import { ObjectStore } from "../../../web/ObjectStore";
 import { AbstractSpringGenerator } from "./AbstractSpringGenerator";
 
+// TODO should work like NodeGenerator
+
 /**
  * Creates a GitHub Repo and installs Atomist collaborator if necessary
  */
 @CommandHandler("generate spring boot seed")
-export class RepoCreator extends AbstractSpringGenerator {
+export class SpringRepoCreator extends AbstractSpringGenerator {
 
     @Secret(Secrets.userToken(["repo", "user"]))
     protected githubToken;

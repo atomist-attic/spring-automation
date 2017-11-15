@@ -2,12 +2,13 @@ import { Configuration } from "@atomist/automation-client/configuration";
 import * as appRoot from "app-root-path";
 import { UpgradeCreatedRepos } from "./commands/editor/spring/UpgradeCreatedRepos";
 import { ReposWeMadeRepoFinder } from "./commands/generator/initializr/createdReposRepoFinder";
-import { RepoCreator } from "./commands/generator/initializr/RepoCreator";
-import { addDeployRoutes } from "./web/addDeployRoutes";
-import { addInitializrHandoffRoute } from "./web/initializerHandoff";
+import { SpringRepoCreator } from "./commands/generator/initializr/SpringRepoCreator";
+import { addDeployRoutes } from "./web/spring/addDeployRoutes";
+import { addInitializrHandoffRoute } from "./web/spring/initializerHandoff";
 import { InMemoryStore } from "./web/InMemoryObjectStore";
 import { orgPage } from "./web/orgPage";
 import { projectPage } from "./web/projectPage";
+import { addNodeRoutes } from "./web/node/nodeRoutes";
 
 const pj = require(`${appRoot.path}/package.json`);
 
@@ -21,7 +22,7 @@ export const configuration: Configuration = {
     version: pj.version,
     teamIds: ["T5964N9B7"],
     commands: [
-        () => new RepoCreator(InMemoryStore, AtomistUser, AtomistToken),
+        () => new SpringRepoCreator(InMemoryStore, AtomistUser, AtomistToken),
         () => new UpgradeCreatedRepos(ReposWeMadeRepoFinder, AtomistToken),
     ],
     events: [],
@@ -30,6 +31,7 @@ export const configuration: Configuration = {
         enabled: true,
         customizers: [
             addInitializrHandoffRoute,
+            addNodeRoutes,
             projectPage,
             orgPage,
             addDeployRoutes,

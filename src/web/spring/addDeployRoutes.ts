@@ -2,9 +2,9 @@ import { GitHubRepoRef } from "@atomist/automation-client/operations/common/GitH
 import { GitCommandGitProject } from "@atomist/automation-client/project/git/GitCommandGitProject";
 import { LocalProject } from "@atomist/automation-client/project/local/LocalProject";
 import * as exp from "express";
-import { build, deploy } from "../commands/generator/build/DefaultDeploymentChain";
-import { CloudFoundryInfo, PivotalWebServices, ProgressLog } from "../commands/generator/build/DeploymentChain";
-import { ColorEscapeSuppressingProgressLog } from "./ColorEscapeSuppressingProgressLog";
+import { build, deploy } from "../../commands/generator/build/DefaultDeploymentChain";
+import { CloudFoundryInfo, PivotalWebServices, ProgressLog } from "../../commands/generator/build/DeploymentChain";
+import { ColorEscapeSuppressingProgressLog } from "../ColorEscapeSuppressingProgressLog";
 
 const CloudFoundryTarget: CloudFoundryInfo = {
     ...PivotalWebServices,

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Spring Initializr</title>
+    <link href="//fonts.googleapis.com/css?family=Varela+Round|Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="/css/spring.css"/>
+    <link rel="shortcut icon" type="image/x-icon" href="../../public/img/favicon.png"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {{#trackingCode}}
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-KZM7GF6');</script>
+    {{/trackingCode}}
+</head>
+<body>
+<form id="form" action="createRepo" method="get" role="form">
+
+    <input type="hidden" name="id" id="id" value="{{ id }}" />
+
+    <div class="container-fluid">
+        <div class="row start-header">
+            <div class="container">
+                <img src ="https://www.atomist.com/img/Atomist-Logo.png" height="108" width="87" />
+                <a href="https://github.com/{{owner}}/{{repo}}">
+                    <img src="https://assets-cdn.github.com/images/modules/logos_page/Octocat.png"
+                         align="right"
+                         width="116" height="90"/>
+                </a>
+                <h1>Spring Initializr <small>create a repo with Atomist</small></h1>
+            </div>
+        </div>
+
+        <div class="container start-main">
+
+            <div class="row">
+
+                {{#message}}
+                <div class="alert alert-danger text-center" role="alert" style="margin-top: 20px">
+                    {{message}}
+                </div>
+                {{/message}}
+
+                <div class="col-sm-12 col-md-6">
+                    <h2>Create a GitHub Repo</h2>
+
+                    {{#sourceRepo}}
+                        Source: <i>{{sourceOwner}}/{{sourceRepo}}:{{sourceBranch}}</i>
+                        <br/>
+                    {{/sourceRepo}}
+
+                    <p>Target Repo</p>
+
+                    <div class="form-group groupid-form-group">
+                        <label for="org" class="control-label">Org</label>
+                        <select class="form-control" id="org" name="org">
+                            {{#orgs}}
+                            <option>{{.}}</option>
+                            {{/orgs}}
+                        </select>
+                    </div>
+                    <div class="form-group artifactid-form-group">
+                        <label for="repo" class="control-label">Repo</label>
+                        <input tabindex="5" id="repo" class="form-control" type="text"
+                               value="{{name}}"
+                               name="repo">
+                    </div>
+
+                </div>
+
+                <div class="col-sm-12 col-md-6">
+                    <h2>How it Works</h2>
+
+                    <p>We'll create a new GitHub repo containing your new Spring Boot project.
+                    </p>
+                    <p>Atomist and Pivotal will make pull requests when a newer
+                        version of Spring Boot comes out, to ensure you stay up to date.
+                    </p>
+
+                    <label>Keep my repo up to date</label>
+                    <input type="checkbox" name="Keep my repo alive" checked="true" />
+
+                    <p>You can go at any time to the
+                        Atomist Dashboard
+                        to change update subscriptions.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+            <p class="text-center">
+                <button tabindex="12" name="create-repo" type="submit" class="btn btn-lg btn-primary"
+                        role="button"
+                        formmethod="GET"
+                        formaction="/createRepo">
+                    Create Repo
+                </button>
+            </p>
+        </div>
+    </div>
+</form>
+<footer>
+    <div class="container">
+        <p>start.spring.io is powered by <a href="https://github.com/spring-io/initializr/">Spring Initializr</a>
+            and <a href="https://www.atomist.com">Atomist</a> on <a href="https://run.pivotal.io">Pivotal Web Services</a></p>
+    </div>
+</footer>
+<script src="/js/jquery-3.1.1.min.js"></script>
+<script src="/js/typeahead.bundle.min.js"></script>
+<script src="/js/mousetrap.min.js"></script>
+<script src="/js/start.js"></script>
+</body>
+</html>
