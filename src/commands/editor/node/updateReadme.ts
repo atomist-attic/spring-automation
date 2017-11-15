@@ -1,4 +1,3 @@
-import { SimpleProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
 import { doWithFileMatches } from "@atomist/automation-client/project/util/parseUtils";
 import { Microgrammar } from "@atomist/microgrammar/Microgrammar";
 
