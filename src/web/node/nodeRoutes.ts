@@ -48,7 +48,6 @@ export function addNodeRoutes(express: exp.Express, ...handlers: exp.RequestHand
                     `&mp_targetOwner=${generator.targetOwner}&` +
                     encodeURIComponent("s_github://user_token?scopes=repo,user") + "=" + req.user.accessToken;
                 return res.redirect(uri);
-
             });
     });
 }

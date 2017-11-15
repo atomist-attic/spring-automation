@@ -1,9 +1,8 @@
 import axios from "axios";
 
-import { MappedParameters, Secrets } from "@atomist/automation-client";
+import { MappedParameters, RedirectResult, Secrets } from "@atomist/automation-client";
 import { MappedParameter, Secret } from "@atomist/automation-client/decorators";
 import { HandlerContext } from "@atomist/automation-client/HandlerContext";
-import { HandlerResult } from "@atomist/automation-client/HandlerResult";
 import { logger } from "@atomist/automation-client/internal/util/logger";
 import { GitHubRepoRef } from "@atomist/automation-client/operations/common/GitHubRepoRef";
 import { generate } from "@atomist/automation-client/operations/generate/generatorUtils";
@@ -37,7 +36,7 @@ export abstract class AbstractRepoCreator extends SeedDrivenGenerator implements
         return this.targetRepo;
     }
 
-    public handle(ctx: HandlerContext, params: this): Promise<HandlerResult> {
+    public handle(ctx: HandlerContext, params: this): Promise<RedirectResult> {
         return generate(this.startingPoint(ctx, this),
             ctx,
             {token: params.githubToken},

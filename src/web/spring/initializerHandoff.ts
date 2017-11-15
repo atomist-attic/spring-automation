@@ -104,7 +104,6 @@ export function addInitializrHandoffRoute(express: exp.Express, ...handlers: exp
                     `&mp_targetOwner=${generator.targetOwner}&` +
                     encodeURIComponent("s_github://user_token?scopes=repo,user") + "=" + req.user.accessToken;
                 return res.redirect(uri);
-
             });
     });
 }

@@ -3,6 +3,7 @@ import { ObjectStore } from "../../../web/ObjectStore";
 import { AbstractRepoCreator } from "../common/AbstractRepoCreator";
 import { HandlerContext, Parameter } from "@atomist/automation-client";
 import { AnyProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
+import { updatePackageJsonIdentification } from "../../editor/node/updatePackageJsonIdentification";
 
 /**
  * Creates a GitHub Repo and installs Atomist collaborator if necessary
@@ -44,6 +45,6 @@ export class NodeGenerator extends AbstractRepoCreator {
     }
 
     public projectEditor(ctx: HandlerContext, params: this): AnyProjectEditor<this> {
-        return p => Promise.resolve(p);
+        return updatePackageJsonIdentification(params.appName, params.version);
     }
 }
