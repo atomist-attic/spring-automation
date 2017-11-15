@@ -8,7 +8,7 @@ import { SpringRepoCreator } from "../../commands/generator/initializr/SpringRep
 import { ZipCreator } from "../../commands/generator/initializr/ZipCreator";
 import { InMemoryStore } from "../InMemoryObjectStore";
 
-const CreateRepoCommandPath = "command/repo-creator";
+const CreateRepoCommandPath = "command/spring-repo-creator";
 
 export function addInitializrHandoffRoute(express: exp.Express, ...handlers: exp.RequestHandler[]) {
 
@@ -109,7 +109,7 @@ export function addInitializrHandoffRoute(express: exp.Express, ...handlers: exp
     });
 }
 
-function toCommandHandlerGetUrl(base: string, generator: object): string {
+export function toCommandHandlerGetUrl(base: string, generator: object): string {
     const params = Object.getOwnPropertyNames(generator)
         .filter(p => typeof generator[p] !== "function")
         .map(p => {

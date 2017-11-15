@@ -9,6 +9,7 @@ import { InMemoryStore } from "./web/InMemoryObjectStore";
 import { orgPage } from "./web/orgPage";
 import { projectPage } from "./web/projectPage";
 import { addNodeRoutes } from "./web/node/nodeRoutes";
+import { NodeGenerator } from "./commands/generator/node/NodeGenerator";
 
 const pj = require(`${appRoot.path}/package.json`);
 
@@ -23,6 +24,7 @@ export const configuration: Configuration = {
     teamIds: ["T5964N9B7"],
     commands: [
         () => new SpringRepoCreator(InMemoryStore, AtomistUser, AtomistToken),
+        () => new NodeGenerator(InMemoryStore, AtomistUser, AtomistToken),
         () => new UpgradeCreatedRepos(ReposWeMadeRepoFinder, AtomistToken),
     ],
     events: [],

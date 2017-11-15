@@ -1,7 +1,13 @@
 import { logger } from "@atomist/automation-client/internal/util/logger";
 
+import axios from "axios";
+
 import * as exp from "express";
 import { InMemoryStore } from "../InMemoryObjectStore";
+import { NodeGenerator } from "../../commands/generator/node/NodeGenerator";
+import { toCommandHandlerGetUrl } from "../spring/initializerHandoff";
+
+const CreateRepoCommandPath = "/command/node-generator";
 
 export function addNodeRoutes(express: exp.Express, ...handlers: exp.RequestHandler[]) {
 
@@ -14,45 +20,30 @@ export function addNodeRoutes(express: exp.Express, ...handlers: exp.RequestHand
         });
     });
 
-    express.post("/node/requestRepoCreation", (req, res) => {
-        logger.debug("POST for repo creation: BODY is [" + JSON.stringify(req.body) + "]");
-        const id = InMemoryStore.put(req.body);
-        res.redirect("fillInRepo/" + id);
-    });
+    express.get("/node/createRepo", ...handlers, (req, res) => {
 
-    /*
-    express.get("/createRepo", ...handlers, (req, res) => {
-        const id = req.query.id;
-        logger.debug("cache: pointer is [" + id + "]");
-
-        const owner = req.query.org;
-        const repo = req.query.repo;
+        const owner = req.query.targetOwner;
+        const repo = req.query.targetRepo;
 
         axios.get(`https://api.github.com/repos/${owner}/${repo}`,
             {headers: {Authorization: `token ${req.user.accessToken}`}})
             .then(() => {
                 req.flash("error", `Repository ${owner}/${repo} already exists. Please use a different name!`);
-                return res.redirect(`/fillInRepo/${id}`);
+                // TODO fix this
+                return res.redirect(`/fillInRepo`);
             })
             .catch(err => {
                 // Populate the generator itself to ensure we get the right names,
                 // then take out the data
-                const initializrData = InMemoryStore.get(id);
-                const generator = new SpringRepoCreator(null);
-                generator.targetOwner = owner;
-                generator.targetRepo = repo;
-                generator.startersCsv = (initializrData.style || []).join();
-                generator.rootPackage = initializrData.packageName;
-                generator.artifactId = initializrData.artifactId;
-                generator.groupId = initializrData.groupId;
-                generator.version = initializrData.version;
-                generator.serviceClassName = initializrData.name;
+                const generator = new NodeGenerator(InMemoryStore);
+                generator.targetOwner = req.query.targetOwner;
+                generator.targetRepo = req.query.targetRepo;
+                generator.appName = req.query.appName;
+
                 generator.visibility = "public";
-                if (!!initializrData.sourceOwner && !!initializrData.sourceRepo) {
-                    generator.sourceOwner = initializrData.sourceOwner;
-                    generator.sourceRepo = initializrData.sourceRepo;
-                    generator.sourceBranch = initializrData.sourceBranch || "master";
-                }
+                // generator.sourceOwner = req.query.sourceOwner;
+                // generator.sourceRepo = req.query.sourceRepo;
+                generator.sourceBranch = req.query.sourceBranch || "master";
                 const uri = toCommandHandlerGetUrl(CreateRepoCommandPath, generator) +
                     `&mp_targetOwner=${generator.targetOwner}&` +
                     encodeURIComponent("s_github://user_token?scopes=repo,user") + "=" + req.user.accessToken;
@@ -60,5 +51,4 @@ export function addNodeRoutes(express: exp.Express, ...handlers: exp.RequestHand
 
             });
     });
-    */
 }
