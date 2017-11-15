@@ -14,9 +14,12 @@ export function addNodeRoutes(express: exp.Express, ...handlers: exp.RequestHand
     logger.debug("Adding express routes for node");
 
     express.get("/node/create", ...handlers, (req, res) => {
+        const defaults = new NodeGenerator(InMemoryStore);
         return res.render("node/fillInNodeProject.html", {
             orgs: req.user.orgs,
             message: req.flash("error"),
+            sourceOwner: defaults.sourceOwner,
+            sourceRepo: defaults.sourceRepo,
         });
     });
 
@@ -41,9 +44,9 @@ export function addNodeRoutes(express: exp.Express, ...handlers: exp.RequestHand
                 generator.appName = req.query.appName;
                 generator.description = req.query.description || generator.appName;
 
-                generator.visibility = "public";
-                // generator.sourceOwner = req.query.sourceOwner;
-                // generator.sourceRepo = req.query.sourceRepo;
+                generator.visibility = !!req.query.public ? "public" : "private";
+                generator.sourceOwner = req.query.sourceOwner;
+                generator.sourceRepo = req.query.sourceRepo;
                 generator.sourceBranch = req.query.sourceBranch || "master";
                 const uri = toCommandHandlerGetUrl(CreateRepoCommandPath, generator) +
                     `&mp_targetOwner=${generator.targetOwner}&` +

@@ -47,10 +47,10 @@
                 <div class="col-sm-12 col-md-6">
                     <h2>Create a GitHub Repo</h2>
 
-                    {{#sourceRepo}}
-                        Source: <i>{{sourceOwner}}/{{sourceRepo}}:{{sourceBranch}}</i>
-                        <br/>
-                    {{/sourceRepo}}
+                    <!--{{#sourceRepo}}-->
+                        <!--Source: <i>{{sourceOwner}}/{{sourceRepo}}:{{sourceBranch}}</i>-->
+                        <!--<br/>-->
+                    <!--{{/sourceRepo}}-->
 
                     <h3>Target Repo</h3>
 
@@ -86,9 +86,27 @@
 
                     <h3>Settings</h3>
 
+                    <input type="checkbox" name="public" checked="true" />
+                    <label>Public repo</label>
+                    <p/>
+
                     <input type="checkbox" name="tslint" checked="true" />
                     <label>Lint using tslint</label>
 
+                    <div class="form-group artifactid-form-group">
+                        <label for="sourceOwner" class="control-label">Seed Org</label>
+                        <input tabindex="5" id="sourceOwner" class="form-control" type="text"
+                               value="{{sourceOwner}}"
+                               name="sourceOwner"
+                        >
+                    </div>
+                    <div class="form-group artifactid-form-group">
+                        <label for="sourceRepo" class="control-label">Seed Repo</label>
+                        <input tabindex="5" id="sourceRepo" class="form-control" type="text"
+                               value="{{sourceRepo}}"
+                               name="sourceRepo"
+                        >
+                    </div>
                 </div>
 
                 <div class="col-sm-12 col-md-6">

@@ -4,7 +4,8 @@ import { doWithAtMostOneMatch } from "@atomist/automation-client/project/util/pa
 
 export function updatePackageJsonIdentification(appName: string,
                                                 description: string,
-                                                version: string): SimpleProjectEditor {
+                                                version: string,
+                                                author: string): SimpleProjectEditor {
     return project => {
         return doWithAtMostOneMatch(project, "package.json", nameGrammar, m => {
             m.value = appName;
@@ -14,6 +15,9 @@ export function updatePackageJsonIdentification(appName: string,
             }))
             .then(() => doWithAtMostOneMatch(project, "package.json", descriptionGrammar, m => {
                 m.value = description;
+            }))
+            .then(() => doWithAtMostOneMatch(project, "package.json", authorGrammar, m => {
+                m.value = author;
             }));
     };
 }
@@ -24,5 +28,7 @@ const keyGrammar: (key: string) => Microgrammar<{ value: string }> =
 const nameGrammar = keyGrammar("name");
 
 const descriptionGrammar = keyGrammar("description");
+
+const authorGrammar = keyGrammar("author");
 
 const versionGrammar = keyGrammar("version");

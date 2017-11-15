@@ -9,7 +9,7 @@ describe("updatePackageJsonIdentification", () => {
 
     it("doesn't edit empty project", done => {
         const p = new InMemoryProject();
-        const sim: SimpleProjectEditor = updatePackageJsonIdentification("x", "y", "v");
+        const sim: SimpleProjectEditor = updatePackageJsonIdentification("x", "y", "v", "a");
         sim(p, null, null)
             .then(edited => {
                 assert(!!edited);
@@ -21,7 +21,7 @@ describe("updatePackageJsonIdentification", () => {
     it("changes name", done => {
         const p = InMemoryProject.of({path: "package.json", content: SimplePackageJson });
         const name = "thing1";
-        updatePackageJsonIdentification(name, name, "0.0.0")(p, undefined, undefined)
+        updatePackageJsonIdentification(name, name, "0.0.0", "a")(p, undefined, undefined)
             .then(() => {
                 const content = p.findFileSync("package.json").getContentSync();
                 console.log(content);
@@ -35,7 +35,7 @@ describe("updatePackageJsonIdentification", () => {
     it("changes version", done => {
         const p = InMemoryProject.of({path: "package.json", content: SimplePackageJson });
         const version = "0.1.0";
-        updatePackageJsonIdentification("somename", "", version)(p, undefined, undefined)
+        updatePackageJsonIdentification("somename", "", version, "a")(p, undefined, undefined)
             .then(() => {
                 const content = p.findFileSync("package.json").getContentSync();
                 console.log(content);
@@ -50,13 +50,28 @@ describe("updatePackageJsonIdentification", () => {
         const p = InMemoryProject.of({path: "package.json", content: SimplePackageJson });
         const version = "0.1.0";
         const description = "whatever you say";
-        updatePackageJsonIdentification("somename", description, version)(p, undefined, undefined)
+        updatePackageJsonIdentification("somename", description, version, "a")(p, undefined, undefined)
             .then(() => {
                 const content = p.findFileSync("package.json").getContentSync();
                 console.log(content);
                 assert(content.includes(description));
                 const parsed = JSON.parse(content);
                 assert(parsed.description === description);
+                done();
+            }).catch(done);
+    });
+
+    it("changes author", done => {
+        const p = InMemoryProject.of({path: "package.json", content: SimplePackageJson });
+        const version = "0.1.0";
+        const author = "vonnegut";
+        updatePackageJsonIdentification("somename", "descr", version, author)(p, undefined, undefined)
+            .then(() => {
+                const content = p.findFileSync("package.json").getContentSync();
+                console.log(content);
+                assert(content.includes(author));
+                const parsed = JSON.parse(content);
+                assert(parsed.author === author);
                 done();
             }).catch(done);
     });
