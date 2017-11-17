@@ -1,9 +1,10 @@
 applications:
-- name: automation-client-samples
-  command: $(npm bin)/atomist-client
-  memory: 128M
+- name: generator-automation
+  command: node --trace-warnings --expose_gc --optimize_for_size --always_compact --max_old_space_size=170 build/src/start.client.js
+  memory: 256M
   buildpack: https://github.com/cloudfoundry/nodejs-buildpack
   env:
     SUPPRESS_NO_CONFIG_WARNING: true
   services:
   - github-token
+  - logzio-credentials

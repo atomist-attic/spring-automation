@@ -19,15 +19,18 @@
     "initializr"
   ],
   "dependencies": {
-    "@atomist/automation-client": "https://atomist.jfrog.io/atomist/npm-dev/@atomist/automation-client/-/@atomist/automation-client-0.3.2-20171117070332.tgz",
     "@atomist/antlr": "0.1.3",
+    "@atomist/automation-client": "https://r.atomist.com/S1SHXjT2kz",
     "@types/jsdom": "^11.0.3",
     "@types/jszip": "^3.1.2",
     "ansi-to-html": "^0.6.3",
     "app-root-path": "^2.0.1",
     "cfenv": "^1.0.4",
     "jszip": "^3.1.4",
+    "logzio-nodejs": "^0.4.4",
     "strip-ansi": "^4.0.0",
+    "tslint": "^5.4.3",
+    "winston-logzio": "^1.0.3",
     "xml2js": "^0.4.19"
   },
   "devDependencies": {
@@ -45,7 +48,6 @@
     "supervisor": "^0.12.0",
     "tmp": "0.0.33",
     "ts-node": "^3.3.0",
-    "tslint": "^5.4.3",
     "typedoc": "^0.8.0",
     "typescript": "^2.5.3",
     "typescript-formatter": "^6.0.0"
@@ -64,6 +66,7 @@
     "clean:npm": "rimraf node_modules",
     "compile": "npm-run-all compile:ts",
     "compile:ts": "tsc --project .",
+    "debug": "node $NODE_DEBUG_OPTION node_modules/@atomist/automation-client/start.client.js",
     "fmt": "tsfmt --replace",
     "git:info": "git-info",
     "gql:gen": "gql-gen --file node_modules/@atomist/automation-client/graph/schema.cortex.json --template typescript -m --out ./src/typings/ './graphql/**/*.graphql'",

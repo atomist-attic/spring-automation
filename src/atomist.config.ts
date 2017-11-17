@@ -1,4 +1,3 @@
-import { Configuration } from "@atomist/automation-client/configuration";
 import * as appRoot from "app-root-path";
 import { UpgradeCreatedRepos } from "./commands/editor/spring/UpgradeCreatedRepos";
 import { ReposWeMadeRepoFinder } from "./commands/generator/initializr/createdReposRepoFinder";
@@ -11,25 +10,48 @@ import { orgPage } from "./web/orgPage";
 import { projectPage } from "./web/projectPage";
 import { addDeployRoutes } from "./web/spring/addDeployRoutes";
 import { addInitializrHandoffRoute } from "./web/spring/initializerHandoff";
+import { initMemoryMonitoring } from "./util/mem";
+import { secret } from "./util/secrets";
+import { LogzioAutomationEventListener, LogzioOptions } from "./util/logzio";
 
 const pj = require(`${appRoot.path}/package.json`);
 
-const GitHubToken = process.env.GITHUB_TOKEN;
+const token = secret("github.token", process.env.GITHUB_TOKEN);
+const notLocal = process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging";
+
+const logzioOptions: LogzioOptions = {
+    applicationId: secret("applicationId"),
+    environmentId: secret("environmentId"),
+    token: secret("logzio.token", process.env.LOGZIO_TOKEN),
+};
+
+// Set uo automation event listeners
+const listeners = [];
+
+// Logz.io will only work in certain environments
+if (logzioOptions.token) {
+    listeners.push(new LogzioAutomationEventListener(logzioOptions));
+}
 
 const AtomistUser: string = "atomist-bot";
-const AtomistToken: string = process.env.ATOMIST_GITHUB_TOKEN;
+const AtomistToken: string = process.env.ATOMIST_GITHUB_TOKEN || token;
 
-export const configuration: Configuration = {
+export const configuration: any = {
     name: pj.name,
     version: pj.version,
-    teamIds: ["T5964N9B7"],
+    teamIds: [ "T095SFFBK" ],
+    // groups: ["all"],
     commands: [
-        () => new SpringRepoCreator(InMemoryStore, AtomistUser, AtomistToken),
-        () => new NodeGenerator(InMemoryStore, AtomistUser, AtomistToken),
+        () => new SpringRepoCreator(InMemoryStore),
+        () => new NodeGenerator(InMemoryStore),
         () => new UpgradeCreatedRepos(ReposWeMadeRepoFinder, AtomistToken),
     ],
     events: [],
-    token: GitHubToken,
+    token,
+    listeners,
+    ws: {
+        enabled: false,
+    },
     http: {
         enabled: true,
         customizers: [
@@ -43,15 +65,12 @@ export const configuration: Configuration = {
         auth: {
             basic: {
                 enabled: false,
-                username: "test",
-                password: "test",
             },
             bearer: {
-                enabled: false,
-                token: GitHubToken,
+                enabled: true,
             },
             github: {
-                enabled: true,
+                enabled: false,
                 clientId: "092b3124ced86d5d1569",
                 clientSecret: "71d72f657d4402009bd8d728fc1967939c343793",
                 callbackUrl: "http://localhost:2866",
@@ -61,3 +80,6 @@ export const configuration: Configuration = {
         forceSecure: false,
     },
 };
+
+// For now, we enable a couple of interesting memory and heap commands on this automation-client
+initMemoryMonitoring(`${appRoot.path}/node_modules/@atomist/automation-client/public/heap`);
