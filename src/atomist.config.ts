@@ -4,13 +4,13 @@ import { UpgradeCreatedRepos } from "./commands/editor/spring/UpgradeCreatedRepo
 import { ReposWeMadeRepoFinder } from "./commands/generator/initializr/createdReposRepoFinder";
 import { SpringRepoCreator } from "./commands/generator/initializr/SpringRepoCreator";
 import { NodeGenerator } from "./commands/generator/node/NodeGenerator";
+import { addFlaskRoutes } from "./web/flask/flaskRoutes";
 import { InMemoryStore } from "./web/InMemoryObjectStore";
 import { addNodeRoutes } from "./web/node/nodeRoutes";
 import { orgPage } from "./web/orgPage";
 import { projectPage } from "./web/projectPage";
 import { addDeployRoutes } from "./web/spring/addDeployRoutes";
 import { addInitializrHandoffRoute } from "./web/spring/initializerHandoff";
-import { addFlaskRoutes } from "./web/flask/flaskRoutes";
 
 const pj = require(`${appRoot.path}/package.json`);
 

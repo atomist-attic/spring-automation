@@ -48,7 +48,7 @@ export class FlaskGenerator extends AbstractRepoCreator {
 
     public projectEditor(ctx: HandlerContext, params: this): AnyProjectEditor<this> {
         return chainEditors(
-            //updatePackageJsonIdentification(params.appName, params.description, params.version, params.targetOwner),
+            // updatePackageJsonIdentification(params.appName, params.description, params.version, params.targetOwner),
             updateReadme(params.appName, params.description),
         );
     }
