@@ -1,13 +1,11 @@
 import "mocha";
 
 import { InMemoryProject } from "@atomist/automation-client/project/mem/InMemoryProject";
-
-import { RepoId, SimpleRepoId } from "@atomist/automation-client/operations/common/RepoId";
 import * as assert from "power-assert";
-import { setSpringBootVersionEditor } from "../../../../src/commands/editor/spring/setSpringBootVersionEditor";
-import { tempProject } from "../../../util/tempProject";
-import { springBootPom } from "../../reviewer/maven/Poms";
-import { removeUnnecesaryComponentScanEditor } from "../../../../src/commands/editor/spring/springFixes";
+import {
+    removeAutowiredOnSoleConstructor,
+    removeUnnecessaryComponentScanEditor,
+} from "../../../../src/commands/editor/spring/springFixes";
 
 describe("springFixes", () => {
 
@@ -15,7 +13,7 @@ describe("springFixes", () => {
 
         it("doesn't fail on empty project", done => {
             const p = new InMemoryProject();
-            removeUnnecesaryComponentScanEditor(p, null)
+            removeUnnecessaryComponentScanEditor(p, null)
                 .then(r => {
                     done();
                 }).catch(done);
@@ -26,7 +24,7 @@ describe("springFixes", () => {
             const content = "public @SpringBootApplication @ComponentScan class MyApp {}";
             const p = InMemoryProject.of(
                 {path, content});
-            removeUnnecesaryComponentScanEditor(p, null)
+            removeUnnecessaryComponentScanEditor(p, null)
                 .then(r => {
                     const f = r.findFileSync(path);
                     assert(f.getContentSync() === content.replace("@ComponentScan", ""));
@@ -39,7 +37,7 @@ describe("springFixes", () => {
             const content = "public @ComponentScan class MyApp {}";
             const p = InMemoryProject.of(
                 {path, content});
-            removeUnnecesaryComponentScanEditor(p, null)
+            removeUnnecessaryComponentScanEditor(p, null)
                 .then(r => {
                     const f = r.findFileSync(path);
                     assert(f.getContentSync() === content);
@@ -48,4 +46,40 @@ describe("springFixes", () => {
         });
     });
 
+    describe("removeAutowiredOnSoleConstructor", () => {
+
+        it("doesn't fail on empty project", done => {
+            const p = new InMemoryProject();
+            removeAutowiredOnSoleConstructor(p, null)
+                .then(r => {
+                    done();
+                }).catch(done);
+        });
+
+        it("removes unnecessary annotation", done => {
+            const path = "src/main/java/Foo.java";
+            const content = "public class MyApp { @Autowired public MyApp(Thing t) {} }";
+            const p = InMemoryProject.of(
+                {path, content});
+            removeAutowiredOnSoleConstructor(p, null)
+                .then(r => {
+                    const f = r.findFileSync(path);
+                    assert(f.getContentSync() === content.replace("@Autowired ", ""));
+                    done();
+                }).catch(done);
+        });
+
+        it("doesn't remove necessary annotation", done => {
+            const path = "src/main/java/Foo.java";
+            const content = "public class MyApp { @Autowired public MyApp(Thing t) {} @Autowired public MyApp(Thing t, OtherThing ot) {} }";
+            const p = InMemoryProject.of(
+                {path, content});
+            removeAutowiredOnSoleConstructor(p, null)
+                .then(r => {
+                    const f = r.findFileSync(path);
+                    assert(f.getContentSync() === content);
+                    done();
+                }).catch(done);
+        });
+    });
 });

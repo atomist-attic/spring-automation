@@ -2,7 +2,7 @@ import { HandlerContext, Parameter } from "@atomist/automation-client";
 import { logger } from "@atomist/automation-client/internal/util/logger";
 import { RepoId } from "@atomist/automation-client/operations/common/RepoId";
 import { AnyProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
-import { chainEditors, EditorChainable, ProjectOp } from "@atomist/automation-client/operations/edit/projectEditorOps";
+import { chainEditors } from "@atomist/automation-client/operations/edit/projectEditorOps";
 import {
     doUpdatePom, inferStructureAndMovePackage,
     removeTravisBuildFiles,
@@ -123,12 +123,12 @@ export abstract class AbstractSpringGenerator extends SeedDrivenGenerator implem
     }
 
     public projectEditor(ctx: HandlerContext, params: this): AnyProjectEditor<this> {
-        const starterEditors: ProjectOp[] =
+        const starterEditors: AnyProjectEditor[] =
             this.starters.map(starter =>
                 addSpringBootStarter("spring-boot-starter-" + starter));
         logger.debug("Starters: [%s]. Editor count=%d", params.starters.join(), starterEditors.length);
 
-        const editors: EditorChainable[] = [
+        const editors: AnyProjectEditor[] = [
             RemoveSeedFiles,
             curry(cleanReadMe)(this.description),
             removeTravisBuildFiles,

@@ -1,11 +1,10 @@
 import { doWithFileMatches } from "@atomist/automation-client/project/util/parseUtils";
 import { Microgrammar } from "@atomist/microgrammar/Microgrammar";
 
-import { ProjectOp } from "@atomist/automation-client/operations/edit/projectEditorOps";
 import { RestOfLine } from "@atomist/microgrammar/matchers/skip/Skip";
 
 export function updateReadme(appName: string,
-                             description: string): ProjectOp {
+                             description: string) {
     return project => {
         return doWithFileMatches(project, "README.md", h1Grammar, fm => {
             if (fm.matches.length > 0) {
