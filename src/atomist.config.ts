@@ -10,6 +10,7 @@ import { orgPage } from "./web/orgPage";
 import { projectPage } from "./web/projectPage";
 import { addDeployRoutes } from "./web/spring/addDeployRoutes";
 import { addInitializrHandoffRoute } from "./web/spring/initializerHandoff";
+import { addFlaskRoutes } from "./web/flask/flaskRoutes";
 
 const pj = require(`${appRoot.path}/package.json`);
 
@@ -33,6 +34,7 @@ export const configuration: Configuration = {
         enabled: true,
         customizers: [
             addInitializrHandoffRoute,
+            addFlaskRoutes,
             addNodeRoutes,
             projectPage,
             orgPage,
