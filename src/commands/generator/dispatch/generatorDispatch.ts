@@ -1,5 +1,4 @@
 import { GitHubRepoRef } from "@atomist/automation-client/operations/common/GitHubRepoRef";
-import { Arg } from "@atomist/automation-client/internal/invoker/Payload";
 import { fileContent } from "@atomist/automation-client/util/gitHub";
 import { GeneratorCall, JavaTag, MavenTag, NpmTag, SeedMetadata, Seeds, SpringBootTag } from "./Seeds";
 import { defaultSeeds, genericCall } from "./defaultSeeds";
@@ -20,10 +19,12 @@ export function chooseGenerator(token: string, seedId: GitHubRepoRef,
 
 function determineFromSeedMetadata(id: GitHubRepoRef, seeds: Seeds): Promise<GeneratorCall> | GeneratorCall {
     const smd = seeds.seeds.find(s => s.id.owner === id.owner && s.id.repo === id.repo);
-    if (!!smd.generatorCall) {
-        return smd.generatorCall;
+    if (!smd) {
+        return undefined;
     }
-    return !!smd ? callFromTags(id, smd) : undefined;
+    return !!smd.generatorCall ?
+        smd.generatorCall :
+        callFromTags(id, smd);
 }
 
 function callFromTags(id: GitHubRepoRef, smd: SeedMetadata): GeneratorCall {
