@@ -37,25 +37,36 @@ export abstract class AbstractRepoCreator extends SeedDrivenGenerator implements
     }
 
     public handle(ctx: HandlerContext, params: this): Promise<RedirectResult> {
-        return generate(this.startingPoint(ctx, this),
-            ctx,
-            {token: params.githubToken},
-            params.projectEditor(ctx, params),
-            GitHubProjectPersister,
-            params)
-            .then(r => {
-                // Store the repo we created
-                const ref = new GitHubRepoRef(params.owner, params.repo);
-                params.store.put(ref);
-                logger.info("Remembering we created repo %j", ref);
-                return ref;
-            })
-            .then(ref => this.addAtomistCollaborator(params, ref))
-            .then(r => ({
-                code: 0,
-                // Redirect to our local project page
-                redirect: `/projects/github/${params.targetOwner}/${params.targetRepo}`,
-            }));
+        return ctx.messageClient.respond(`Starting project generation for ${params.targetOwner}/${params.targetRepo}`)
+            .then(() => generate(
+                this.startingPoint(ctx, this).then(p => {
+                    return ctx.messageClient.respond(`Cloned seed project from ${params.sourceOwner}/${params.sourceRepo}`)
+                        .then(() => p);
+                }),
+                ctx,
+                {token: params.githubToken},
+                params.projectEditor(ctx, params),
+                GitHubProjectPersister,
+                params)
+                .then(r => {
+                    return ctx.messageClient.respond(`Created and pushed new project`)
+                        .then(() => r);
+                }))
+                .then(r => {
+                    // Store the repo we created
+                    const ref = new GitHubRepoRef(params.owner, params.repo);
+                    params.store.put(ref);
+                    logger.info("Remembering we created repo %j", ref);
+                    return ref;
+                })
+                .then(ref => this.addAtomistCollaborator(params, ref))
+                .then( r => ctx.messageClient.respond(`Successfully created new project`)
+                    .then(() => r))
+                .then(r => ({
+                    code: 0,
+                    // Redirect to our local project page
+                    redirect: `/projects/github/${params.targetOwner}/${params.targetRepo}`,
+                }));
     }
 
     private addAtomistCollaborator(params: AbstractRepoCreator, ref: GitHubRepoRef): Promise<any> {
