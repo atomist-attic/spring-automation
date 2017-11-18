@@ -11,6 +11,7 @@ import { orgPage } from "./web/orgPage";
 import { projectPage } from "./web/projectPage";
 import { addDeployRoutes } from "./web/spring/addDeployRoutes";
 import { addInitializrHandoffRoute } from "./web/spring/initializerHandoff";
+import { seedMetadataRoutes } from "./web/metadata/seedMetadataRoutes";
 
 const pj = require(`${appRoot.path}/package.json`);
 
@@ -33,6 +34,7 @@ export const configuration: Configuration = {
     http: {
         enabled: true,
         customizers: [
+            seedMetadataRoutes,
             addInitializrHandoffRoute,
             addFlaskRoutes,
             addNodeRoutes,

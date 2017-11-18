@@ -1,7 +1,7 @@
 import { GitHubRepoRef } from "@atomist/automation-client/operations/common/GitHubRepoRef";
 import { Arg } from "@atomist/automation-client/internal/invoker/Payload";
-import { RepoRef } from "@atomist/automation-client/operations/common/RepoId";
 import { fileContent } from "@atomist/automation-client/util/gitHub";
+import { SeedMetadata } from "./Seeds";
 
 /**
  * Information needed to route to appropriate generator form.
@@ -43,13 +43,13 @@ function genericCall(seedId: GitHubRepoRef): GeneratorCall {
  * @param {GitHubRepoRef} seedId id of the seed
  * @return {GeneratorCall}
  */
-export function chooseGenerator(token: string, seedId: GitHubRepoRef): Promise<GeneratorCall> {
-    return determineFromLocalDatabase(seedId)
-        .then(call => !!call ? call : determineFromGithubApi(token, seedId));
+export function chooseGenerator(token: string, smd: SeedMetadata): Promise<GeneratorCall> {
+    return determineFromLocalDatabase(smd)
+        .then(call => !!call ? call : determineFromGithubApi(token, smd.id));
 
 }
 
-function determineFromLocalDatabase(seedId: RepoRef): Promise<GeneratorCall> {
+function determineFromLocalDatabase(smd: SeedMetadata): Promise<GeneratorCall> {
     // TODO we can look up custom generators etc here
     return Promise.resolve(undefined);
 }
