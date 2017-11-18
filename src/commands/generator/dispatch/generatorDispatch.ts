@@ -1,40 +1,8 @@
 import { GitHubRepoRef } from "@atomist/automation-client/operations/common/GitHubRepoRef";
 import { Arg } from "@atomist/automation-client/internal/invoker/Payload";
 import { fileContent } from "@atomist/automation-client/util/gitHub";
-import { SeedMetadata } from "./Seeds";
-
-/**
- * Information needed to route to appropriate generator form.
- */
-export interface GeneratorCall {
-
-    generatorName: string;
-
-    seedId: GitHubRepoRef;
-
-    /**
-     * Additional arguments needed to populate the generate form or
-     * initialize the generator, besides
-     * whatever parameters that the generator will itself ask for. For example,
-     * default parameter values.
-     */
-    setupArgs: Arg[];
-
-    /**
-     * Did we understand the repo or are we falling back to copying it?
-     */
-    understood: boolean;
-
-}
-
-function genericCall(seedId: GitHubRepoRef): GeneratorCall {
-    return {
-        generatorName: "copy-generator",
-        seedId,
-        setupArgs: [],
-        understood: false,
-    };
-}
+import { GeneratorCall, JavaTag, MavenTag, NpmTag, SeedMetadata, Seeds, SpringBootTag } from "./Seeds";
+import { defaultSeeds, genericCall } from "./defaultSeeds";
 
 /**
  * Choose an editor to chooseGenerator to based on the given seed,
@@ -43,15 +11,29 @@ function genericCall(seedId: GitHubRepoRef): GeneratorCall {
  * @param {GitHubRepoRef} seedId id of the seed
  * @return {GeneratorCall}
  */
-export function chooseGenerator(token: string, smd: SeedMetadata): Promise<GeneratorCall> {
-    return determineFromLocalDatabase(smd)
-        .then(call => !!call ? call : determineFromGithubApi(token, smd.id));
+export function chooseGenerator(token: string, seedId: GitHubRepoRef,
+                                seeds: Seeds = defaultSeeds): Promise<GeneratorCall> {
+    return Promise.resolve(determineFromSeedMetadata(seedId, seeds))
+        .then(call => !!call ? call : determineFromGithubApi(token, seedId));
 
 }
 
-function determineFromLocalDatabase(smd: SeedMetadata): Promise<GeneratorCall> {
-    // TODO we can look up custom generators etc here
-    return Promise.resolve(undefined);
+function determineFromSeedMetadata(id: GitHubRepoRef, seeds: Seeds): Promise<GeneratorCall> | GeneratorCall {
+    const smd = seeds.seeds.find(s => s.id.owner === id.owner && s.id.repo === id.repo);
+    if (!!smd.generatorCall) {
+        return smd.generatorCall;
+    }
+    return !!smd ? callFromTags(id, smd) : undefined;
+}
+
+function callFromTags(id: GitHubRepoRef, smd: SeedMetadata): GeneratorCall {
+    if (smd.tags.includes(JavaTag) && smd.tags.includes(MavenTag)) {
+        return javaInfoToCall(id, {maven: true, springBoot: smd.tags.includes(SpringBootTag)});
+    }
+    if (smd.tags.includes(NpmTag)) {
+        return nodeInfoToCall(id, {npm: true});
+    }
+    return undefined;
 }
 
 interface JavaInfo {
@@ -74,7 +56,7 @@ function determineFromGithubApi(token: string, seedId: GitHubRepoRef): Promise<G
                     return {
                         maven: true,
                         springBoot: content.includes("org.springframework.boot"),
-                    }
+                    };
                 } else {
                     return undefined;
                 }
@@ -84,7 +66,7 @@ function determineFromGithubApi(token: string, seedId: GitHubRepoRef): Promise<G
             if (!!content) {
                 return {
                     npm: true,
-                }
+                };
             } else {
                 return undefined;
             }
@@ -98,11 +80,12 @@ function determineFromGithubApi(token: string, seedId: GitHubRepoRef): Promise<G
 
 function javaInfoToCall(seedId: GitHubRepoRef, ji: JavaInfo): GeneratorCall {
     return {
-        generatorName: ji.springBoot ? "spring-repo-creator" : "java-generator",
+        // This will want to split ultimately
+        generatorName: ji.springBoot ? "spring-repo-creator" : "spring-repo-creator",
         seedId,
         setupArgs: [],
         understood: true,
-}
+    };
 }
 
 function nodeInfoToCall(seedId: GitHubRepoRef, ni: NodeInfo): GeneratorCall {
