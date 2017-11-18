@@ -1,28 +1,38 @@
 import {
-    ExpressTag, GeneratorCall, JavaTag, MavenTag, NpmTag, ReactTag, Seeds, SpringBootTag, SpringTag,
+    ExpressTag, GeneratorCall, JavaScriptTag, JavaTag, MavenTag, NpmTag, ReactTag, Seeds, SpringBootTag, SpringTag,
     TypeScriptTag,
 } from "./Seeds";
 import { GitHubRepoRef } from "@atomist/automation-client/operations/common/GitHubRepoRef";
+
+export const defaultTags: String[] =
+    [JavaTag, SpringTag, SpringBootTag, MavenTag, NpmTag, ExpressTag,
+        TypeScriptTag, JavaScriptTag, ReactTag].sort();
 
 export const defaultSeeds: Seeds = {
 
     seeds: [
         {
             id: new GitHubRepoRef("atomist-seeds", "spring-rest-seed"),
-            tags: [ SpringTag, SpringBootTag, JavaTag, MavenTag ],
-            get generatorCall() { return springCall(this.id); },
+            tags: [SpringTag, SpringBootTag, JavaTag, MavenTag],
+            get generatorCall() {
+                return springCall(this.id);
+            },
         },
         {
             id: new GitHubRepoRef("blove", "typescript-express-starter"),
-            tags: [ TypeScriptTag, ExpressTag, NpmTag ],
-            get generatorCall() { return nodeCall(this.id); },
+            tags: [TypeScriptTag, ExpressTag, NpmTag],
+            get generatorCall() {
+                return nodeCall(this.id);
+            },
         },
         {
             id: new GitHubRepoRef("gilamran", "fullstack-typescript"),
-            tags: [ TypeScriptTag, ExpressTag, NpmTag, ReactTag ],
-            get generatorCall() { return nodeCall(this.id); },
+            tags: [TypeScriptTag, ExpressTag, NpmTag, ReactTag],
+            get generatorCall() {
+                return nodeCall(this.id);
+            },
         },
-        ],
+    ],
 
 };
 
