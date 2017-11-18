@@ -1,13 +1,27 @@
 import { JavaFileParser } from "@atomist/antlr/tree/ast/antlr/java/JavaFileParser";
 import { SimpleProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
 import { JavaSourceFiles } from "@atomist/automation-client/operations/generate/java/javaProjectUtils";
-import { findMatches, zapAllMatches } from "@atomist/automation-client/tree/ast/astUtils";
+import { findFileMatches, findMatches, zapAllMatches } from "@atomist/automation-client/tree/ast/astUtils";
+
+import { File } from "@atomist/automation-client/project/File";
+import { Project } from "@atomist/automation-client/project/Project";
 
 const UnnecessaryComponentScanAnnotations = `//typeDeclaration[/classDeclaration]
                             [//annotation[@value='@SpringBootApplication']]
                             //annotation[@value='@ComponentScan']`;
 
 const Constructors = `//classBodyDeclaration[//constructorDeclaration]`;
+
+// Look at constructor assignments LHS or just bodies. Then look at fields to see if they're non final. Can run again
+// against AST
+const NonFinalFieldInjectedIntoConstructor = `//classBodyDeclaration[//constructorDeclaration]`;
+
+// TODO will eventually use OR predicates - for Inject
+// Also, see https://github.com/atomist/tree-path-ts/issues/9 for why @Inject isn't yet working
+const InjectedFields = `//classBodyDeclaration[//annotation[@value='@Autowired']]
+                            //fieldDeclaration//variableDeclaratorId |
+                         classBodyDeclaration[//annotation[@value='@Inject']]
+                            //fieldDeclaration//variableDeclaratorId`;
 
 export const removeUnnecessaryComponentScanEditor: SimpleProjectEditor = p => {
     // TODO needs whitespace arg
@@ -23,3 +37,24 @@ export const removeAutowiredOnSoleConstructor: SimpleProjectEditor = p => {
             return p.flush();
         });
 };
+
+export interface FileWithInjectedFields {
+
+    file: File;
+    fieldNames: string[];
+}
+
+/**
+ * Return injected fields
+ * @param {Project} p
+ * @param {string} globPattern
+ * @return {Promise<FileWithInjectedFields[]>}
+ */
+export function findInjectedFields(p: Project,
+                                   globPattern: string = JavaSourceFiles): Promise<FileWithInjectedFields[]> {
+    return findFileMatches(p, JavaFileParser, globPattern, InjectedFields)
+        .then(fileHits => fileHits.map(fh => ({
+            file: fh.file,
+            fieldNames: fh.matches.map(m => m.$value),
+        })));
+}
