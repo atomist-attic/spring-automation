@@ -17,10 +17,9 @@ const Constructors = `//classBodyDeclaration[//constructorDeclaration]`;
 const NonFinalFieldInjectedIntoConstructor = `//classBodyDeclaration[//constructorDeclaration]`;
 
 // TODO will eventually use OR predicates - for Inject
-// Also, see https://github.com/atomist/tree-path-ts/issues/9 for why @Inject isn't yet working
 const InjectedFields = `//classBodyDeclaration[//annotation[@value='@Autowired']]
                             //fieldDeclaration//variableDeclaratorId |
-                         classBodyDeclaration[//annotation[@value='@Inject']]
+                         //classBodyDeclaration[//annotation[@value='@Inject']]
                             //fieldDeclaration//variableDeclaratorId`;
 
 export const removeUnnecessaryComponentScanEditor: SimpleProjectEditor = p => {

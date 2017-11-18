@@ -121,7 +121,7 @@ describe("springFixes", () => {
         });
     });
 
-    it.skip("finds @Inject field", done => {
+    it("finds @Inject field", done => {
         const path = "src/main/java/Foo.java";
         const content = "public class MyApp { @Inject private String dog; @Autowired public MyApp(Thing t) {}}";
         const p = InMemoryProject.of(
