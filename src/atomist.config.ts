@@ -16,6 +16,11 @@ import { LogzioAutomationEventListener, LogzioOptions } from "./util/logzio";
 import { CopyGenerator } from "./commands/generator/common/CopyGenerator";
 import { ObjectStore } from "./web/ObjectStore";
 import { seedMetadataRoutes } from "./web/metadata/seedMetadataRoutes";
+import {
+    removeAutowiredOnSoleConstructorCommand,
+    removeUnnecessaryComponentScanCommand,
+    removeUnnecessaryComponentScanEditor
+} from "./commands/editor/spring/springFixes";
 
 const pj = require(`${appRoot.path}/package.json`);
 
@@ -42,9 +47,11 @@ const AtomistToken: string = process.env.ATOMIST_GITHUB_TOKEN || token;
 export const configuration: any = {
     name: pj.name,
     version: pj.version,
-    teamIds: [ "T095SFFBK" ],
+    teamIds: [ "T5964N9B7" ],
     // groups: ["all"],
     commands: [
+        () => removeUnnecessaryComponentScanCommand,
+        () => removeAutowiredOnSoleConstructorCommand,
         () => new SpringRepoCreator(InMemoryStore),
         () => new NodeGenerator(InMemoryStore),
         () => new CopyGenerator(InMemoryStore, AtomistToken),
@@ -54,7 +61,7 @@ export const configuration: any = {
     token,
     listeners,
     ws: {
-        enabled: false,
+        enabled: true,
     },
     http: {
         enabled: true,

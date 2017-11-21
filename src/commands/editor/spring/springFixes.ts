@@ -5,6 +5,12 @@ import { findFileMatches, findMatches, zapAllMatches } from "@atomist/automation
 
 import { File } from "@atomist/automation-client/project/File";
 import { Project } from "@atomist/automation-client/project/Project";
+import { HandleCommand } from "@atomist/automation-client";
+import {
+    editorHandler,
+} from "@atomist/automation-client/operations/edit/editorToCommand";
+import { PullRequest } from "@atomist/automation-client/operations/edit/editModes";
+import { BaseEditorParameters } from "@atomist/automation-client/operations/edit/BaseEditorParameters";
 
 const UnnecessaryComponentScanAnnotations = `//typeDeclaration[/classDeclaration]
                             [//annotation[@value='@SpringBootApplication']]
@@ -27,6 +33,17 @@ export const removeUnnecessaryComponentScanEditor: SimpleProjectEditor = p => {
     return zapAllMatches(p, JavaFileParser, JavaSourceFiles, UnnecessaryComponentScanAnnotations);
 };
 
+export const removeUnnecessaryComponentScanCommand: HandleCommand =
+    editorHandler(removeUnnecessaryComponentScanEditor,
+        BaseEditorParameters,
+        "RemoveUnnecessaryComponentScanAnnotations", {
+            description: "Remove unnecessary component scan annotations",
+            editMode: new PullRequest("remove-unnecessary-component-scan", "Remove unnecessary component scan annotations",
+                "`@ComponentScan` annotations are not necessary on `@SpringBootApplication` classes as they are inherited"),
+            intent: "remove unnecessary component scan",
+        }
+    );
+
 export const removeAutowiredOnSoleConstructor: SimpleProjectEditor = p => {
     return findMatches(p, JavaFileParser, JavaSourceFiles, Constructors)
         .then(constructors => {
@@ -36,6 +53,12 @@ export const removeAutowiredOnSoleConstructor: SimpleProjectEditor = p => {
             return p.flush();
         });
 };
+
+export const removeAutowiredOnSoleConstructorCommand: HandleCommand =
+    editorHandler(removeAutowiredOnSoleConstructor,
+        BaseEditorParameters,
+        "RemoveAutowiredOnSoleConstructor",
+    );
 
 export interface FileWithInjectedFields {
 

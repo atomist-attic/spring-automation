@@ -49,39 +49,40 @@ export class LogzioAutomationEventListener extends AutomationEventListenerSuppor
     public commandSuccessful(payload: CommandInvocation,
                              ctx: HandlerContext,
                              result: HandlerResult) {
-        this.sendOperation("CommandHandler", "operation", "command-handler",
-            payload.name, "successful", result);
+        return Promise.resolve(this.sendOperation("CommandHandler", "operation", "command-handler",
+            payload.name, "successful", result));
 
     }
 
     public commandFailed(payload: CommandInvocation,
                          ctx: HandlerContext,
                          err: any) {
-        this.sendOperation("CommandHandler", "operation", "command-handler",
-            payload.name, "failed", err);
+        return Promise.resolve(this.sendOperation("CommandHandler", "operation", "command-handler",
+            payload.name, "failed", err));
     }
 
     public eventIncoming(payload: EventIncoming) {
-        this.sendEvent("Incoming event", "event", payload);
+        return Promise.resolve(
+            this.sendEvent("Incoming event", "event", payload));
     }
 
     public eventStarting(payload: EventFired<any>,
                          ctx: HandlerContext) {
-        this.sendOperation("EventHandler", "operation", "event-handler",
-            payload.extensions.operationName, "starting");
+        return Promise.resolve(this.sendOperation("EventHandler", "operation", "event-handler",
+            payload.extensions.operationName, "starting"));
     }
 
     public eventSuccessful(payload: EventFired<any>,
                            ctx: HandlerContext,
                            result: HandlerResult[]) {
-        this.sendOperation("EventHandler", "operation", "event-handler",
-            payload.extensions.operationName, "successful", result);
+        return Promise.resolve(this.sendOperation("EventHandler", "operation", "event-handler",
+            payload.extensions.operationName, "successful", result));
     }
 
     public eventFailed(payload: EventFired<any>,
                        ctx: HandlerContext, err: any) {
-        this.sendOperation("EventHandler", "operation", "event-handler",
-            payload.extensions.operationName, "failed", err);
+        return Promise.resolve(this.sendOperation("EventHandler", "operation", "event-handler",
+            payload.extensions.operationName, "failed", err));
     }
 
     public messageSent(message: string | SlackMessage,
