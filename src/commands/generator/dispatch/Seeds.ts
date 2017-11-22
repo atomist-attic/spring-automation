@@ -1,6 +1,6 @@
 
-import { GitHubRepoRef } from "@atomist/automation-client/operations/common/GitHubRepoRef";
 import { Arg } from "@atomist/automation-client/internal/invoker/Payload";
+import { GitHubRepoRef } from "@atomist/automation-client/operations/common/GitHubRepoRef";
 
 export const JavaTag = "java";
 

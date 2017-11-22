@@ -1,7 +1,7 @@
 import { GitHubRepoRef } from "@atomist/automation-client/operations/common/GitHubRepoRef";
 import { fileContent } from "@atomist/automation-client/util/gitHub";
-import { GeneratorCall, JavaTag, MavenTag, NpmTag, SeedMetadata, Seeds, SpringBootTag } from "./Seeds";
 import { defaultSeeds, genericCall } from "./defaultSeeds";
+import { GeneratorCall, JavaTag, MavenTag, NpmTag, SeedMetadata, Seeds, SpringBootTag } from "./Seeds";
 
 /**
  * Choose an editor to chooseGenerator to based on the given seed,

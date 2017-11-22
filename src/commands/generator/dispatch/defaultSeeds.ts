@@ -1,8 +1,8 @@
+import { GitHubRepoRef } from "@atomist/automation-client/operations/common/GitHubRepoRef";
 import {
     ExpressTag, GeneratorCall, JavaScriptTag, JavaTag, MavenTag, NpmTag, ReactTag, Seeds, SpringBootTag, SpringTag,
     TypeScriptTag,
 } from "./Seeds";
-import { GitHubRepoRef } from "@atomist/automation-client/operations/common/GitHubRepoRef";
 
 export const defaultTags: String[] =
     [JavaTag, SpringTag, SpringBootTag, MavenTag, NpmTag, ExpressTag,
