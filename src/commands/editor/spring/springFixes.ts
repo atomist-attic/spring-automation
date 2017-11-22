@@ -3,14 +3,14 @@ import { SimpleProjectEditor } from "@atomist/automation-client/operations/edit/
 import { JavaSourceFiles } from "@atomist/automation-client/operations/generate/java/javaProjectUtils";
 import { findFileMatches, findMatches, zapAllMatches } from "@atomist/automation-client/tree/ast/astUtils";
 
-import { File } from "@atomist/automation-client/project/File";
-import { Project } from "@atomist/automation-client/project/Project";
 import { HandleCommand } from "@atomist/automation-client";
+import { BaseEditorParameters } from "@atomist/automation-client/operations/edit/BaseEditorParameters";
+import { PullRequest } from "@atomist/automation-client/operations/edit/editModes";
 import {
     editorHandler,
 } from "@atomist/automation-client/operations/edit/editorToCommand";
-import { PullRequest } from "@atomist/automation-client/operations/edit/editModes";
-import { BaseEditorParameters } from "@atomist/automation-client/operations/edit/BaseEditorParameters";
+import { File } from "@atomist/automation-client/project/File";
+import { Project } from "@atomist/automation-client/project/Project";
 
 const UnnecessaryComponentScanAnnotations = `//typeDeclaration[/classDeclaration]
                             [//annotation[@value='@SpringBootApplication']]
@@ -41,7 +41,7 @@ export const removeUnnecessaryComponentScanCommand: HandleCommand =
             editMode: new PullRequest("remove-unnecessary-component-scan", "Remove unnecessary component scan annotations",
                 "`@ComponentScan` annotations are not necessary on `@SpringBootApplication` classes as they are inherited"),
             intent: "remove unnecessary component scan",
-        }
+        },
     );
 
 export const removeAutowiredOnSoleConstructor: SimpleProjectEditor = p => {

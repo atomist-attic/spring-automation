@@ -1,6 +1,6 @@
+import { GitHubRepoRef } from "@atomist/automation-client/operations/common/GitHubRepoRef";
 import * as exp from "express";
 import { defaultSeeds, defaultTags } from "../../commands/generator/dispatch/defaultSeeds";
-import { GitHubRepoRef } from "@atomist/automation-client/operations/common/GitHubRepoRef";
 import { chooseGenerator } from "../../commands/generator/dispatch/generatorDispatch";
 
 export function seedMetadataRoutes(express: exp.Express, ...handlers: exp.RequestHandler[]) {
@@ -12,7 +12,6 @@ export function seedMetadataRoutes(express: exp.Express, ...handlers: exp.Reques
     express.get("/metadata/seeds.json", (req, res) => {
         return res.json(defaultSeeds);
     });
-
 
     express.get("/metadata/resolveGenerator/:owner/:repo", ...handlers, (req, res) => {
         const seedId = new GitHubRepoRef(req.params.owner, req.params.repo);
