@@ -27,7 +27,7 @@ export class TestGenerator extends SpringRepoCreator {
                 return {
                     code: 0,
                     redirect: "foo",
-                }
+                };
             });
     }
 

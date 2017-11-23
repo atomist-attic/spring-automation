@@ -4,8 +4,8 @@ import {
     removeUnnecessaryComponentScanCommand,
 } from "./commands/editor/spring/springFixes";
 import { CopyGenerator } from "./commands/generator/common/CopyGenerator";
-import { SpringRepoCreator } from "./commands/generator/spring/SpringRepoCreator";
 import { NodeGenerator } from "./commands/generator/node/NodeGenerator";
+import { SpringRepoCreator } from "./commands/generator/spring/SpringRepoCreator";
 import { LogzioAutomationEventListener, LogzioOptions } from "./util/logzio";
 import { initMemoryMonitoring } from "./util/mem";
 import { secret } from "./util/secrets";
