@@ -1,4 +1,3 @@
-import { CopyGenerator } from "@atomist/automation-client/operations/generate/CopyGenerator";
 import * as appRoot from "app-root-path";
 import {
     removeAutowiredOnSoleConstructorCommand,
@@ -40,7 +39,7 @@ export const configuration: any = {
         () => removeUnnecessaryComponentScanCommand,
         () => removeAutowiredOnSoleConstructorCommand,
         () => springBootGenerator(),
-        CopyGenerator,
+        //CopyGenerator,
     ],
     events: [],
     token,

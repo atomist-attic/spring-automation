@@ -22,16 +22,18 @@ export function springBootGenerator(projectPersister: ProjectPersister = GitHubP
         SpringBootProjectParameters,
         "springBootGenerator",
         {
+            intent: "generate spring",
             tags: ["spring", "boot", "java"],
             projectPersister,
         });
 }
 
 export function springBootProjectEditor(params: SpringBootProjectParameters): AnyProjectEditor {
+    const starters = params.starters || [];
     const starterEditors: AnyProjectEditor[] =
-        params.starters.map(starter =>
-            addSpringBootStarter("spring-boot-starter-" + starter));
-    logger.debug("Starters: [%s]. Editor count=%d", params.starters.join(), starterEditors.length);
+        starters.map(starter =>
+                addSpringBootStarter("spring-boot-starter-" + starter));
+    logger.debug("Starters: [%s]. Editor count=%d", starters.join(), starterEditors.length);
 
     const editors: AnyProjectEditor[] = [
         RemoveSeedFiles,

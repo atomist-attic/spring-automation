@@ -8,6 +8,8 @@ import {
     springBootProjectEditor,
 } from "../../../../../src/commands/generator/java/spring/springBootGenerator";
 import { GishPath, GishProject } from "./SpringBootProjectStructureTest";
+import { metadataFromInstance } from "@atomist/automation-client/internal/metadata/metadataReading";
+import { CommandHandlerMetadata } from "@atomist/automation-client/metadata/automationMetadata";
 
 const GroupId = "group";
 const ArtId = "art";
@@ -45,6 +47,11 @@ describe("Spring Boot generation", () => {
         params.version = Version;
         params.artifactId = ArtId;
         params.rootPackage = "com.the.smiths";
+
+        const md = metadataFromInstance(sbs) as CommandHandlerMetadata;
+        assert(md.name === "springBootGenerator");
+        assert(md.parameters.length > 5);
+
         const ctx = null;
         return toEditor(springBootProjectEditor(params))(project, ctx, null);
     }

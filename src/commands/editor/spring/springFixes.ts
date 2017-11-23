@@ -41,6 +41,7 @@ export const removeUnnecessaryComponentScanCommand: HandleCommand =
             editMode: new PullRequest("remove-unnecessary-component-scan", "Remove unnecessary component scan annotations",
                 "`@ComponentScan` annotations are not necessary on `@SpringBootApplication` classes as they are inherited"),
             intent: "remove unnecessary component scan",
+            tags: ["spring", "boot", "java"],
         },
     );
 
@@ -58,6 +59,9 @@ export const removeAutowiredOnSoleConstructorCommand: HandleCommand =
     editorHandler(removeAutowiredOnSoleConstructor,
         BaseEditorParameters,
         "RemoveAutowiredOnSoleConstructor",
+        {
+            tags: ["spring", "boot", "java"],
+        }
     );
 
 export interface FileWithInjectedFields {
