@@ -109,7 +109,7 @@ describe("springFixes", () => {
 
         it("finds @Autowired field", done => {
             const path = "src/main/java/Foo.java";
-            const content = "public class MyApp { @Autowired private String dog; @Autowired public MyApp(Thing t) {} @Autowired public MyApp(Thing t, OtherThing ot) {} }";
+            const content = "public class MyApp { @Autowired private String dog; @Autowired public MyApp(Thing t) {} }";
             const p = InMemoryProject.of(
                 {path, content});
             findInjectedFields(p)

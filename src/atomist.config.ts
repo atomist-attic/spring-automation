@@ -42,7 +42,6 @@ export const configuration: any = {
         SpringRepoCreator,
         // TODO this is generic
         CopyGenerator,
-        //() => new UpgradeCreatedRepos(ReposWeMadeRepoFinder, AtomistToken),
     ],
     events: [],
     token,
