@@ -2,8 +2,8 @@ import { HandleCommand } from "@atomist/automation-client";
 import { logger } from "@atomist/automation-client/internal/util/logger";
 import { AnyProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
 import { chainEditors } from "@atomist/automation-client/operations/edit/projectEditorOps";
-import { ProjectPersister } from "@atomist/automation-client/operations/generate/generatorUtils";
 import { generatorHandler } from "@atomist/automation-client/operations/generate/generatorToCommand";
+import { ProjectPersister } from "@atomist/automation-client/operations/generate/generatorUtils";
 import { GitHubProjectPersister } from "@atomist/automation-client/operations/generate/gitHubProjectPersister";
 import {
     doUpdatePom,
