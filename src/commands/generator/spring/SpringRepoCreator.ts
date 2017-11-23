@@ -13,12 +13,13 @@ import { cleanReadMe, RemoveSeedFiles } from "@atomist/automation-client/operati
 import { curry } from "@typed/curry";
 import { camelize } from "tslint/lib/utils";
 import { addSpringBootStarter } from "../../editor/spring/addStarterEditor";
+import { AbstractRepoCreator } from "../common/AbstractRepoCreator";
 
 /**
  * Superclass for all Spring Boot generators. Defines editing behavior
  * and common parameters.
  */
-export abstract class AbstractSpringGenerator extends SeedDrivenGenerator implements RepoId {
+export class SpringRepoCreator extends AbstractRepoCreator {
 
     @Parameter({
         displayName: "Maven Artifact ID",
@@ -115,6 +116,7 @@ export abstract class AbstractSpringGenerator extends SeedDrivenGenerator implem
 
     constructor() {
         super();
+        this.githubToken = process.env.GITHUB_TOKEN;
         this.visibility = "public";
         this.sourceOwner = "atomist-seeds";
         this.sourceRepo = "spring-rest-seed";

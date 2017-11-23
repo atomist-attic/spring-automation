@@ -2,25 +2,13 @@ import * as appRoot from "app-root-path";
 import {
     removeAutowiredOnSoleConstructorCommand,
     removeUnnecessaryComponentScanCommand,
-    removeUnnecessaryComponentScanEditor,
 } from "./commands/editor/spring/springFixes";
-import { UpgradeCreatedRepos } from "./commands/editor/spring/UpgradeCreatedRepos";
 import { CopyGenerator } from "./commands/generator/common/CopyGenerator";
-import { ReposWeMadeRepoFinder } from "./commands/generator/initializr/createdReposRepoFinder";
-import { SpringRepoCreator } from "./commands/generator/initializr/SpringRepoCreator";
+import { SpringRepoCreator } from "./commands/generator/spring/SpringRepoCreator";
 import { NodeGenerator } from "./commands/generator/node/NodeGenerator";
 import { LogzioAutomationEventListener, LogzioOptions } from "./util/logzio";
 import { initMemoryMonitoring } from "./util/mem";
 import { secret } from "./util/secrets";
-import { addFlaskRoutes } from "./web/flask/flaskRoutes";
-import { InMemoryStore } from "./web/InMemoryObjectStore";
-import { seedMetadataRoutes } from "./web/metadata/seedMetadataRoutes";
-import { addNodeRoutes } from "./web/node/nodeRoutes";
-import { ObjectStore } from "./web/ObjectStore";
-import { orgPage } from "./web/orgPage";
-import { projectPage } from "./web/projectPage";
-import { addDeployRoutes } from "./web/spring/addDeployRoutes";
-import { addInitializrHandoffRoute } from "./web/spring/initializerHandoff";
 
 const pj = require(`${appRoot.path}/package.json`);
 
@@ -52,10 +40,11 @@ export const configuration: any = {
     commands: [
         () => removeUnnecessaryComponentScanCommand,
         () => removeAutowiredOnSoleConstructorCommand,
-        () => new SpringRepoCreator(InMemoryStore),
-        () => new NodeGenerator(InMemoryStore),
-        () => new CopyGenerator(InMemoryStore, AtomistToken),
-        () => new UpgradeCreatedRepos(ReposWeMadeRepoFinder, AtomistToken),
+        SpringRepoCreator,
+        NodeGenerator,
+        // TODO this is generic
+        CopyGenerator,
+        //() => new UpgradeCreatedRepos(ReposWeMadeRepoFinder, AtomistToken),
     ],
     events: [],
     token,
@@ -65,15 +54,6 @@ export const configuration: any = {
     },
     http: {
         enabled: true,
-        customizers: [
-            seedMetadataRoutes,
-            addInitializrHandoffRoute,
-            addFlaskRoutes,
-            addNodeRoutes,
-            projectPage,
-            orgPage,
-            addDeployRoutes,
-        ],
         auth: {
             basic: {
                 enabled: false,

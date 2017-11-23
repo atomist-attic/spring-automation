@@ -3,21 +3,21 @@ import "mocha";
 import { ProjectEditor, toEditor } from "@atomist/automation-client/operations/edit/projectEditor";
 import { InMemoryProject } from "@atomist/automation-client/project/mem/InMemoryProject";
 import * as assert from "power-assert";
-import { ZipCreator } from "../../../../src/commands/generator/initializr/ZipCreator";
+import { SpringRepoCreator } from "../../../../src/commands/generator/spring/SpringRepoCreator";
 
 describe("springGeneratorEditor", () => {
 
-    const zip = new ZipCreator();
-    zip.startersCsv = "web,security,foobar,baz";
-    zip.rootPackage = "com.foo.bar";
-    zip.serviceClassName = "MyApp";
-    const editor: ProjectEditor = toEditor(zip.projectEditor(null, zip));
+    const sgen = new SpringRepoCreator();
+    sgen.startersCsv = "web,security,foobar,baz";
+    sgen.rootPackage = "com.foo.bar";
+    sgen.serviceClassName = "MyApp";
+    const editor: ProjectEditor = toEditor(sgen.projectEditor(null, sgen));
 
     it("doesn't edit empty project", done => {
         const p = new InMemoryProject();
         editor(p, null, null)
             .then(r => {
-                assert(r.edited);
+                assert(r.edited === undefined);
                 assert(r.target === p);
                 done();
             }).catch(done);

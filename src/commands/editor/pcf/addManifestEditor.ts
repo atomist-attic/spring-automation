@@ -1,7 +1,16 @@
 import { logger } from "@atomist/automation-client/internal/util/logger";
 import { Project } from "@atomist/automation-client/project/Project";
 import { VersionedArtifact } from "../../../grammars/VersionedArtifact";
-import { DevNullProgressLog, ProgressLog } from "../../generator/build/DeploymentChain";
+
+export interface ProgressLog {
+    write(what: string): void;
+}
+
+export const DevNullProgressLog: ProgressLog = {
+    write() {
+        // Do nothing
+    },
+};
 
 /**
  * Add a Cloud Foundry manifest to the given Maven project

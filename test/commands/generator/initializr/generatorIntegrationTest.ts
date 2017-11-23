@@ -7,7 +7,7 @@ import { TestGenerator } from "./TestGenerator";
 
 export const GishPath = "src/main/java/com/smashing/pumpkins/Gish.java";
 
-describe("initializr generator integration test", () => {
+describe("spring generator integration test", () => {
 
     it("edits, verifies and compiles", done => {
         generate()

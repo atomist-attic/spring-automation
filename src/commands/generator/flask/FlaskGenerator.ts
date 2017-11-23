@@ -2,8 +2,6 @@ import { HandlerContext, Parameter } from "@atomist/automation-client";
 import { CommandHandler } from "@atomist/automation-client/decorators";
 import { AnyProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
 import { chainEditors } from "@atomist/automation-client/operations/edit/projectEditorOps";
-import { ObjectStore } from "../../../web/ObjectStore";
-import { updatePackageJsonIdentification } from "../../editor/node/updatePackageJsonIdentification";
 import { updateReadme } from "../../editor/node/updateReadme";
 import { AbstractRepoCreator } from "../common/AbstractRepoCreator";
 
@@ -38,10 +36,8 @@ export class FlaskGenerator extends AbstractRepoCreator {
     })
     public version: string = "0.1.0";
 
-    constructor(store: ObjectStore,
-                collaborator?: string,
-                collaboratorToken?: string) {
-        super(store, collaborator, collaboratorToken);
+    constructor() {
+        super();
         this.sourceOwner = "blove";
         this.sourceRepo = "typescript-express-starter";
     }
