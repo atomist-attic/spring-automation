@@ -4,13 +4,12 @@ import { ProjectEditor, toEditor } from "@atomist/automation-client/operations/e
 import { InMemoryProject } from "@atomist/automation-client/project/mem/InMemoryProject";
 import * as assert from "power-assert";
 import {
-    SpringBootGenerator,
+    springBootGenerator,
     springBootProjectEditor,
-} from "../../../../../src/commands/generator/java/spring/SpringBootGenerator";
+} from "../../../../../src/commands/generator/java/spring/springBootGenerator";
 
 describe("springGeneratorEditor", () => {
-
-    const sgen = new SpringBootGenerator();
+    const sgen = springBootGenerator();
     const params = sgen.freshParametersInstance();
     params.startersCsv = "web,security,foobar,baz";
     params.rootPackage = "com.foo.bar";

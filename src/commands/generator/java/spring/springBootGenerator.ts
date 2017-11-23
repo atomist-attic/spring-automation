@@ -1,8 +1,9 @@
+import { HandleCommand } from "@atomist/automation-client";
 import { logger } from "@atomist/automation-client/internal/util/logger";
 import { AnyProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
 import { chainEditors } from "@atomist/automation-client/operations/edit/projectEditorOps";
 import { ProjectPersister } from "@atomist/automation-client/operations/generate/generatorUtils";
-import { GenericGenerator } from "@atomist/automation-client/operations/generate/GenericGenerator";
+import { generatorHandler } from "@atomist/automation-client/operations/generate/generatorToCommand";
 import { GitHubProjectPersister } from "@atomist/automation-client/operations/generate/gitHubProjectPersister";
 import {
     doUpdatePom,
@@ -15,18 +16,15 @@ import { curry } from "@typed/curry";
 import { addSpringBootStarter } from "../../../editor/spring/addStarterEditor";
 import { SpringBootProjectParameters } from "./SpringBootProjectParameters";
 
-/**
- * Superclass for all Spring Boot generators. Defines editing behavior
- * and common parameters.
- */
-export class SpringBootGenerator extends GenericGenerator<SpringBootProjectParameters> {
-
-    constructor(projectPersister: ProjectPersister = GitHubProjectPersister) {
-        super(SpringBootProjectParameters, springBootProjectEditor,
-            () => undefined,
-            projectPersister);
-    }
-
+export function springBootGenerator(projectPersister: ProjectPersister = GitHubProjectPersister): HandleCommand<SpringBootProjectParameters> {
+    return generatorHandler(
+        springBootProjectEditor,
+        SpringBootProjectParameters,
+        "springBootGenerator",
+        {
+            tags: ["spring", "boot", "java"],
+            projectPersister,
+        });
 }
 
 export function springBootProjectEditor(params: SpringBootProjectParameters): AnyProjectEditor {

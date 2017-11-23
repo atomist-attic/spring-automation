@@ -1,11 +1,16 @@
-import { HandlerContext } from "@atomist/automation-client";
+import { HandleCommand, HandlerContext } from "@atomist/automation-client";
 import { CommandResult, runCommand } from "@atomist/automation-client/action/cli/commandLine";
 import { ConsoleMessageClient } from "@atomist/automation-client/internal/message/ConsoleMessageClient";
 import { LocalProject } from "@atomist/automation-client/project/local/LocalProject";
 import { Project } from "@atomist/automation-client/project/Project";
+
+import { localProjectPersister } from "./localProjectPersister";
+
 import "mocha";
 import * as assert from "power-assert";
-import { TestGenerator } from "./TestGenerator";
+import { springBootGenerator } from "../../../../../src/commands/generator/java/spring/springBootGenerator";
+import { SpringBootProjectParameters } from "../../../../../src/commands/generator/java/spring/SpringBootProjectParameters";
+import { createdProject } from "./localProjectPersister";
 
 export const GishPath = "src/main/java/com/smashing/pumpkins/Gish.java";
 
@@ -22,16 +27,18 @@ describe("spring generator integration test", () => {
     }).timeout(200000);
 
     function generate(): Promise<LocalProject> {
-        const gem = new TestGenerator();
-        const params = gem.freshParametersInstance();
+        const gem: HandleCommand<SpringBootProjectParameters> = springBootGenerator(localProjectPersister);
+        const params: SpringBootProjectParameters = gem.freshParametersInstance();
         params.artifactId = "my-custom";
         params.groupId = "atomist";
         params.rootPackage = "com.the.smiths";
+        params.target.owner = "johnsonr";
         params.target.repo = "foo";
-        return gem.handle(fakeContext(), params)
+        params.target.githubToken = process.env.GITHUB_TOKEN;
+        return (gem as any).handle(fakeContext(), params)
             .then(hr => {
                 assert(hr.code === 0);
-                return gem.created;
+                return createdProject;
             });
     }
 

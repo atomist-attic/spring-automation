@@ -8,23 +8,10 @@ import { LocalProject } from "@atomist/automation-client/project/local/LocalProj
 import { NodeFsLocalProject } from "@atomist/automation-client/project/local/NodeFsLocalProject";
 import { Project } from "@atomist/automation-client/project/Project";
 import { diagnosticDump } from "@atomist/automation-client/project/util/diagnosticUtils";
-import { SpringBootGenerator } from "../../../../../src/commands/generator/java/spring/SpringBootGenerator";
 
-export class TestGenerator extends SpringBootGenerator {
+export let createdProject: LocalProject;
 
-    get created() {
-        return createdProject;
-    }
-
-    constructor() {
-        super(localFilePersister);
-    }
-
-}
-
-let createdProject: LocalProject;
-
-const localFilePersister: ProjectPersister = (p: Project) => {
+export const localProjectPersister: ProjectPersister = (p: Project) => {
     const dir = tmp.dirSync();
     fs.removeSync(dir.name + "/" + p.name);
     return diagnosticDump("before persistence")(p)

@@ -4,16 +4,16 @@ import { Project } from "@atomist/automation-client/project/Project";
 import "mocha";
 import * as assert from "power-assert";
 import {
-    SpringBootGenerator,
+    springBootGenerator,
     springBootProjectEditor,
-} from "../../../../../src/commands/generator/java/spring/SpringBootGenerator";
+} from "../../../../../src/commands/generator/java/spring/springBootGenerator";
 import { GishPath, GishProject } from "./SpringBootProjectStructureTest";
 
 const GroupId = "group";
 const ArtId = "art";
 const Version = "1.0.7";
 
-describe("SpringBootSeed", () => {
+describe("Spring Boot generation", () => {
 
     it("edits project and verifies package", done => {
         edit(GishProject).then(r => {
@@ -38,7 +38,7 @@ describe("SpringBootSeed", () => {
     });
 
     function edit(project: Project): Promise<EditResult> {
-        const sbs = new SpringBootGenerator();
+        const sbs = springBootGenerator();
         const params = sbs.freshParametersInstance();
         params.serviceClassName = "MyCustom";
         params.groupId = GroupId;
