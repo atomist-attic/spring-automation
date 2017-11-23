@@ -1,10 +1,8 @@
-import { CommandHandler, HandlerContext, Parameter } from "@atomist/automation-client";
-import { ProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
-import { chainEditors } from "@atomist/automation-client/operations/edit/projectEditorOps";
-import { UniversalSeed } from "@atomist/automation-client/operations/generate/UniversalSeed";
+import { Parameter } from "@atomist/automation-client";
+import { Parameters } from "@atomist/automation-client/decorators";
+import { BaseSeedDrivenGeneratorParameters } from "@atomist/automation-client/operations/generate/BaseSeedDrivenGeneratorParameters";
 import { Project } from "@atomist/automation-client/project/Project";
 import { deleteFiles } from "@atomist/automation-client/project/util/projectUtils";
-import { curry } from "@typed/curry";
 import { JavaProjectStructure } from "./JavaProjectStructure";
 import { movePackage } from "./javaProjectUtils";
 import { updatePom } from "./updatePom";
@@ -24,10 +22,8 @@ export interface VersionedArtifact {
  * Superclass for all Java seeds using Maven. Updates Maven pom
  * based on parameters.
  */
-@CommandHandler("project generator for Java library seeds", "generate java")
-export class JavaSeed extends UniversalSeed implements VersionedArtifact {
-
-    public static Name = "JavaSeed";
+@Parameters()
+export class JavaProjectParameters extends BaseSeedDrivenGeneratorParameters implements VersionedArtifact {
 
     @Parameter({
         displayName: "Maven Artifact ID",
@@ -83,13 +79,8 @@ export class JavaSeed extends UniversalSeed implements VersionedArtifact {
     })
     public rootPackage: string;
 
-    public projectEditor(ctx: HandlerContext, params: this): ProjectEditor {
-        return chainEditors(
-            super.projectEditor(ctx, params),
-            removeTravisBuildFiles,
-            curry(doUpdatePom)(params),
-            curry(inferStructureAndMovePackage)(params.rootPackage),
-        );
+    get description() {
+        return this.target.description;
     }
 
 }

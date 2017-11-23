@@ -1,4 +1,6 @@
+import { HandlerContext } from "@atomist/automation-client";
 import { CommandResult, runCommand } from "@atomist/automation-client/action/cli/commandLine";
+import { ConsoleMessageClient } from "@atomist/automation-client/internal/message/ConsoleMessageClient";
 import { LocalProject } from "@atomist/automation-client/project/local/LocalProject";
 import { Project } from "@atomist/automation-client/project/Project";
 import "mocha";
@@ -21,11 +23,12 @@ describe("spring generator integration test", () => {
 
     function generate(): Promise<LocalProject> {
         const gem = new TestGenerator();
-        gem.artifactId = "my-custom";
-        gem.groupId = "atomist";
-        gem.rootPackage = "com.the.smiths";
-        gem.targetRepo = "foo";
-        return gem.handle(null, gem)
+        const params = gem.freshParametersInstance();
+        params.artifactId = "my-custom";
+        params.groupId = "atomist";
+        params.rootPackage = "com.the.smiths";
+        params.target.repo = "foo";
+        return gem.handle(fakeContext(), params)
             .then(hr => {
                 assert(hr.code === 0);
                 return gem.created;
@@ -56,3 +59,9 @@ describe("spring generator integration test", () => {
     }
 
 });
+
+function fakeContext(): HandlerContext {
+    return {
+        messageClient: new ConsoleMessageClient(),
+    } as any as HandlerContext;
+}

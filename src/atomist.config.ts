@@ -3,11 +3,11 @@ import {
     removeAutowiredOnSoleConstructorCommand,
     removeUnnecessaryComponentScanCommand,
 } from "./commands/editor/spring/springFixes";
-import { CopyGenerator } from "./commands/generator/common/CopyGenerator";
-import { SpringRepoCreator } from "./commands/generator/java/spring/SpringRepoCreator";
+import { SpringBootGenerator } from "./commands/generator/java/spring/SpringBootGenerator";
 import { LogzioAutomationEventListener, LogzioOptions } from "./util/logzio";
 import { initMemoryMonitoring } from "./util/mem";
 import { secret } from "./util/secrets";
+import { CopyGenerator } from "@atomist/automation-client/operations/generate/CopyGenerator";
 
 const pj = require(`${appRoot.path}/package.json`);
 
@@ -39,8 +39,7 @@ export const configuration: any = {
     commands: [
         () => removeUnnecessaryComponentScanCommand,
         () => removeAutowiredOnSoleConstructorCommand,
-        SpringRepoCreator,
-        // TODO this is generic
+        SpringBootGenerator,
         CopyGenerator,
     ],
     events: [],

@@ -1,9 +1,12 @@
 
-import { EditResult } from "@atomist/automation-client/operations/edit/projectEditor";
+import { EditResult, toEditor } from "@atomist/automation-client/operations/edit/projectEditor";
 import { Project } from "@atomist/automation-client/project/Project";
 import "mocha";
 import * as assert from "power-assert";
-import { SpringBootSeed } from "../../../../../src/commands/generator/java/spring/SpringBootSeed";
+import {
+    SpringBootGenerator,
+    springBootProjectEditor,
+} from "../../../../../src/commands/generator/java/spring/SpringBootGenerator";
 import { GishPath, GishProject } from "./SpringBootProjectStructureTest";
 
 const GroupId = "group";
@@ -35,14 +38,15 @@ describe("SpringBootSeed", () => {
     });
 
     function edit(project: Project): Promise<EditResult> {
-        const sbs = new SpringBootSeed();
-        sbs.serviceClassName = "MyCustom";
-        sbs.groupId = GroupId;
-        sbs.version = Version;
-        sbs.artifactId = ArtId;
-        sbs.rootPackage = "com.the.smiths";
+        const sbs = new SpringBootGenerator();
+        const params = sbs.freshParametersInstance();
+        params.serviceClassName = "MyCustom";
+        params.groupId = GroupId;
+        params.version = Version;
+        params.artifactId = ArtId;
+        params.rootPackage = "com.the.smiths";
         const ctx = null;
-        return sbs.projectEditor(null, sbs)(project, ctx, null);
+        return toEditor(springBootProjectEditor(params))(project, ctx, null);
     }
 
 });

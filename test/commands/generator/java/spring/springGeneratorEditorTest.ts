@@ -3,15 +3,19 @@ import "mocha";
 import { ProjectEditor, toEditor } from "@atomist/automation-client/operations/edit/projectEditor";
 import { InMemoryProject } from "@atomist/automation-client/project/mem/InMemoryProject";
 import * as assert from "power-assert";
-import { SpringRepoCreator } from "../../../../../src/commands/generator/java/spring/SpringRepoCreator";
+import {
+    SpringBootGenerator,
+    springBootProjectEditor,
+} from "../../../../../src/commands/generator/java/spring/SpringBootGenerator";
 
 describe("springGeneratorEditor", () => {
 
-    const sgen = new SpringRepoCreator();
-    sgen.startersCsv = "web,security,foobar,baz";
-    sgen.rootPackage = "com.foo.bar";
-    sgen.serviceClassName = "MyApp";
-    const editor: ProjectEditor = toEditor(sgen.projectEditor(null, sgen));
+    const sgen = new SpringBootGenerator();
+    const params = sgen.freshParametersInstance();
+    params.startersCsv = "web,security,foobar,baz";
+    params.rootPackage = "com.foo.bar";
+    params.serviceClassName = "MyApp";
+    const editor: ProjectEditor = toEditor(springBootProjectEditor(params));
 
     it("doesn't edit empty project", done => {
         const p = new InMemoryProject();
