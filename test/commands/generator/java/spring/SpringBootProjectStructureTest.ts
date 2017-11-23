@@ -2,7 +2,7 @@ import { InMemoryProject } from "@atomist/automation-client/project/mem/InMemory
 import { Project } from "@atomist/automation-client/project/Project";
 import "mocha";
 import * as assert from "power-assert";
-import { SpringBootProjectStructure } from "../../../src/commands/generator/SpringBootProjectStructure";
+import { SpringBootProjectStructure } from "../../../../../src/commands/generator/java/spring/SpringBootProjectStructure";
 
 describe("SpringBootProjectStructure: Java inference", () => {
 

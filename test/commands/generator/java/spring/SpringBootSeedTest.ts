@@ -3,7 +3,7 @@ import { EditResult } from "@atomist/automation-client/operations/edit/projectEd
 import { Project } from "@atomist/automation-client/project/Project";
 import "mocha";
 import * as assert from "power-assert";
-import { SpringBootSeed } from "../../../src/commands/generator/SpringBootSeed";
+import { SpringBootSeed } from "../../../../../src/commands/generator/java/spring/SpringBootSeed";
 import { GishPath, GishProject } from "./SpringBootProjectStructureTest";
 
 const GroupId = "group";

@@ -1,4 +1,4 @@
-# @atomist/initializr-atomist
+# @atomist/spring-automations
 
 [![Build Status](https://travis-ci.org/atomist/initializr-atomist.svg?branch=master)](https://travis-ci.org/atomist/initializr-atomist)
 
