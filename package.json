@@ -1,35 +1,29 @@
 {
-  "name": "@atomist/initializr-atomist",
+  "name": "@atomist/spring-automations",
   "version": "0.1.1",
   "description": "Atomist back end for Spring Initializr",
   "author": "Atomist.",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/atomist/initializr-atomist.git"
+    "url": "https://github.com/atomist/spring-automations.git"
   },
-  "homepage": "https://github.com/atomist/initializr-atomist#readme",
+  "homepage": "https://github.com/atomist/spring-automations#readme",
   "bugs": {
-    "url": "https://github.com/atomist/initializr-atomist/issues"
+    "url": "https://github.com/atomist/spring-automations/issues"
   },
   "keywords": [
     "atomist",
     "automation",
     "spring",
-    "initializr"
+    "seed"
   ],
   "dependencies": {
     "@atomist/antlr": "0.1.4",
     "@atomist/automation-client": "https://r.atomist.com/r1U9LinfxM",
     "@types/jsdom": "^11.0.3",
-    "@types/jszip": "^3.1.2",
-    "ansi-to-html": "^0.6.3",
-    "app-root-path": "^2.0.1",
     "cfenv": "^1.0.4",
-    "isbinaryfile": "^3.0.2",
-    "jszip": "^3.1.4",
     "logzio-nodejs": "^0.4.4",
-    "strip-ansi": "^4.0.0",
     "tslint": "^5.4.3",
     "winston-logzio": "^1.0.3",
     "xml2js": "^0.4.19"
