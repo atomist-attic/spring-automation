@@ -2,7 +2,8 @@
 
 [![Build Status](https://travis-ci.org/atomist/initializr-atomist.svg?branch=master)](https://travis-ci.org/atomist/initializr-atomist)
 
-This repository contains the Atomist backend for Spring Initializr.
+This repository contains Atomist automations for Spring Boot:
+generators, editors and reviewers.
 
 ## Prerequisites
 

@@ -9,7 +9,7 @@ import { LocalProject } from "@atomist/automation-client/project/local/LocalProj
 import { NodeFsLocalProject } from "@atomist/automation-client/project/local/NodeFsLocalProject";
 import { Project } from "@atomist/automation-client/project/Project";
 import { diagnosticDump } from "@atomist/automation-client/project/util/diagnosticUtils";
-import { SpringRepoCreator } from "../../../../src/commands/generator/spring/SpringRepoCreator";
+import { SpringRepoCreator } from "../../../src/commands/generator/SpringRepoCreator";
 
 export class TestGenerator extends SpringRepoCreator {
 

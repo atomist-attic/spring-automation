@@ -3,7 +3,7 @@ import "mocha";
 import { ProjectEditor, toEditor } from "@atomist/automation-client/operations/edit/projectEditor";
 import { InMemoryProject } from "@atomist/automation-client/project/mem/InMemoryProject";
 import * as assert from "power-assert";
-import { SpringRepoCreator } from "../../../../src/commands/generator/spring/SpringRepoCreator";
+import { SpringRepoCreator } from "../../../../src/commands/generator/SpringRepoCreator";
 
 describe("springGeneratorEditor", () => {
 

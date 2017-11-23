@@ -4,11 +4,10 @@ import {
     removeUnnecessaryComponentScanCommand,
 } from "./commands/editor/spring/springFixes";
 import { CopyGenerator } from "./commands/generator/common/CopyGenerator";
-import { NodeGenerator } from "./commands/generator/node/NodeGenerator";
-import { SpringRepoCreator } from "./commands/generator/spring/SpringRepoCreator";
 import { LogzioAutomationEventListener, LogzioOptions } from "./util/logzio";
 import { initMemoryMonitoring } from "./util/mem";
 import { secret } from "./util/secrets";
+import { SpringRepoCreator } from "./commands/generator/SpringRepoCreator";
 
 const pj = require(`${appRoot.path}/package.json`);
 
@@ -41,7 +40,6 @@ export const configuration: any = {
         () => removeUnnecessaryComponentScanCommand,
         () => removeAutowiredOnSoleConstructorCommand,
         SpringRepoCreator,
-        NodeGenerator,
         // TODO this is generic
         CopyGenerator,
         //() => new UpgradeCreatedRepos(ReposWeMadeRepoFinder, AtomistToken),

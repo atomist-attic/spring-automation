@@ -12,8 +12,8 @@ import { SeedDrivenGenerator } from "@atomist/automation-client/operations/gener
 import { cleanReadMe, RemoveSeedFiles } from "@atomist/automation-client/operations/generate/UniversalSeed";
 import { curry } from "@typed/curry";
 import { camelize } from "tslint/lib/utils";
-import { addSpringBootStarter } from "../../editor/spring/addStarterEditor";
-import { AbstractRepoCreator } from "../common/AbstractRepoCreator";
+import { addSpringBootStarter } from "../editor/spring/addStarterEditor";
+import { AbstractRepoCreator } from "./common/AbstractRepoCreator";
 
 /**
  * Superclass for all Spring Boot generators. Defines editing behavior
