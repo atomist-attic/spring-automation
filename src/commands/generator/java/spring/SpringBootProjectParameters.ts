@@ -34,9 +34,7 @@ export class SpringBootGeneratorParameters extends JavaGeneratorParameters {
     public startersCsv: string = "";
 
     get starters(): string[] {
-        const value = this.startersCsv.split(",");
-        console.log("STARTERS = " + JSON.stringify(value));
-        return value;
+        return this.startersCsv.split(",");
     }
 
     constructor() {
