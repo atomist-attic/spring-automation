@@ -3,10 +3,10 @@ import { Parameters } from "@atomist/automation-client/decorators";
 import { BaseSeedDrivenGeneratorParameters } from "@atomist/automation-client/operations/generate/BaseSeedDrivenGeneratorParameters";
 import { Project } from "@atomist/automation-client/project/Project";
 import { deleteFiles } from "@atomist/automation-client/project/util/projectUtils";
+import { SmartParameters } from "@atomist/automation-client/SmartParameters";
 import { JavaProjectStructure } from "./JavaProjectStructure";
 import { movePackage } from "./javaProjectUtils";
 import { updatePom } from "./updatePom";
-import { SmartParameters } from "@atomist/automation-client/SmartParameters";
 
 /**
  * Represents a Maven or Gradle artifact.
