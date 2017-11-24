@@ -24,12 +24,6 @@ export class SpringBootGeneratorParameters extends JavaGeneratorParameters {
     })
     public serviceClassName: string;
 
-    get serviceClassNameToUse() {
-        return (!!this.serviceClassName) ?
-            toInitialCap(this.serviceClassName) :
-            toInitialCap(camelize(this.artifactId));
-    }
-
     // TODO should be an array parameter
     @Parameter({
         displayName: "starters",
@@ -40,7 +34,9 @@ export class SpringBootGeneratorParameters extends JavaGeneratorParameters {
     public startersCsv: string = "";
 
     get starters(): string[] {
-        return this.startersCsv.split(",");
+        const value = this.startersCsv.split(",");
+        console.log("STARTERS = " + JSON.stringify(value));
+        return value;
     }
 
     constructor() {
@@ -50,6 +46,13 @@ export class SpringBootGeneratorParameters extends JavaGeneratorParameters {
 
         // Stable version that has a controller
         this.source.sha = "b3d23de0b23745994f44f192866cc0bb3c4a2224";
+    }
+
+    public bindAndValidate() {
+        super.bindAndValidate();
+        this.serviceClassName = !!this.serviceClassName ?
+            toInitialCap(this.serviceClassName) :
+            toInitialCap(camelize(this.artifactId));
     }
 
 }

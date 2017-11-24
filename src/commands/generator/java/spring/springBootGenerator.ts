@@ -24,11 +24,12 @@ export function springBootGenerator(projectPersister: ProjectPersister = GitHubP
 }
 
 export function springBootProjectEditor(params: SpringBootGeneratorParameters): AnyProjectEditor {
-    const starters = params.starters || [];
-    const starterEditors: AnyProjectEditor[] =
-        starters.map(starter =>
-                addSpringBootStarter("spring-boot-starter-" + starter));
-    logger.debug("Starters: [%s]. Editor count=%d", starters.join(), starterEditors.length);
+    // TODO why does this fail without a guard?
+    const starterEditors: AnyProjectEditor[] = [];
+    // const starterEditors: AnyProjectEditor[] =
+    //     params.starters.map(starter =>
+    //             addSpringBootStarter("spring-boot-starter-" + starter));
+    // logger.debug("Starters: [%s]. Editor count=%d", params.starters.join(), starterEditors.length);
 
     const editors: AnyProjectEditor[] = [
         RemoveSeedFiles,
@@ -36,7 +37,7 @@ export function springBootProjectEditor(params: SpringBootGeneratorParameters): 
         removeTravisBuildFiles,
         curry(doUpdatePom)(params),
         curry(inferStructureAndMovePackage)(params.rootPackage),
-        curry(inferSpringStructureAndRename)(params.serviceClassNameToUse),
+        curry(inferSpringStructureAndRename)(params.serviceClassName),
     ];
     return chainEditors(
         ...editors.concat(starterEditors),

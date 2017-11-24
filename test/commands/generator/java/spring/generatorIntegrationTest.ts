@@ -11,6 +11,7 @@ import * as assert from "power-assert";
 import { springBootGenerator } from "../../../../../src/commands/generator/java/spring/springBootGenerator";
 import { SpringBootGeneratorParameters } from "../../../../../src/commands/generator/java/spring/SpringBootProjectParameters";
 import { createdProject } from "./localProjectPersister";
+import { SmartParameters } from "@atomist/automation-client/SmartParameters";
 
 export const GishPath = "src/main/java/com/smashing/pumpkins/Gish.java";
 
@@ -35,10 +36,13 @@ describe("spring generator integration test", () => {
         params.target.owner = "johnsonr";
         params.target.repo = "foo";
         params.target.githubToken = process.env.GITHUB_TOKEN;
-        return (gem as any).handle(fakeContext(), params)
-            .then(hr => {
-                assert(hr.code === 0);
-                return createdProject;
+        return Promise.resolve(params.bindAndValidate())
+            .then(() => {
+                return (gem as any).handle(fakeContext(), params)
+                    .then(hr => {
+                        assert(hr.code === 0);
+                        return createdProject;
+                    });
             });
     }
 

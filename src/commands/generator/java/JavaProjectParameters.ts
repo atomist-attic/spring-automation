@@ -6,6 +6,7 @@ import { deleteFiles } from "@atomist/automation-client/project/util/projectUtil
 import { JavaProjectStructure } from "./JavaProjectStructure";
 import { movePackage } from "./javaProjectUtils";
 import { updatePom } from "./updatePom";
+import { SmartParameters } from "@atomist/automation-client/SmartParameters";
 
 /**
  * Represents a Maven or Gradle artifact.
@@ -23,21 +24,22 @@ export interface VersionedArtifact {
  * based on parameters.
  */
 @Parameters()
-export class JavaGeneratorParameters extends BaseSeedDrivenGeneratorParameters implements VersionedArtifact {
+export class JavaGeneratorParameters extends BaseSeedDrivenGeneratorParameters
+    implements SmartParameters, VersionedArtifact {
 
     @Parameter({
         displayName: "Maven Artifact ID",
-        description: "Maven artifact identifier, i.e., the name of the jar without the version," +
-        " it is often the same as the project name",
-        pattern: /^([a-z][-a-z0-9_]*|\$\{projectName\})$/,
+        description: "Maven artifact identifier, i.e., the name of the jar without the version." +
+        " Defaults to the project name",
+        pattern: /^([a-z][-a-z0-9_]*)$/,
         validInput: "a valid Maven artifact ID, which starts with a lower-case letter and contains only " +
         " alphanumeric, -, and _ characters, or `${projectName}` to use the project name",
         minLength: 1,
         maxLength: 50,
-        required: true,
+        required: false,
         order: 51,
     })
-    public artifactId: string = "${projectName}";
+    public artifactId: string = "";
 
     @Parameter({
         displayName: "Maven Group ID",
@@ -81,6 +83,12 @@ export class JavaGeneratorParameters extends BaseSeedDrivenGeneratorParameters i
 
     get description() {
         return this.target.description;
+    }
+
+    public bindAndValidate() {
+        if (!this.artifactId) {
+            this.artifactId = this.target.repo;
+        }
     }
 
 }
