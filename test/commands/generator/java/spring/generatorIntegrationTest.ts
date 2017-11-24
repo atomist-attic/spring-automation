@@ -9,7 +9,7 @@ import { localProjectPersister } from "./localProjectPersister";
 import "mocha";
 import * as assert from "power-assert";
 import { springBootGenerator } from "../../../../../src/commands/generator/java/spring/springBootGenerator";
-import { SpringBootProjectParameters } from "../../../../../src/commands/generator/java/spring/SpringBootProjectParameters";
+import { SpringBootGeneratorParameters } from "../../../../../src/commands/generator/java/spring/SpringBootProjectParameters";
 import { createdProject } from "./localProjectPersister";
 
 export const GishPath = "src/main/java/com/smashing/pumpkins/Gish.java";
@@ -27,8 +27,8 @@ describe("spring generator integration test", () => {
     }).timeout(200000);
 
     function generate(): Promise<LocalProject> {
-        const gem: HandleCommand<SpringBootProjectParameters> = springBootGenerator(localProjectPersister);
-        const params: SpringBootProjectParameters = gem.freshParametersInstance();
+        const gem: HandleCommand<SpringBootGeneratorParameters> = springBootGenerator(localProjectPersister);
+        const params: SpringBootGeneratorParameters = gem.freshParametersInstance();
         params.artifactId = "my-custom";
         params.groupId = "atomist";
         params.rootPackage = "com.the.smiths";

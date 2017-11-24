@@ -1,16 +1,16 @@
 import { Parameter } from "@atomist/automation-client";
 import { Parameters } from "@atomist/automation-client/decorators";
-import { renameClass } from "@atomist/automation-client/operations/generate/java/javaProjectUtils";
 import { Project } from "@atomist/automation-client/project/Project";
 import { camelize } from "tslint/lib/utils";
-import { JavaProjectParameters } from "../JavaProjectParameters";
+import { JavaGeneratorParameters } from "../JavaProjectParameters";
+import { renameClass } from "../javaProjectUtils";
 import { SpringBootProjectStructure } from "./SpringBootProjectStructure";
 
 /**
  * Spring Boot seed parameters.
  */
 @Parameters()
-export class SpringBootProjectParameters extends JavaProjectParameters {
+export class SpringBootGeneratorParameters extends JavaGeneratorParameters {
 
     @Parameter({
         displayName: "Class Name",
@@ -34,7 +34,7 @@ export class SpringBootProjectParameters extends JavaProjectParameters {
     @Parameter({
         displayName: "starters",
         pattern: /.*/,
-        required: true,
+        required: false,
         // type: FreeChoices,
     })
     public startersCsv: string = "";

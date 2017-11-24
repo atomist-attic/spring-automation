@@ -1,11 +1,11 @@
 
 import { logger } from "@atomist/automation-client/internal/util/logger";
-import { JavaPackageDeclaration } from "@atomist/automation-client/operations/generate/java/JavaGrammars";
 import { ProjectAsync } from "@atomist/automation-client/project/Project";
 import { saveFromFilesAsync } from "@atomist/automation-client/project/util/projectUtils";
 import { SPRING_BOOT_APP } from "./SpringGrammars";
 
 import { File } from "@atomist/automation-client/project/File";
+import { JavaPackageDeclaration } from "../JavaGrammars";
 
 /**
  * Represents the structure of a Spring Boot project,

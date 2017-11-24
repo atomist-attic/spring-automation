@@ -23,7 +23,7 @@ export interface VersionedArtifact {
  * based on parameters.
  */
 @Parameters()
-export class JavaProjectParameters extends BaseSeedDrivenGeneratorParameters implements VersionedArtifact {
+export class JavaGeneratorParameters extends BaseSeedDrivenGeneratorParameters implements VersionedArtifact {
 
     @Parameter({
         displayName: "Maven Artifact ID",

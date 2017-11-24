@@ -39,7 +39,7 @@ export const configuration: any = {
         () => removeUnnecessaryComponentScanCommand,
         () => removeAutowiredOnSoleConstructorCommand,
         () => springBootGenerator(),
-        //CopyGenerator,
+        // CopyGenerator,
     ],
     events: [],
     token,

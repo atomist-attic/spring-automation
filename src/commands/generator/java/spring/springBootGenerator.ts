@@ -5,21 +5,16 @@ import { chainEditors } from "@atomist/automation-client/operations/edit/project
 import { generatorHandler } from "@atomist/automation-client/operations/generate/generatorToCommand";
 import { ProjectPersister } from "@atomist/automation-client/operations/generate/generatorUtils";
 import { GitHubProjectPersister } from "@atomist/automation-client/operations/generate/gitHubProjectPersister";
-import {
-    doUpdatePom,
-    inferStructureAndMovePackage,
-    removeTravisBuildFiles,
-} from "@atomist/automation-client/operations/generate/java/JavaSeed";
-import { inferSpringStructureAndRename } from "@atomist/automation-client/operations/generate/java/SpringBootSeed";
 import { cleanReadMe, RemoveSeedFiles } from "@atomist/automation-client/operations/generate/UniversalSeed";
 import { curry } from "@typed/curry";
 import { addSpringBootStarter } from "../../../editor/spring/addStarterEditor";
-import { SpringBootProjectParameters } from "./SpringBootProjectParameters";
+import { doUpdatePom, inferStructureAndMovePackage, removeTravisBuildFiles } from "../JavaProjectParameters";
+import { inferSpringStructureAndRename, SpringBootGeneratorParameters } from "./SpringBootProjectParameters";
 
-export function springBootGenerator(projectPersister: ProjectPersister = GitHubProjectPersister): HandleCommand<SpringBootProjectParameters> {
+export function springBootGenerator(projectPersister: ProjectPersister = GitHubProjectPersister): HandleCommand<SpringBootGeneratorParameters> {
     return generatorHandler(
         springBootProjectEditor,
-        SpringBootProjectParameters,
+        SpringBootGeneratorParameters,
         "springBootGenerator",
         {
             intent: "generate spring",
@@ -28,7 +23,7 @@ export function springBootGenerator(projectPersister: ProjectPersister = GitHubP
         });
 }
 
-export function springBootProjectEditor(params: SpringBootProjectParameters): AnyProjectEditor {
+export function springBootProjectEditor(params: SpringBootGeneratorParameters): AnyProjectEditor {
     const starters = params.starters || [];
     const starterEditors: AnyProjectEditor[] =
         starters.map(starter =>

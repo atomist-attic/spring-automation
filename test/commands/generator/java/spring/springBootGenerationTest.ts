@@ -1,4 +1,6 @@
 
+import { metadataFromInstance } from "@atomist/automation-client/internal/metadata/metadataReading";
+import { CommandHandlerMetadata } from "@atomist/automation-client/metadata/automationMetadata";
 import { EditResult, toEditor } from "@atomist/automation-client/operations/edit/projectEditor";
 import { Project } from "@atomist/automation-client/project/Project";
 import "mocha";
@@ -8,8 +10,6 @@ import {
     springBootProjectEditor,
 } from "../../../../../src/commands/generator/java/spring/springBootGenerator";
 import { GishPath, GishProject } from "./SpringBootProjectStructureTest";
-import { metadataFromInstance } from "@atomist/automation-client/internal/metadata/metadataReading";
-import { CommandHandlerMetadata } from "@atomist/automation-client/metadata/automationMetadata";
 
 const GroupId = "group";
 const ArtId = "art";

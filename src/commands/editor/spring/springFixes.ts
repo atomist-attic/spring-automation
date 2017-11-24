@@ -1,6 +1,5 @@
 import { JavaFileParser } from "@atomist/antlr/tree/ast/antlr/java/JavaFileParser";
 import { SimpleProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
-import { JavaSourceFiles } from "@atomist/automation-client/operations/generate/java/javaProjectUtils";
 import { findFileMatches, findMatches, zapAllMatches } from "@atomist/automation-client/tree/ast/astUtils";
 
 import { HandleCommand } from "@atomist/automation-client";
@@ -11,6 +10,7 @@ import {
 } from "@atomist/automation-client/operations/edit/editorToCommand";
 import { File } from "@atomist/automation-client/project/File";
 import { Project } from "@atomist/automation-client/project/Project";
+import { JavaSourceFiles } from "../../generator/java/javaProjectUtils";
 
 const UnnecessaryComponentScanAnnotations = `//typeDeclaration[/classDeclaration]
                             [//annotation[@value='@SpringBootApplication']]
@@ -61,7 +61,7 @@ export const removeAutowiredOnSoleConstructorCommand: HandleCommand =
         "RemoveAutowiredOnSoleConstructor",
         {
             tags: ["spring", "boot", "java"],
-        }
+        },
     );
 
 export interface FileWithInjectedFields {
