@@ -31,7 +31,7 @@ import { GishPath } from "./kotlinSpringBootStructureInferenceTest";
 
 describe("Kotlin Spring5 generator integration test", () => {
 
-    it.skip("edits, verifies and compiles", done => {
+    it("edits, verifies and compiles", done => {
         generate()
             .then(verifyAndCompile)
             .then(cr => console.log(cr.stdout), e => {
@@ -39,13 +39,14 @@ describe("Kotlin Spring5 generator integration test", () => {
                 assert(false);
             })
             .then(done, done);
-    }); // .timeout(200000);
+    }).timeout(200000);
 
     function generate(): Promise<LocalProject> {
         const kgen = new KotlinSpring5Parameters();
         kgen.artifactId = "my-custom";
         kgen.groupId = "atomist";
         kgen.rootPackage = "com.the.smiths";
+        kgen.bindAndValidate();
         const ctx: any = {
             messageClient: {
                 respond(msg: string | SlackMessage) {

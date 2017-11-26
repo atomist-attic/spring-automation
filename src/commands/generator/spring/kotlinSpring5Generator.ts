@@ -1,5 +1,6 @@
 import { HandleCommand } from "@atomist/automation-client";
 import { HandlerContext } from "@atomist/automation-client/Handlers";
+import { AnyProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
 import { generatorHandler } from "@atomist/automation-client/operations/generate/generatorToCommand";
 import { ProjectPersister } from "@atomist/automation-client/operations/generate/generatorUtils";
 import { GitHubProjectPersister } from "@atomist/automation-client/operations/generate/gitHubProjectPersister";
@@ -26,8 +27,8 @@ export class KotlinSpring5Parameters extends SpringBootGeneratorParameters {
 
 export function kotlinSpring5Generator(projectPersister: ProjectPersister = GitHubProjectPersister): HandleCommand<KotlinSpring5Parameters> {
     return generatorHandler(
-        () => kotlinSeedTransformation,
-        SpringBootGeneratorParameters,
+        kotlinSeedTransformation,
+        KotlinSpring5Parameters,
         "kotlinSpring5",
         {
             description: "Generate a Spring 5.0 reactive web project using Kotlin",
@@ -37,8 +38,8 @@ export function kotlinSpring5Generator(projectPersister: ProjectPersister = GitH
         });
 }
 
-export const kotlinSeedTransformation = (project: Project, ctx: HandlerContext, params: KotlinSpring5Parameters) => {
-    return updatePom(project, params.artifactId, params.groupId, params.version, params.description)
+export function kotlinSeedTransformation(params: KotlinSpring5Parameters) {
+    return project => updatePom(project, params.artifactId, params.groupId, params.version, params.description)
         .then(inferFromKotlinSource)
         .then(structure =>
             !!structure ?
@@ -47,7 +48,7 @@ export const kotlinSeedTransformation = (project: Project, ctx: HandlerContext, 
                         movePackage(p, structure.applicationPackage, params.rootPackage, AllKotlinFiles)) :
                 project)
         .then(() => project);
-};
+}
 
 function renameAppClass(project: Project,
                         structure: SpringBootProjectStructure,

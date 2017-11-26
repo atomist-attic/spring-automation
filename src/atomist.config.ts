@@ -3,6 +3,7 @@ import {
     removeAutowiredOnSoleConstructorCommand,
     removeUnnecessaryComponentScanCommand,
 } from "./commands/editor/spring/springFixes";
+import { kotlinSpring5Generator } from "./commands/generator/spring/kotlinSpring5Generator";
 import { springBootGenerator } from "./commands/generator/spring/springBootGenerator";
 import { LogzioAutomationEventListener, LogzioOptions } from "./util/logzio";
 import { initMemoryMonitoring } from "./util/mem";
@@ -39,6 +40,7 @@ export const configuration: any = {
         () => removeUnnecessaryComponentScanCommand,
         () => removeAutowiredOnSoleConstructorCommand,
         () => springBootGenerator(),
+        () => kotlinSpring5Generator(),
         // CopyGenerator,
     ],
     events: [],

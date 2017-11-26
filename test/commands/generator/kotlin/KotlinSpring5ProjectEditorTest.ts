@@ -19,7 +19,7 @@ import { Project } from "@atomist/automation-client/project/Project";
 import "mocha";
 import * as assert from "power-assert";
 import {
-    kotlinSeedTransformation,
+    kotlinSeedTransformation, kotlinSpring5Generator,
     KotlinSpring5Parameters,
 } from "../../../../src/commands/generator/spring/kotlinSpring5Generator";
 import { GishPath, GishProject } from "./kotlinSpringBootStructureInferenceTest";
@@ -55,8 +55,10 @@ function edit(project: Project, artifactId: string, groupId: string, rootPackage
     kgen.groupId = groupId;
     kgen.rootPackage = rootPackage;
     kgen.serviceClassName = serviceName;
-    return kotlinSeedTransformation(project, null, kgen)
-        .then(hr => {
+    kgen.bindAndValidate();
+    const gen = kotlinSeedTransformation(kgen);
+    return gen(project)
+        .then(() => {
             return project;
         });
 }
