@@ -5,7 +5,6 @@ import { ProjectPersister } from "@atomist/automation-client/operations/generate
 import { GitHubProjectPersister } from "@atomist/automation-client/operations/generate/gitHubProjectPersister";
 import { Project } from "@atomist/automation-client/project/Project";
 import { doWithFiles } from "@atomist/automation-client/project/util/projectUtils";
-import { camelize } from "tslint/lib/utils";
 import { movePackage } from "../java/javaProjectUtils";
 import { updatePom } from "../java/updatePom";
 import { AllKotlinFiles, inferFromKotlinSource } from "../kotlin/kotlinUtils";
@@ -21,6 +20,7 @@ export class KotlinSpring5Parameters extends SpringBootGeneratorParameters {
         super();
         this.source.owner = DefaultSourceOwner;
         this.source.repo = DefaultSourceRepo;
+        this.source.sha = undefined;
     }
 }
 
@@ -38,14 +38,11 @@ export function kotlinSpring5Generator(projectPersister: ProjectPersister = GitH
 }
 
 export const kotlinSeedTransformation = (project: Project, ctx: HandlerContext, params: KotlinSpring5Parameters) => {
-    const smartArtifactId = (params.artifactId === "${projectName}") ? project.name : params.artifactId;
-    let appName = camelize(smartArtifactId);
-    appName = appName.charAt(0).toUpperCase() + appName.substr(1);
-    return updatePom(project, smartArtifactId, params.groupId, params.version, params.description)
+    return updatePom(project, params.artifactId, params.groupId, params.version, params.description)
         .then(inferFromKotlinSource)
         .then(structure =>
             !!structure ?
-                renameAppClass(project, structure, appName)
+                renameAppClass(project, structure, params.serviceClassName)
                     .then(p =>
                         movePackage(p, structure.applicationPackage, params.rootPackage, AllKotlinFiles)) :
                 project)

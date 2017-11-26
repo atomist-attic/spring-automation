@@ -33,7 +33,7 @@ export class JavaGeneratorParameters extends BaseSeedDrivenGeneratorParameters
         " Defaults to the project name",
         pattern: /^([a-z][-a-z0-9_]*)$/,
         validInput: "a valid Maven artifact ID, which starts with a lower-case letter and contains only " +
-        " alphanumeric, -, and _ characters, or `${projectName}` to use the project name",
+        " alphanumeric, -, and _ characters. Defaults to project name",
         minLength: 1,
         maxLength: 50,
         required: false,

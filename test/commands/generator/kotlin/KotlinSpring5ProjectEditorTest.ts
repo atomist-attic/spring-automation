@@ -27,7 +27,7 @@ import { GishPath, GishProject } from "./kotlinSpringBootStructureInferenceTest"
 describe("Kotlin Spring5 project editor", () => {
 
     it("edits project and verifies package", done => {
-        edit(GishProject, "my-custom", "atomist", "com.the.smiths")
+        edit(GishProject, "my-custom", "atomist", "com.the.smiths", "MyCustom")
             .then(p => {
                 verifyPackage(p);
                 done();
@@ -38,7 +38,7 @@ describe("Kotlin Spring5 project editor", () => {
         const artifact = "my-custom";
         const group = "atomist";
         const project = InMemoryProject.of({ path: "pom.xml", content: SimplePom });
-        edit(project, artifact, group, "com.the.smiths")
+        edit(project, artifact, group, "com.the.smiths", "MyCustom")
             .then(p => {
                 const found = p.findFileSync("pom.xml");
                 const newPom = found.getContentSync();
@@ -49,11 +49,12 @@ describe("Kotlin Spring5 project editor", () => {
     });
 });
 
-function edit(project: Project, artifactId: string, groupId: string, rootPackage: string): Promise<Project> {
+function edit(project: Project, artifactId: string, groupId: string, rootPackage: string, serviceName: string): Promise<Project> {
     const kgen = new KotlinSpring5Parameters();
     kgen.artifactId = artifactId;
     kgen.groupId = groupId;
     kgen.rootPackage = rootPackage;
+    kgen.serviceClassName = serviceName;
     return kotlinSeedTransformation(project, null, kgen)
         .then(hr => {
             return project;
