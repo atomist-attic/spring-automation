@@ -7,8 +7,8 @@ import { ProjectPersister } from "@atomist/automation-client/operations/generate
 import { GitHubProjectPersister } from "@atomist/automation-client/operations/generate/gitHubProjectPersister";
 import { cleanReadMe, RemoveSeedFiles } from "@atomist/automation-client/operations/generate/UniversalSeed";
 import { curry } from "@typed/curry";
-import { addSpringBootStarter } from "../../../editor/spring/addStarterEditor";
-import { doUpdatePom, inferStructureAndMovePackage, removeTravisBuildFiles } from "../JavaProjectParameters";
+import { addSpringBootStarter } from "../../editor/spring/addStarterEditor";
+import { doUpdatePom, inferStructureAndMovePackage, removeTravisBuildFiles } from "../java/JavaProjectParameters";
 import { inferSpringStructureAndRename, SpringBootGeneratorParameters } from "./SpringBootProjectParameters";
 
 export function springBootGenerator(projectPersister: ProjectPersister = GitHubProjectPersister): HandleCommand<SpringBootGeneratorParameters> {

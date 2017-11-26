@@ -6,7 +6,7 @@ import * as assert from "power-assert";
 import {
     springBootGenerator,
     springBootProjectEditor,
-} from "../../../../../src/commands/generator/java/spring/springBootGenerator";
+} from "../../../../src/commands/generator/spring/springBootGenerator";
 
 describe("springGeneratorEditor", () => {
     const sgen = springBootGenerator();

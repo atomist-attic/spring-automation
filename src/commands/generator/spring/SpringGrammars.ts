@@ -1,7 +1,7 @@
 import { Microgrammar } from "@atomist/microgrammar/Microgrammar";
 import { Opt } from "@atomist/microgrammar/Ops";
 import { Rep } from "@atomist/microgrammar/Rep";
-import { CLASS_NAME, DISCARDED_ANNOTATION } from "../JavaGrammars";
+import { CLASS_NAME, DISCARDED_ANNOTATION } from "../java/JavaGrammars";
 
 export const SPRING_BOOT_APP = Microgrammar.fromDefinitions<{ name: string }>({
     // TODO does this take parameters?

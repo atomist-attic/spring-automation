@@ -5,7 +5,7 @@ import { saveFromFilesAsync } from "@atomist/automation-client/project/util/proj
 import { SPRING_BOOT_APP } from "./SpringGrammars";
 
 import { File } from "@atomist/automation-client/project/File";
-import { JavaPackageDeclaration } from "../JavaGrammars";
+import { JavaPackageDeclaration } from "../java/JavaGrammars";
 
 /**
  * Represents the structure of a Spring Boot project,

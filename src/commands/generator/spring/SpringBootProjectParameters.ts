@@ -2,8 +2,8 @@ import { Parameter } from "@atomist/automation-client";
 import { Parameters } from "@atomist/automation-client/decorators";
 import { Project } from "@atomist/automation-client/project/Project";
 import { camelize } from "tslint/lib/utils";
-import { JavaGeneratorParameters } from "../JavaProjectParameters";
-import { renameClass } from "../javaProjectUtils";
+import { JavaGeneratorParameters } from "../java/JavaProjectParameters";
+import { renameClass } from "../java/javaProjectUtils";
 import { SpringBootProjectStructure } from "./SpringBootProjectStructure";
 
 /**

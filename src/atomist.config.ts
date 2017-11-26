@@ -3,7 +3,7 @@ import {
     removeAutowiredOnSoleConstructorCommand,
     removeUnnecessaryComponentScanCommand,
 } from "./commands/editor/spring/springFixes";
-import { springBootGenerator } from "./commands/generator/java/spring/springBootGenerator";
+import { springBootGenerator } from "./commands/generator/spring/springBootGenerator";
 import { LogzioAutomationEventListener, LogzioOptions } from "./util/logzio";
 import { initMemoryMonitoring } from "./util/mem";
 import { secret } from "./util/secrets";

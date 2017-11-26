@@ -9,8 +9,8 @@ import { localProjectPersister } from "./localProjectPersister";
 import { SmartParameters } from "@atomist/automation-client/SmartParameters";
 import "mocha";
 import * as assert from "power-assert";
-import { springBootGenerator } from "../../../../../src/commands/generator/java/spring/springBootGenerator";
-import { SpringBootGeneratorParameters } from "../../../../../src/commands/generator/java/spring/SpringBootProjectParameters";
+import { springBootGenerator } from "../../../../src/commands/generator/spring/springBootGenerator";
+import { SpringBootGeneratorParameters } from "../../../../src/commands/generator/spring/SpringBootProjectParameters";
 import { createdProject } from "./localProjectPersister";
 
 export const GishPath = "src/main/java/com/smashing/pumpkins/Gish.java";
