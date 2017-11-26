@@ -24,7 +24,6 @@ describe("addSpringBootStarterEditor", () => {
         addSpringBootStarter(starterName)(p)
             .then(edited => {
                 const content = edited.findFileSync("pom.xml").getContentSync();
-                console.log(content);
                 assert(content.includes(starterName));
                 done();
             }).catch(done);

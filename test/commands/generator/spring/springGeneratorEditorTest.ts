@@ -31,10 +31,8 @@ describe("springGeneratorEditor", () => {
         editor(p, null, null)
             .then(r => {
                 const content = r.target.findFileSync("pom.xml").getContentSync();
-                console.log(content);
                 assert(content.includes("foobar"));
                 assert(content.includes("baz"));
-
                 done();
             }).catch(done);
     });

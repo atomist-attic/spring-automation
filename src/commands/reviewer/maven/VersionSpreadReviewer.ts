@@ -52,11 +52,10 @@ export class VersionSpreadReviewer extends ReviewerCommandSupport<LibraryCheckRe
     }
 
     public projectReviewer(): ProjectReviewer<this, VersionReportReview> {
-        return (p, context) => {
+        return p => {
             return findMatches(p, "pom.xml",
                 dependencyOfGrammar(this.groupId, this.artifactId))
                 .then(matches => {
-                    console.log("%d  matches looking for %s:%s", matches.length, this.groupId, this.artifactId);
                     if (matches.length > 0) {
                         const version = matches[0].gav.version;
                         return Promise.resolve({

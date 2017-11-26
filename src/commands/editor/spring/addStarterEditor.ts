@@ -7,7 +7,6 @@ export function addSpringBootStarter(artifact: string,
                                      group: string = "org.springframework.boot"): (p: Project) => Promise<Project> {
     return (p: Project) => {
         return doWithFiles(p, "pom.xml", pom => {
-            console.log("Looking at POM");
             return pom.getContent()
                 .then(content => {
                     // Don't add if it's already there

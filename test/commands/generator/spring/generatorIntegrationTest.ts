@@ -21,7 +21,6 @@ describe("spring generator integration test", () => {
         generate()
             .then(verifyAndCompile)
             .then(cr => {
-                    console.log(cr.stdout);
                     done();
                 },
             ).catch(done);

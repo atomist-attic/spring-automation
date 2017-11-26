@@ -67,7 +67,6 @@ export function consolidate(arrs: VersionedArtifact[][]): object {
     for (const group of Object.getOwnPropertyNames(byGroup)) {
         (byGroup[group] as any) = _.groupBy(byGroup[group], a => a.artifact);
         for (const artifact of Object.getOwnPropertyNames(byGroup[group])) {
-            console.log("artifact=" + artifact);
             byGroup[group][artifact] = byGroup[group][artifact].map(gav => gav.version);
         }
     }
