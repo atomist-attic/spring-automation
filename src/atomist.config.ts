@@ -2,7 +2,7 @@ import * as appRoot from "app-root-path";
 import {
     removeAutowiredOnSoleConstructorCommand,
     removeUnnecessaryComponentScanCommand,
-} from "./commands/editor/spring/springFixes";
+} from "./commands/editor/spring/removeUnnecessaryAnnotations";
 import { kotlinSpring5Generator } from "./commands/generator/spring/kotlinSpring5Generator";
 import { springBootGenerator } from "./commands/generator/spring/springBootGenerator";
 import { LogzioAutomationEventListener, LogzioOptions } from "./util/logzio";

@@ -3,14 +3,13 @@ import "mocha";
 import { InMemoryProject } from "@atomist/automation-client/project/mem/InMemoryProject";
 import * as assert from "power-assert";
 import {
-    findInjectedFields,
     removeAutowiredOnSoleConstructor,
     removeUnnecessaryComponentScanEditor,
-} from "../../../../src/commands/editor/spring/springFixes";
+} from "../../../../src/commands/editor/spring/removeUnnecessaryAnnotations";
 
-describe("springFixes", () => {
+describe("remove unnecessary annotations", () => {
 
-    describe("removeUnnecesaryComponentScanEditor", () => {
+    describe("removeUnnecessaryComponentScanEditor", () => {
 
         it("doesn't fail on empty project", done => {
             const p = new InMemoryProject();
@@ -28,7 +27,7 @@ describe("springFixes", () => {
             removeUnnecessaryComponentScanEditor(p, null)
                 .then(r => {
                     const f = r.findFileSync(path);
-                    assert(f.getContentSync() === content.replace("@ComponentScan", ""));
+                    assert(f.getContentSync() === content.replace("@ComponentScan ", ""));
                     done();
                 }).catch(done);
         });
@@ -82,56 +81,6 @@ describe("springFixes", () => {
                     done();
                 }).catch(done);
         });
-    });
-
-    describe("find injected fields", () => {
-
-        it("finds none in empty project", done => {
-            const p = new InMemoryProject();
-            findInjectedFields(p)
-                .then(r => {
-                    assert(r.length === 0);
-                    done();
-                }).catch(done);
-        });
-
-        it("finds none in a Java file", done => {
-            const path = "src/main/java/Foo.java";
-            const content = "public class MyApp { private String dog; @Autowired public MyApp(Thing t) {} }";
-            const p = InMemoryProject.of(
-                {path, content});
-            findInjectedFields(p)
-                .then(r => {
-                    assert(r.length === 0);
-                    done();
-                }).catch(done);
-        });
-
-        it("finds @Autowired field", done => {
-            const path = "src/main/java/Foo.java";
-            const content = "public class MyApp { @Autowired private String dog; @Autowired public MyApp(Thing t) {} }";
-            const p = InMemoryProject.of(
-                {path, content});
-            findInjectedFields(p)
-                .then(r => {
-                    assert(r.length === 1);
-                    assert.deepEqual(r[0].fieldNames, [ "dog"]);
-                    done();
-                }).catch(done);
-        });
-    });
-
-    it("finds @Inject field", done => {
-        const path = "src/main/java/Foo.java";
-        const content = "public class MyApp { @Inject private String dog; @Autowired public MyApp(Thing t) {}}";
-        const p = InMemoryProject.of(
-            {path, content});
-        findInjectedFields(p)
-            .then(r => {
-                assert(r.length === 1);
-                assert.deepEqual(r[0].fieldNames, [ "dog"]);
-                done();
-            }).catch(done);
     });
 
 });

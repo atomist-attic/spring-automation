@@ -20,7 +20,7 @@
   ],
   "dependencies": {
     "@atomist/antlr": "0.1.4",
-    "@atomist/automation-client": "https://r.atomist.com/H1UYgjVHxf",
+    "@atomist/automation-client": "https://r.atomist.com/rJHbiXitgG",
     "@types/jsdom": "^11.0.3",
     "cfenv": "^1.0.4",
     "logzio-nodejs": "^0.4.4",
