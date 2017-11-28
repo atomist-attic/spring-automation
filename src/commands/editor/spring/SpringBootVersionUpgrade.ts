@@ -1,16 +1,16 @@
 import { HandleCommand, Parameter } from "@atomist/automation-client";
-import { EditMode, PullRequest, } from "@atomist/automation-client/operations/edit/editModes";
-import { setSpringBootVersionEditor } from "./setSpringBootVersionEditor";
 import { Parameters } from "@atomist/automation-client/decorators";
-import { BaseEditorParameters } from "@atomist/automation-client/operations/edit/BaseEditorParameters";
-import { editorHandler } from "@atomist/automation-client/operations/edit/editorToCommand";
+import { allReposInTeam } from "@atomist/automation-client/operations/common/allReposInTeamRepoFinder";
+import { gitHubRepoLoader } from "@atomist/automation-client/operations/common/gitHubRepoLoader";
 import { AllRepos } from "@atomist/automation-client/operations/common/repoFilter";
 import { RepoFinder } from "@atomist/automation-client/operations/common/repoFinder";
-import { allReposInTeam } from "@atomist/automation-client/operations/common/allReposInTeamRepoFinder";
+import { RepoLoader } from "@atomist/automation-client/operations/common/repoLoader";
+import { BaseEditorParameters } from "@atomist/automation-client/operations/edit/BaseEditorParameters";
+import { EditMode, PullRequest } from "@atomist/automation-client/operations/edit/editModes";
+import { editorHandler } from "@atomist/automation-client/operations/edit/editorToCommand";
 import { ProjectPersister } from "@atomist/automation-client/operations/generate/generatorUtils";
 import { GitHubProjectPersister } from "@atomist/automation-client/operations/generate/gitHubProjectPersister";
-import { RepoLoader } from "@atomist/automation-client/operations/common/repoLoader";
-import { gitHubRepoLoader } from "@atomist/automation-client/operations/common/gitHubRepoLoader";
+import { setSpringBootVersionEditor } from "./setSpringBootVersionEditor";
 
 @Parameters()
 export class SpringBootVersionUpgradeParameters extends BaseEditorParameters {

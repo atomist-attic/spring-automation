@@ -3,12 +3,12 @@ import {
     removeAutowiredOnSoleConstructorCommand,
     removeUnnecessaryComponentScanCommand,
 } from "./commands/editor/spring/removeUnnecessaryAnnotations";
+import { springBootVersionUpgrade } from "./commands/editor/spring/SpringBootVersionUpgrade";
 import { kotlinSpring5Generator } from "./commands/generator/spring/kotlinSpring5Generator";
 import { springBootGenerator } from "./commands/generator/spring/springBootGenerator";
 import { LogzioAutomationEventListener, LogzioOptions } from "./util/logzio";
 import { initMemoryMonitoring } from "./util/mem";
 import { secret } from "./util/secrets";
-import { springBootVersionUpgrade } from "./commands/editor/spring/SpringBootVersionUpgrade";
 
 const pj = require(`${appRoot.path}/package.json`);
 

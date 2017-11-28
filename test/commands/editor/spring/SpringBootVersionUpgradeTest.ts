@@ -1,18 +1,17 @@
+import { HandlerContext } from "@atomist/automation-client";
+import { fromListRepoFinder, fromListRepoLoader } from "@atomist/automation-client/operations/common/fromProjectList";
+import { SimpleRepoId } from "@atomist/automation-client/operations/common/RepoId";
+import { CustomExecutionEditMode } from "@atomist/automation-client/operations/edit/editModes";
+import { EditResult, ProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
 import { InMemoryProject } from "@atomist/automation-client/project/mem/InMemoryProject";
+import { Project } from "@atomist/automation-client/project/Project";
 import "mocha";
 import * as assert from "power-assert";
 import {
     springBootVersionUpgrade,
-    SpringBootVersionUpgradeParameters
+    SpringBootVersionUpgradeParameters,
 } from "../../../../src/commands/editor/spring/SpringBootVersionUpgrade";
 import { NonSpringPom, springBootPom } from "../../reviewer/maven/Poms";
-import { fromListRepoFinder } from "@atomist/automation-client/operations/common/fromProjectList";
-import { RepoRef, SimpleRepoId } from "@atomist/automation-client/operations/common/RepoId";
-import { CustomExecutionEditMode } from "@atomist/automation-client/operations/edit/editModes";
-import { Project } from "@atomist/automation-client/project/Project";
-import { EditResult, ProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
-import { HandlerContext } from "@atomist/automation-client";
-import { RepoLoader } from "@atomist/automation-client/operations/common/repoLoader";
 
 describe("springBootVersionUpgrade", () => {
 
@@ -37,10 +36,10 @@ describe("springBootVersionUpgrade", () => {
             }).catch(done);
     });
 
-    it.skip("comment for old Spring project", done => {
+    it("upgrade for old Spring project", done => {
         let verified = false;
         const v = "1.3.0";
-        const proj = InMemoryProject.of({path: "pom.xml", content: springBootPom(v)});
+        const proj = InMemoryProject.from(new SimpleRepoId("x", "y"), {path: "pom.xml", content: springBootPom(v)});
         const rf = fromListRepoFinder([proj]);
         (springBootVersionUpgrade(rf, p => fromListRepoLoader([proj]),
             new VerifyEditMode(p => {
@@ -71,12 +70,5 @@ class VerifyEditMode implements CustomExecutionEditMode {
                 this.assertions(p);
                 return er;
             });
-    }
-}
-
-export function fromListRepoLoader(projects: Project[]): RepoLoader {
-    return (id: RepoRef) => {
-        console.log("Loading repo " + JSON.stringify(id));
-        return Promise.resolve(projects.find(p => p.id === id));
     }
 }
