@@ -1,22 +1,22 @@
 {
-  "name": "@atomist/spring-automations",
-  "version": "0.1.1",
+  "name": "@atomist/spring-automation",
+  "version": "0.2.0",
   "description": "Atomist back end for Spring Initializr",
-  "author": "Atomist.",
+  "author": "Atomist",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/atomist/spring-automations.git"
+    "url": "https://github.com/atomist/spring-automation.git"
   },
-  "homepage": "https://github.com/atomist/spring-automations#readme",
+  "homepage": "https://github.com/atomist/spring-automation#readme",
   "bugs": {
-    "url": "https://github.com/atomist/spring-automations/issues"
+    "url": "https://github.com/atomist/spring-automation/issues"
   },
   "keywords": [
     "atomist",
     "automation",
-    "spring",
-    "seed"
+    "seed",
+    "spring"
   ],
   "dependencies": {
     "@atomist/antlr": "0.1.4",

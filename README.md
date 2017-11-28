@@ -1,6 +1,6 @@
-# @atomist/spring-automations
+# @atomist/spring-automation
 
-[![Build Status](https://travis-ci.org/atomist/initializr-atomist.svg?branch=master)](https://travis-ci.org/atomist/initializr-atomist)
+[![Build Status](https://travis-ci.org/atomist/spring-automation.svg?branch=master)](https://travis-ci.org/atomist/spring-automation)
 
 This repository contains Atomist automations for Spring Boot:
 generators, editors and reviewers.
@@ -35,8 +35,8 @@ $ npm -v
 To get started run the following commands:
 
 ```
-$ git clone git@github.com:atomist/automation-client-samples-ts.git
-$ cd automation-client-samples-ts
+$ git clone git@github.com:atomist/spring-automation.git
+$ cd spring-automation
 $ npm install
 ```
 
@@ -48,10 +48,10 @@ is only allowing members of a GitHub team called `atomist-automation`
 to successfully authenticate and register a new client.
 
 Please create a team in your GitHub organization with the name
-`atomist-automation` and add the user you want to use to the team. 
+`atomist-automation` and add the user you want to use to the team.
 
-After that you can create a personal access token with `read:org` 
-scope at https://github.com/settings/tokens. 
+After that you can create a personal access token with `read:org`
+scope at https://github.com/settings/tokens.
 
 Once you obtained the token, make it available to the client by
 exporting it into an environment variable:
@@ -78,7 +78,7 @@ at [atomist-community.slack.com][slack].
 
 If you find a problem, please create an [issue][].
 
-[issue]: https://github.com/atomist/automation-client-samples-ts/issues
+[issue]: https://github.com/atomist/spring-automation/issues
 
 ## Development
 
