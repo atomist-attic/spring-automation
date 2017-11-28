@@ -12,23 +12,42 @@ import { JavaSourceFiles } from "../../generator/java/javaProjectUtils";
 import { File } from "@atomist/automation-client/project/File";
 import { Project } from "@atomist/automation-client/project/Project";
 
+export interface InjectedField {
+
+    name: string;
+
+    offset: number;
+}
+
 export interface FileWithInjectedFields {
 
     file: File;
-    fieldNames: string[];
+    fields: InjectedField[];
 }
 
-// TODO will eventually use OR predicates - for Inject
+// TODO will eventually use OR predicates - for @Inject
 const InjectedFields = `//classBodyDeclaration[//annotation[@value='@Autowired']]
                             //fieldDeclaration//variableDeclaratorId |
                          //classBodyDeclaration[//annotation[@value='@Inject']]
                             //fieldDeclaration//variableDeclaratorId`;
 
+/**
+ * Find all fields annotated with @Autowired or @Inject in the codebase.
+ * This is an undesirable usage pattern in application code, although
+ * acceptable in tests.
+ * @param {Project} p project to search
+ * @param {string} globPattern glob pattern, defaults ot standard Maven
+ * location of source tree.
+ * @return {Promise<FileWithInjectedFields[]>}
+ */
 export function findInjectedFields(p: Project,
                                    globPattern: string = JavaSourceFiles): Promise<FileWithInjectedFields[]> {
     return findFileMatches(p, JavaFileParser, globPattern, InjectedFields)
         .then(fileHits => fileHits.map(fh => ({
             file: fh.file,
-            fieldNames: fh.matches.map(m => m.$value),
+            fields: fh.matches.map(m => ({
+                name: m.$value,
+                offset: m.$offset,
+            })),
         })));
 }

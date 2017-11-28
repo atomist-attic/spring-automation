@@ -34,21 +34,25 @@ describe("find injected fields", () => {
         findInjectedFields(p)
             .then(r => {
                 assert(r.length === 1);
-                assert.deepEqual(r[0].fieldNames, [ "dog"]);
+                assert.deepEqual(r[0].fields.map(f => f.name), [ "dog"]);
                 done();
             }).catch(done);
     });
-});
 
-it("finds @Inject field", done => {
-    const path = "src/main/java/Foo.java";
-    const content = "public class MyApp { @Inject private String dog; @Autowired public MyApp(Thing t) {}}";
-    const p = InMemoryProject.of(
-        {path, content});
-    findInjectedFields(p)
-        .then(r => {
-            assert(r.length === 1);
-            assert.deepEqual(r[0].fieldNames, [ "dog"]);
-            done();
-        }).catch(done);
+    it("finds @Inject field", done => {
+        const path = "src/main/java/Foo.java";
+        const content = "public class MyApp { @Inject private String dog; @Autowired public MyApp(Thing t) {}}";
+        const p = InMemoryProject.of(
+            {path, content});
+        findInjectedFields(p)
+            .then(r => {
+                assert(r.length === 1);
+                assert.deepEqual(r[0].fields.map(f => f.name), [ "dog"]);
+                r[0].fields.forEach(f => {
+                    assert(f.offset > 0);
+                    assert(content.substr(f.offset, f.name.length) === f.name);
+                });
+                done();
+            }).catch(done);
+    });
 });
