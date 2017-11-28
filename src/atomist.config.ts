@@ -1,3 +1,4 @@
+import { initMemoryMonitoring } from "@atomist/automation-client/internal/util/memory";
 import * as appRoot from "app-root-path";
 import {
     removeAutowiredOnSoleConstructorCommand,
@@ -7,7 +8,6 @@ import { springBootVersionUpgrade } from "./commands/editor/spring/SpringBootVer
 import { kotlinSpring5Generator } from "./commands/generator/spring/kotlinSpring5Generator";
 import { springBootGenerator } from "./commands/generator/spring/springBootGenerator";
 import { LogzioAutomationEventListener, LogzioOptions } from "./util/logzio";
-import { initMemoryMonitoring } from "./util/mem";
 import { secret } from "./util/secrets";
 
 const pj = require(`${appRoot.path}/package.json`);
@@ -21,12 +21,12 @@ const logzioOptions: LogzioOptions = {
     token: secret("logzio.token", process.env.LOGZIO_TOKEN),
 };
 
-// Set uo automation event listeners
+// Set up automation event listeners
 const listeners = [];
 
 // Logz.io will only work in certain environments
 if (logzioOptions.token) {
-    listeners.push(new LogzioAutomationEventListener(logzioOptions));
+    // listeners.push(new LogzioAutomationEventListener(logzioOptions));
 }
 
 const AtomistUser: string = "atomist-bot";
@@ -35,7 +35,7 @@ const AtomistToken: string = process.env.ATOMIST_GITHUB_TOKEN || token;
 export const configuration: any = {
     name: pj.name,
     version: pj.version,
-    teamIds: [ "T5964N9B7" ],
+    teamIds: ["T095SFFBK"],
     // groups: ["all"],
     commands: [
         () => removeUnnecessaryComponentScanCommand,
@@ -62,13 +62,17 @@ export const configuration: any = {
             },
             github: {
                 enabled: false,
-                clientId: "092b3124ced86d5d1569",
-                clientSecret: "71d72f657d4402009bd8d728fc1967939c343793",
-                callbackUrl: "http://localhost:2866",
-                adminOrg: "atomisthq",
             },
         },
         forceSecure: false,
+    },
+    applicationEvents: {
+        enabled: true,
+        teamId: "T29E48P34",
+    },
+    cluster: {
+        enabled: false,
+        workers: 2,
     },
 };
 
