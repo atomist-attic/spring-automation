@@ -23,7 +23,7 @@ export const removeUnnecessaryComponentScanEditor: SimpleProjectEditor = p => {
 };
 
 export const removeUnnecessaryComponentScanCommand: HandleCommand =
-    editorHandler(removeUnnecessaryComponentScanEditor,
+    editorHandler(() => removeUnnecessaryComponentScanEditor,
         BaseEditorParameters,
         "RemoveUnnecessaryComponentScanAnnotations", {
             description: "Remove unnecessary component scan annotations",
@@ -45,7 +45,7 @@ export const removeAutowiredOnSoleConstructor: SimpleProjectEditor = p => {
 };
 
 export const removeAutowiredOnSoleConstructorCommand: HandleCommand =
-    editorHandler(removeAutowiredOnSoleConstructor,
+    editorHandler(() => removeAutowiredOnSoleConstructor,
         BaseEditorParameters,
         "RemoveAutowiredOnSoleConstructor",
         {

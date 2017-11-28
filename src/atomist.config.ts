@@ -8,6 +8,7 @@ import { springBootGenerator } from "./commands/generator/spring/springBootGener
 import { LogzioAutomationEventListener, LogzioOptions } from "./util/logzio";
 import { initMemoryMonitoring } from "./util/mem";
 import { secret } from "./util/secrets";
+import { springBootVersionUpgrade } from "./commands/editor/spring/SpringBootVersionUpgrade";
 
 const pj = require(`${appRoot.path}/package.json`);
 
@@ -41,6 +42,7 @@ export const configuration: any = {
         () => removeAutowiredOnSoleConstructorCommand,
         () => springBootGenerator(),
         () => kotlinSpring5Generator(),
+        () => springBootVersionUpgrade,
         // CopyGenerator,
     ],
     events: [],

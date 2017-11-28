@@ -1,27 +1,19 @@
-
-import { CommandHandler, Parameter, Secret, Secrets, Tags } from "@atomist/automation-client";
-import { hasFile } from "@atomist/automation-client/internal/util/gitHub";
-import {
-    EditMode,
-    PullRequest,
-} from "@atomist/automation-client/operations/edit/editModes";
-import { EditorCommandSupport } from "@atomist/automation-client/operations/edit/EditorCommandSupport";
-import {
-    EditResult,
-    ProjectEditor,
-} from "@atomist/automation-client/operations/edit/projectEditor";
-import { Project } from "@atomist/automation-client/project/Project";
+import { HandleCommand, Parameter } from "@atomist/automation-client";
+import { EditMode, PullRequest, } from "@atomist/automation-client/operations/edit/editModes";
 import { setSpringBootVersionEditor } from "./setSpringBootVersionEditor";
+import { Parameters } from "@atomist/automation-client/decorators";
+import { BaseEditorParameters } from "@atomist/automation-client/operations/edit/BaseEditorParameters";
+import { editorHandler } from "@atomist/automation-client/operations/edit/editorToCommand";
+import { AllRepos } from "@atomist/automation-client/operations/common/repoFilter";
+import { RepoFinder } from "@atomist/automation-client/operations/common/repoFinder";
+import { allReposInTeam } from "@atomist/automation-client/operations/common/allReposInTeamRepoFinder";
+import { ProjectPersister } from "@atomist/automation-client/operations/generate/generatorUtils";
+import { GitHubProjectPersister } from "@atomist/automation-client/operations/generate/gitHubProjectPersister";
+import { RepoLoader } from "@atomist/automation-client/operations/common/repoLoader";
+import { gitHubRepoLoader } from "@atomist/automation-client/operations/common/gitHubRepoLoader";
 
-/**
- * Upgrade the version of Spring Boot projects to a desired version
- */
-@CommandHandler("Upgrade versions of Spring Boot across an org", "upgrade spring boot version")
-@Tags("atomist", "spring")
-export class SpringBootVersionUpgrade extends EditorCommandSupport {
-
-    @Secret(Secrets.userToken(["repo", "user"]))
-    protected githubToken;
+@Parameters()
+export class SpringBootVersionUpgradeParameters extends BaseEditorParameters {
 
     @Parameter({
         displayName: "Desired Spring Boot version",
@@ -32,19 +24,33 @@ export class SpringBootVersionUpgrade extends EditorCommandSupport {
     })
     public desiredBootVersion: string = "1.5.8.RELEASE";
 
-    constructor() {
-        // Check with an API call if the repo has a POM,
-        // to save unnecessary cloning
-        super(r => this.local ? true : hasFile(this.githubToken, r.owner, r.repo, "pom.xml"));
-    }
-
-    public projectEditor(): ProjectEditor<EditResult> {
-        return setSpringBootVersionEditor(this.desiredBootVersion);
-    }
-
-    public editInfo(p: Project): EditMode {
-        return new PullRequest(
-            "spring-boot-" + this.desiredBootVersion,
-            "Upgrade Spring Boot to " + this.desiredBootVersion);
-    }
 }
+
+/**
+ * Upgrade the version of Spring Boot projects to a desired version
+ */
+export function springBootVersionUpgrade(repoFinder: RepoFinder = allReposInTeam(),
+                                         repoLoader: (p: SpringBootVersionUpgradeParameters) => RepoLoader =
+                                             p => gitHubRepoLoader({token: p.githubToken}),
+                                         testEditMode?: EditMode): HandleCommand<SpringBootVersionUpgradeParameters> {
+
+    console.log("RepoFinder = " + repoFinder + ", RepoLoader = " + repoLoader + ", editMode=" + testEditMode);
+    return editorHandler<SpringBootVersionUpgradeParameters>(
+        params => setSpringBootVersionEditor(params.desiredBootVersion),
+        SpringBootVersionUpgradeParameters,
+        "springBootVersionUpgrade", {
+            repoFinder,
+            repoLoader,
+            description: "Upgrade versions of Spring Boot across an org",
+            intent: "upgrade spring boot version",
+            editMode: testEditMode || (params => new PullRequest(
+                "spring-boot-" + params.desiredBootVersion,
+                "Upgrade Spring Boot to " + params.desiredBootVersion)),
+        });
+}
+
+// constructor() {
+//     // Check with an API call if the repo has a POM,
+//     // to save unnecessary cloning
+//     super(r => this.local ? true : hasFile(this.githubToken, r.owner, r.repo, "pom.xml"));
+// }
