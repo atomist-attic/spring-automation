@@ -1,0 +1,38 @@
+dist: trusty
+sudo: false
+language: node_js
+node_js:
+- 8.7.0
+branches:
+  except:
+  - "/\\+travis\\.\\d+$/"
+env:
+  global:
+  - NPM_REGISTRY=https://atomist.jfrog.io/atomist/api/npm/npm-dev-local
+  - secure: 5e5EoOVbE116gJFdZo7QqRfgbDiOQpDBNohdXj5OBoOSJVTIOALIgOO4H/xkUDoda4JUBOhyr8R4NbI5IWiL5GuHqYhRmmihFfTrJcwxFB8StDIu6v+YhKO9W97DuEC1DcJazRbrIBEDFK2s9GvH8mcaEU2P8rLdvTQOFwcEUWQqo9BnTRiZSbk216a3RN9eGGYblu0Qmx5lr2m+2OABAkDbf+i92BlNWhgNPFNii1RzO++/dnMVD/Oudd1nMim5JlF0b627gtGIoHqWFSWSyXOEg5w1OLgj45uBGGXOrUTDE3PVpBY3Bp1/M92O8ojTYIXO6BxjZGrr5/wLgJXEvqoK3hB0xpcbTJT9oI7enB2LRiBCpNdFVsIw2672k3UPvkazeuW2BVUKZJpvUu5wBxsJvTNcznk5TuFpzW3AF24evtptNRgdfLMGueeDGfug5r6MxfC2NWPb3lcYZ+avcISbr7d17or5Wo8FYcC+TzKBLc6ztFLIAqDZOBBn4/txjOUJVpVOfJ7hJSos5obPPJNPYuFA9ctyBYQDnujMV5mIhNwoxantHXD3QvNip8REK+eu9oIc2YHIzGiIdMwEXq0J0itBHiPoVRJMwvqyJPKpMuRRc3PNJe1ngr8WHJDYTqIXWeVMNVNRxfJs6ZAjaRTZjWO0xJ2qPHyijkgRPtw=
+before_install:
+- openssl aes-256-cbc -K $encrypted_bab9b497981d_key -iv $encrypted_bab9b497981d_iv
+  -in scripts/.npmrc.enc -out $HOME/.npmrc -d
+script: bash scripts/travis-build.bash
+notifications:
+  email: false
+  webhooks:
+    urls:
+    - https://webhook.atomist.com/atomist/travis/teams/T29E48P34
+    on_success: always
+    on_failure: always
+    on_start: always
+    on_cancel: always
+    on_error: always
+cache:
+  directories:
+  - "$HOME/.npm"
+deploy:
+  provider: releases
+  api_key:
+    secure: hcWTbCGdStcOjqwZOCkc+1DQD2SF9hWLBOZftxZynI+58y4cIJwMwuISzIWc/HCRQFeb4TBp+zQm2+i3dpyCE42nabF0J3hzhHzV1r36qKohltT4GL8+0WKb4/j7dPL+XkJwMpMGjWQyjFqXyFF+G5nptKLTYNRdz8QCkZ6ISKJ+78/iQIVOkB96rALtOwz+hT61pExZ2xp4dAA2xjlpdAUaJhYhL2Xskw+/tt3m2rXrGvGJOPVRQAXqnlrAXSc2U9Sm2PZ2KW9hys0YgL5zXOs1U5trsJZCgQr9CUxzmWYRX+LW1aFLnBoOER4nhza9CDW0okkLl2J2D4skQ8+usUDKTxxrqpYRcBC3IljdFf6qU9p7PlaCzT77KRyeHASfIWwwZB++icnuz5cFAWXtJ5IJSFl3JrGvdZ44kYUU1npYGnn6FhpUOm2+kJRnHflYq/mcR5CkE65be3hR0R6OUP4kYJMN7GKujc5rq1iH+RvLHRm/7uxs3ec8mzM/aFS1KoM6wyMBZiO+d5/ypAmecyt3PKd0GsaeiIkFCXJb0afPRXDoLgUn2Ym/HS+DPVhwYOgEcDp/SqtSlUkhupjKOBzdqchldrPSV6WU2R5WUoxQmwxcxiEXBtr4SJXcFfuXY1+/q/JH8sRVd5SOSap3xti/jM+PefOvyVcarSJvgNc=
+  on:
+    tags: true
+    condition: "$TRAVIS_TAG =~ ^[0-9]+\\.[0-9]+\\.[0-9]+(-(m|rc)\\.[0-9]+)?$"
+after_deploy:
+- bash scripts/gh-publish.bash $TRAVIS_REPO_SLUG
