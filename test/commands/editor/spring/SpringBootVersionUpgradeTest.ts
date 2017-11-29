@@ -25,7 +25,7 @@ describe("springBootVersionUpgrade", () => {
     });
 
     it("does nothing when project is already up to date", done => {
-        const proj = InMemoryProject.of({
+        const proj = InMemoryProject.from(new SimpleRepoId("a", "b"), {
             path: "pom.xml",
             content: springBootPom(new SpringBootVersionUpgradeParameters().desiredBootVersion),
         });
