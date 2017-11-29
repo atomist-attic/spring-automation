@@ -3,7 +3,7 @@ import { InMemoryProject } from "@atomist/automation-client/project/mem/InMemory
 import * as assert from "power-assert";
 import { findNonSpecificMvcAnnotations } from "../../../../src/commands/editor/spring/findNonSpecificMvcAnnotations";
 
-describe("find non specific MVC injections", () => {
+describe("find non specific MVC annoations", () => {
 
     it("finds none in empty project", done => {
         const p = new InMemoryProject();
