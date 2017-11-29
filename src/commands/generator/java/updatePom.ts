@@ -1,3 +1,7 @@
+
+import { ProjectAsync } from "@atomist/automation-client/project/Project";
+import { doWithFiles } from "@atomist/automation-client/project/util/projectUtils";
+
 /**
  * Record change to POM. Project will subsequently need flushing
  * @param {Project} project
@@ -6,10 +10,6 @@
  * @param {string} version
  * @param {string} description
  */
-
-import { ProjectAsync } from "@atomist/automation-client/project/Project";
-import { doWithFiles } from "@atomist/automation-client/project/util/projectUtils";
-
 export function updatePom<P extends ProjectAsync>(project: P,
                                                   artifactId: string,
                                                   groupId: string,

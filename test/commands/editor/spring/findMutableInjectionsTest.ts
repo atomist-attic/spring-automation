@@ -53,8 +53,8 @@ describe("find mutable injections", () => {
                 assert(r.length === 1);
                 assert(r[0].name === "dog");
                 r.forEach(f => {
-                    assert(f.offset > 0);
-                    assert(content.substr(f.offset, f.name.length) === f.name);
+                    assert(f.sourceLocation.offset > 0);
+                    assert(content.substr(f.sourceLocation.offset, f.name.length) === f.name);
                 });
                 done();
             }).catch(done);

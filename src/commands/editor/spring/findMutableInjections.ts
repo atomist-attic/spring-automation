@@ -9,8 +9,6 @@ export interface MutableInjection {
 
     name: string;
 
-    offset: number;
-
     type: "field" | "setter";
 
     sourceLocation: SourceLocation;
