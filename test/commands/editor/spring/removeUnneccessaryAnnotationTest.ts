@@ -32,6 +32,10 @@ describe("remove unnecessary annotations", () => {
                 }).catch(done);
         });
 
+        it("also removes import if only one use");
+
+        it("does not remove import if multiple uses");
+
         it("doesn't remove necessary annotation", done => {
             const path = "src/main/java/Foo.java";
             const content = "public @ComponentScan class MyApp {}";
@@ -68,6 +72,10 @@ describe("remove unnecessary annotations", () => {
                     done();
                 }).catch(done);
         });
+
+        it("also removes import if only one use");
+
+        it("does not remove import if multiple uses");
 
         it("doesn't remove necessary annotation", done => {
             const path = "src/main/java/Foo.java";
