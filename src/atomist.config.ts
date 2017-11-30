@@ -1,5 +1,6 @@
 import { initMemoryMonitoring } from "@atomist/automation-client/internal/util/memory";
 import * as appRoot from "app-root-path";
+import { findNonSpecificMvcAnnotationsCommand } from "./commands/editor/spring/findNonSpecificMvcAnnotations";
 import {
     removeAutowiredOnSoleConstructorCommand,
     removeUnnecessaryComponentScanCommand,
@@ -35,14 +36,15 @@ const AtomistToken: string = process.env.ATOMIST_GITHUB_TOKEN || token;
 export const configuration: any = {
     name: pj.name,
     version: pj.version,
-    teamIds: ["T095SFFBK"],
+    teamIds: ["T5964N9B7"],
     // groups: ["all"],
     commands: [
         () => removeUnnecessaryComponentScanCommand,
         () => removeAutowiredOnSoleConstructorCommand,
         () => springBootGenerator(),
-        () => kotlinSpring5Generator(),
-        () => springBootVersionUpgrade,
+        () => kotlinSpring5Generator(), // TODO is this one bad?
+        // () => springBootVersionUpgrade, // And this one?
+        () => findNonSpecificMvcAnnotationsCommand,
         // CopyGenerator,
     ],
     events: [],
