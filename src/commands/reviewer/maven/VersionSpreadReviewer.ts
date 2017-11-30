@@ -1,24 +1,19 @@
-import {
-    CommandHandler,
-    Parameter,
-    Tags,
-} from "@atomist/automation-client/decorators";
-import { hasFile } from "@atomist/automation-client/internal/util/gitHub";
+import { HandleCommand } from "@atomist/automation-client";
+import { Parameter, Parameters } from "@atomist/automation-client/decorators";
+import { RepoFinder } from "@atomist/automation-client/operations/common/repoFinder";
+import { RepoLoader } from "@atomist/automation-client/operations/common/repoLoader";
+import { BaseEditorParameters } from "@atomist/automation-client/operations/edit/BaseEditorParameters";
 import { ProjectReviewer } from "@atomist/automation-client/operations/review/projectReviewer";
-import { ReviewerCommandSupport } from "@atomist/automation-client/operations/review/ReviewerCommandSupport";
-import {
-    clean,
-    ProjectReview,
-    ReviewResult,
-} from "@atomist/automation-client/operations/review/ReviewResult";
+import { reviewerHandler } from "@atomist/automation-client/operations/review/reviewerToCommand";
+import { clean, ProjectReview, ReviewResult } from "@atomist/automation-client/operations/review/ReviewResult";
 import { findMatches } from "@atomist/automation-client/project/util/parseUtils";
 import * as _ from "lodash";
 import { dependencyOfGrammar } from "../../../grammars/mavenGrammars";
 import { VersionedArtifact } from "../../../grammars/VersionedArtifact";
+import { SpringBootTags } from "../../editor/spring/springConstants";
 
-@CommandHandler("Reviewer that reports the range of versions of an artifact", "version spread")
-@Tags("atomist", "maven", "library")
-export class VersionSpreadReviewer extends ReviewerCommandSupport<LibraryCheckReviewResult, VersionReportReview> {
+@Parameters()
+export class VersionSpreadReviewerParameters extends BaseEditorParameters {
 
     @Parameter({
         displayName: "Maven Group ID",
@@ -45,42 +40,49 @@ export class VersionSpreadReviewer extends ReviewerCommandSupport<LibraryCheckRe
     })
     public artifactId: string;
 
-    constructor() {
-        // Check with an API call if the repo has a POM,
-        // to save unnecessary cloning
-        super(r => this.local ? true : hasFile(this.githubToken, r.owner, r.repo, "pom.xml"));
-    }
+}
 
-    public projectReviewer(): ProjectReviewer<this, VersionReportReview> {
-        return p => {
-            return findMatches(p, "pom.xml",
-                dependencyOfGrammar(this.groupId, this.artifactId))
-                .then(matches => {
-                    if (matches.length > 0) {
-                        const version = matches[0].gav.version;
-                        return Promise.resolve({
-                            repoId: p.id,
-                            comments: [],
-                            group: this.groupId,
-                            artifact: this.artifactId,
-                            version,
-                        });
-                    }
-                    return Promise.resolve(clean(p.id) as VersionReportReview);
-                });
-        };
-    }
+export function versionSpreadReviewerCommand(repoFinder?: RepoFinder, repoLoader?: RepoLoader): HandleCommand {
+    return reviewerHandler(() => versionSpreadProjectReviewer,
+        VersionSpreadReviewerParameters,
+        "SpringBootVersionReviewer",
+        {
+            description: "Reviewer that reports the range of versions of an artifact",
+            tags: SpringBootTags,
+            intent: "version spread",
+            repoFinder,
+            repoLoader: repoLoader ? () => repoLoader : undefined,
+        },
+    );
+}
 
-    protected enrich(reviewResult: ReviewResult<VersionReportReview>): LibraryCheckReviewResult {
-        // Put in the aggregate version information
-        const allVersions = reviewResult.projectReviews
-            .map(r => r.version)
-            .filter(v => !!v);
-        const lrr = reviewResult as LibraryCheckReviewResult;
-        lrr.versions = _.uniq(allVersions).sort();
-        return lrr;
-    }
+const versionSpreadProjectReviewer: ProjectReviewer<VersionSpreadReviewerParameters, VersionReportReview> =
+    (p, ctx, params) => {
+        return findMatches(p, "pom.xml",
+            dependencyOfGrammar(params.groupId, params.artifactId))
+            .then(matches => {
+                if (matches.length > 0) {
+                    const version = matches[0].gav.version;
+                    return Promise.resolve({
+                        repoId: p.id,
+                        comments: [],
+                        group: params.groupId,
+                        artifact: params.artifactId,
+                        version,
+                    });
+                }
+                return Promise.resolve(clean(p.id) as VersionReportReview);
+            });
+    };
 
+function enrich(reviewResult: ReviewResult<VersionReportReview>): LibraryCheckReviewResult {
+    // Put in the aggregate version information
+    const allVersions = reviewResult.projectReviews
+        .map(r => r.version)
+        .filter(v => !!v);
+    const lrr = reviewResult as LibraryCheckReviewResult;
+    lrr.versions = _.uniq(allVersions).sort();
+    return lrr;
 }
 
 export interface LibraryCheckReviewResult extends ReviewResult<VersionReportReview> {

@@ -7,30 +7,36 @@ import {
     Secrets,
     Tags,
 } from "@atomist/automation-client/Handlers";
-import { hasFile } from "@atomist/automation-client/internal/util/gitHub";
-import { LocalOrRemoteRepoOperation } from "@atomist/automation-client/operations/common/LocalOrRemoteRepoOperation";
+import { allReposInTeam } from "@atomist/automation-client/operations/common/allReposInTeamRepoFinder";
+import { defaultRepoLoader } from "@atomist/automation-client/operations/common/defaultRepoLoader";
+import { AllRepos, RepoFilter } from "@atomist/automation-client/operations/common/repoFilter";
+import { RepoFinder } from "@atomist/automation-client/operations/common/repoFinder";
+import { RepoLoader } from "@atomist/automation-client/operations/common/repoLoader";
 import { doWithAllRepos } from "@atomist/automation-client/operations/common/repoUtils";
 import { Project } from "@atomist/automation-client/project/Project";
 import { findMatches } from "@atomist/automation-client/project/util/parseUtils";
 import * as _ from "lodash";
-import {
-    ArtifactContainer,
-    DependencyGrammar,
-} from "../../../grammars/mavenGrammars";
+import { ArtifactContainer, DependencyGrammar } from "../../../grammars/mavenGrammars";
 import { VersionedArtifact } from "../../../grammars/VersionedArtifact";
 import { expandProperties } from "./utils";
 
 @CommandHandler("Reviewer that reports the range of versions of all Maven dependencies", "version map")
 @Tags("atomist", "maven", "library")
-export class VersionMapper extends LocalOrRemoteRepoOperation implements HandleCommand {
+export class VersionMapper implements HandleCommand {
 
     @Secret(Secrets.userToken(["repo", "user"]))
     protected githubToken;
 
-    constructor() {
-        // Check with an API call if the repo has a POM,
-        // to save unnecessary cloning
-        super(r => this.local ? true : hasFile(this.githubToken, r.owner, r.repo, "pom.xml"));
+    protected repoFinder(): RepoFinder {
+        return allReposInTeam();
+    }
+
+    protected repoFilter(): RepoFilter {
+        return AllRepos;
+    }
+
+    protected repoLoader(): RepoLoader {
+        return defaultRepoLoader({token: this.githubToken});
     }
 
     public handle(context: HandlerContext): Promise<HandlerResult> {
@@ -42,7 +48,7 @@ export class VersionMapper extends LocalOrRemoteRepoOperation implements HandleC
 
         const arrayOfArrays: Promise<VersionedArtifact[][]> =
             doWithAllRepos(context, { token: this.githubToken }, findInProject,
-                this, this.repoFinder(), this.repoFilter, this.repoLoader())
+                this, this.repoFinder(), this.repoFilter(), this.repoLoader())
                 .then(matches => matches.map(acs =>
                     acs.map(ac => ac.gav)));
 

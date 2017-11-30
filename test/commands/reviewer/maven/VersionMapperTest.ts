@@ -20,7 +20,6 @@ class TestVersionMapper extends VersionMapper {
     constructor(private repos: Project[]) {
         super();
         // Prevent querying of github
-        this.local = true;
         this.rf = fromListRepoFinder(repos);
         this.rl = fromListRepoLoader(repos);
     }

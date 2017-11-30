@@ -4,13 +4,16 @@ import { ProjectReviewer } from "@atomist/automation-client/operations/review/pr
 import { InMemoryProject } from "@atomist/automation-client/project/mem/InMemoryProject";
 import "mocha";
 import * as assert from "power-assert";
-import { SpringBootVersionReviewer } from "../../../../src/commands/reviewer/spring/SpringBootVersionReviewer";
+import {
+    springBootVersionReviewer,
+    SpringBootVersionReviewerParameters,
+} from "../../../../src/commands/reviewer/spring/SpringBootVersionReviewer";
 import { NonSpringPom, springBootPom } from "../maven/Poms";
 
 describe("SpringBootVersionReviewer", () => {
 
-    function reviewer(): ProjectReviewer {
-        return new SpringBootVersionReviewer().projectReviewer();
+    function reviewer(): ProjectReviewer<any> {
+        return springBootVersionReviewer;
     }
 
     it("no comments for non Spring project", done => {
@@ -35,13 +38,13 @@ describe("SpringBootVersionReviewer", () => {
         const id: RepoId = new SimpleRepoId("a", "b");
         (proj as any).id = id;
         const ctx = { messageClient: new ConsoleMessageClient() } as any;
-        reviewer()(proj, ctx)
+        reviewer()(proj, ctx, new SpringBootVersionReviewerParameters())
             .then(r => {
                 const rev = r as any;
                 assert(rev.repoId.owner === id.owner);
                 assert(rev.repoId.repo === id.repo);
                 assert(rev.comments.length === 1);
-                assert(rev.desiredVersion === new SpringBootVersionReviewer().desiredBootVersion);
+                assert(rev.desiredVersion === new SpringBootVersionReviewerParameters().desiredBootVersion);
                 assert(rev.version === v, rev.version);
                 done();
             }).catch(done);
