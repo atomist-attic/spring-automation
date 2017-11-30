@@ -5,7 +5,7 @@ import { chainEditors } from "@atomist/automation-client/operations/edit/project
 import { generatorHandler } from "@atomist/automation-client/operations/generate/generatorToCommand";
 import { ProjectPersister } from "@atomist/automation-client/operations/generate/generatorUtils";
 import { GitHubProjectPersister } from "@atomist/automation-client/operations/generate/gitHubProjectPersister";
-import { cleanReadMe, RemoveSeedFiles } from "@atomist/automation-client/operations/generate/UniversalSeed";
+import { cleanReadMe } from "@atomist/automation-client/operations/generate/UniversalSeed";
 import { curry } from "@typed/curry";
 import { addSpringBootStarter } from "../../editor/spring/addStarterEditor";
 import { doUpdatePom, inferStructureAndMovePackage, removeTravisBuildFiles } from "../java/JavaProjectParameters";
@@ -30,7 +30,6 @@ export function springBootProjectEditor(params: SpringBootGeneratorParameters): 
     logger.debug("Starters: [%s]. Editor count=%d", params.starters.join(), starterEditors.length);
 
     const editors: AnyProjectEditor[] = [
-        RemoveSeedFiles,
         curry(cleanReadMe)(params.target.description),
         removeTravisBuildFiles,
         curry(doUpdatePom)(params),

@@ -2,11 +2,11 @@ import { JavaFileParser } from "@atomist/antlr/tree/ast/antlr/java/JavaFileParse
 import { HandleCommand } from "@atomist/automation-client";
 import { SourceLocation } from "@atomist/automation-client/operations/common/SourceLocation";
 import { BaseEditorParameters } from "@atomist/automation-client/operations/edit/BaseEditorParameters";
+import { reviewerHandler } from "@atomist/automation-client/operations/review/reviewerToCommand";
 import { ProjectReview, ReviewComment, Severity } from "@atomist/automation-client/operations/review/ReviewResult";
 import { Project } from "@atomist/automation-client/project/Project";
 import { findMatches } from "@atomist/automation-client/tree/ast/astUtils";
 import { JavaSourceFiles } from "../../generator/java/javaProjectUtils";
-import { reviewerHandler } from "../../reviewerToCommand";
 import { SpringBootTags } from "./springConstants";
 
 export class NonSpecificMvcAnnotation implements ReviewComment {
