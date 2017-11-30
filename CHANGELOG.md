@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 [Unreleased]: https://github.com/atomist/spring-automation/compare/0.2.0...HEAD
 
+### Added
+
+-   reviewerToCommand
+-   @RequestMapping search
+
+### Changed
+
+-   Aligned with ReviewComment
+-   Updated client to latest build
+
 ## [0.2.0][] - 2017-11-28
 
 [0.2.0]: https://github.com/atomist/spring-automation/tree/0.2.0
