@@ -41,9 +41,6 @@ export class SpringBootGeneratorParameters extends JavaGeneratorParameters {
         super();
         this.source.owner = "atomist-seeds";
         this.source.repo = "spring-rest-seed";
-
-        // Stable version that has a controller
-        this.source.sha = "b3d23de0b23745994f44f192866cc0bb3c4a2224";
     }
 
     public bindAndValidate() {

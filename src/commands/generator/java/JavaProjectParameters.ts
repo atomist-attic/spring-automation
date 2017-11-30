@@ -1,9 +1,10 @@
-import { Parameter } from "@atomist/automation-client";
+import { MappedParameter, MappedParameters, Parameter } from "@atomist/automation-client";
 import { Parameters } from "@atomist/automation-client/decorators";
 import { BaseSeedDrivenGeneratorParameters } from "@atomist/automation-client/operations/generate/BaseSeedDrivenGeneratorParameters";
 import { Project } from "@atomist/automation-client/project/Project";
 import { deleteFiles } from "@atomist/automation-client/project/util/projectUtils";
 import { SmartParameters } from "@atomist/automation-client/SmartParameters";
+import { updateYamlDocument } from "@atomist/yaml-updater/Yaml";
 import { JavaProjectStructure } from "./JavaProjectStructure";
 import { movePackage } from "./javaProjectUtils";
 import { updatePom } from "./updatePom";
@@ -81,6 +82,9 @@ export class JavaGeneratorParameters extends BaseSeedDrivenGeneratorParameters
     })
     public rootPackage: string;
 
+    @MappedParameter(MappedParameters.SlackTeam)
+    public slackTeam: string;
+
     get description() {
         return this.target.description;
     }
@@ -94,19 +98,37 @@ export class JavaGeneratorParameters extends BaseSeedDrivenGeneratorParameters
 }
 
 /**
- * Remove files in seed that are not useful, valid, or appropriate
- * for a generated project.  In addition to those deleted by
- * UniversalSeed, also remove Travis CI build script.
+ * Remove Travis files and configuration from seed that are not
+ * useful, valid, or appropriate for a generated project.
  *
  * @param project  Project to remove seed files from.
  */
-export function removeTravisBuildFiles(project: Project): Promise<Project> {
-    const filesToDelete: string[] = [
-        "src/main/scripts/travis-build.bash",
-    ];
-    return deleteFiles(project, "src/main/scripts/**",
-        f => filesToDelete.includes(f.path))
-        .then(count => project);
+export function cleanTravisBuildFiles(webhookUrl: string, project: Project): Promise<Project> {
+    return project.deleteDirectory(".travis")
+        .then(p => p.findFile(".travis.yml")
+            .then(travisFile => {
+                return travisFile.getContent()
+                    .then(travisYaml => {
+                        const updates = {
+                            addons: undefined,
+                            branches: undefined,
+                            env: undefined,
+                            install: undefined,
+                            script: undefined,
+                            notifications: {
+                                webhooks: {
+                                    urls: [webhookUrl],
+                                },
+                            },
+                        };
+                        const opts = { keepArrayIndent: true };
+                        const cleanYaml = updateYamlDocument(updates, travisYaml, opts);
+                        return travisFile.setContent(cleanYaml);
+                    })
+                    .then(() => p);
+            }, err => p)
+            .then(() => p),
+    );
 }
 
 export function doUpdatePom(id: VersionedArtifact, p: Project): Promise<Project> {

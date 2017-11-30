@@ -1,5 +1,6 @@
 # @atomist/spring-automation
 
+[![npm version](https://badge.fury.io/js/%40atomist%2Fspring-automation.svg)](https://badge.fury.io/js/%40atomist%2Fspring-automation)
 [![Build Status](https://travis-ci.org/atomist/spring-automation.svg?branch=master)](https://travis-ci.org/atomist/spring-automation)
 
 This repository contains Atomist automations for Spring Boot:
@@ -112,6 +113,53 @@ Command | Reason
 `npm test` | run tests and ensure everything is working
 `npm run autotest` | run tests continuously
 `npm run clean` | remove stray compiled JavaScript files and build directory
+
+You can test the local REST endpoint for generating projects with a
+command like the following, replacing `TOKEN` with your GitHub
+personal access token with "repo", "read:org", and "user" scopes (both
+places), `OWNER` with either your GitHub.com user name or one of your
+GitHub organizations, and `TEAMID` with your Slack team ID.
+
+```
+$ curl -v -X POST \
+    http://localhost:2866/command/spring-boot-generator \
+    -H 'Authorization: bearer TOKEN' \
+    -H 'Content-Type: application/json' \
+    -d '{
+  "name": "springBootGenerator",
+  "corrid": "local-test-from-me-0",
+  "parameters": [{
+    "name": "target.repo",
+    "value": "my-spring-test-0"
+  }, {
+    "name": "groupId",
+    "value": "com.atomist"
+  }, {
+    "name": "artifactId",
+    "value": "demo-test"
+  }, {
+    "name": "version",
+    "value": "0.1.0-SNAPSHOT"
+  }, {
+    "name": "rootPackage",
+    "value": "com.atomist"
+  }, {
+    "name": "target.description",
+    "value": "this is only a test"
+  }],
+  "mapped_parameters": [{
+    "name": "target.owner",
+    "value": "OWNER"
+  }, {
+    "name": "slackTeam",
+    "value": "TEAMID"
+  }],
+  "secrets": [{
+    "name": "github://user_token?scopes=repo,user",
+    "value": "TOKEN"
+  }]
+}'
+```
 
 ### Release
 

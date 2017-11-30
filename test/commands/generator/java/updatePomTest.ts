@@ -1,7 +1,7 @@
 import "mocha";
+import * as assert from "power-assert";
 
 import { InMemoryProject } from "@atomist/automation-client/project/mem/InMemoryProject";
-import * as assert from "power-assert";
 import { updatePom } from "../../../../src/commands/generator/java/updatePom";
 
 describe("updatePom", () => {
@@ -14,20 +14,30 @@ describe("updatePom", () => {
                 .then(() => {
                     const found = p.findFileSync("src/main/java/Foo.java");
                     assert(found.getContentSync() === "public class Foo {}");
-                    done();
-                })).catch(done);
+                })).then(done, done);
     });
 
     it("should edit POM", done => {
-        const p = InMemoryProject.of({path: "pom.xml", content: SimplePom});
+        const p = InMemoryProject.from(
+            { owner: "wicked", repo: "defying-gravity" },
+            { path: "pom.xml", content: SimplePom },
+        );
         p.addFileSync("src/main/java/Foo.java", "public class Foo {}");
         updatePom(p, "art", "group", "version", "desc")
             .then(_ => {
                 const found = p.findFileSync("pom.xml");
                 const newPom = found.getContentSync();
                 assert(newPom.includes("<artifactId>art</artifactId>"));
-                done();
-            }).catch(done);
+                assert(newPom.includes(`<name>defying-gravity</name>`));
+                assert(newPom.includes("<groupId>group</groupId>"));
+                assert(newPom.includes("<version>version</version>"));
+                assert(newPom.includes("<description>desc</description>"));
+                assert(!newPom.includes("<artifactId>flux-flix-service</artifactId>"));
+                assert(!newPom.includes("<name>flux-flix-service</name>"));
+                assert(!newPom.includes("<groupId>com.example</groupId>"));
+                assert(!newPom.includes("<version>0.0.1-SNAPSHOT</version>"));
+                assert(!newPom.includes("<description>Demo project for Spring Boot</description>"));
+            }).then(done, done);
     });
 
 });
@@ -50,4 +60,6 @@ export const SimplePom = `<?xml version="1.0" encoding="UTF-8"?>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.0.0.BUILD-SNAPSHOT</version>
         <relativePath/> <!-- lookup parent from repository -->
-    </parent>`;
+    </parent>
+</project>
+`;

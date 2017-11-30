@@ -18,6 +18,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 -   Aligned with ReviewComment
 -   Updated client to latest build
+-   Leave a proper .travis.yml in generated project
+
+### Fixed
+
+-   Properly replace name and description in POM
 
 ## [0.2.0][] - 2017-11-28
 

@@ -64,10 +64,13 @@ const SimplePom = `<?xml version="1.0" encoding="UTF-8"?>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.0.0.BUILD-SNAPSHOT</version>
         <relativePath/> <!-- lookup parent from repository -->
-    </parent>`;
+    </parent>
+</project>
+`;
 
 export const GishPath = "src/main/java/com/smashing/pumpkins/Gish.java";
-export const GishProject: Project = InMemoryProject.of(
+export const GishProject: Project = InMemoryProject.from(
+    { owner: "smashing-pumpkins", repo: "gish" },
     {
         path: GishPath,
         content: javaSource,

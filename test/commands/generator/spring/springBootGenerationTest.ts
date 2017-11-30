@@ -1,4 +1,3 @@
-
 import { metadataFromInstance } from "@atomist/automation-client/internal/metadata/metadataReading";
 import { CommandHandlerMetadata } from "@atomist/automation-client/metadata/automationMetadata";
 import { EditResult, toEditor } from "@atomist/automation-client/operations/edit/projectEditor";
@@ -24,8 +23,7 @@ describe("Spring Boot generation", () => {
             assert(f);
             const content = f.getContentSync();
             assert(content.includes("class MyCustom"));
-            done();
-        }).catch(done);
+        }).then(done, done);
     });
 
     it("edits project and verifies POM", done => {
@@ -35,8 +33,7 @@ describe("Spring Boot generation", () => {
             assert(f);
             const content = f.getContentSync();
             assert(!content.includes("undefined"));
-            done();
-        }).catch(done);
+        }).then(done, done);
     });
 
     function edit(project: Project): Promise<EditResult> {
