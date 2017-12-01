@@ -42,13 +42,24 @@ describe("verify POM", () => {
             }).catch(done);
     });
 
-    it("finds problem", done => {
+    it("finds problem in bad spring boot", done => {
         const p = InMemoryProject.of(
-            { path: "pom.xml", content: "<xml></xml>" });
+            { path: "pom.xml", content:
+                springBootPom("1.3.1", "my-weird-parent") });
         verifyPom(p)
             .then(r => {
                 assert(r.comments.length === 1);
                 assert(r.comments[0].sourceLocation.path === "pom.xml");
+                done();
+            }).catch(done);
+    });
+
+    it("finds no problem because not spring boot", done => {
+        const p = InMemoryProject.of(
+            { path: "pom.xml", content: "<xml></xml>" });
+        verifyPom(p)
+            .then(r => {
+                assert(r.comments.length === 0);
                 done();
             }).catch(done);
     });

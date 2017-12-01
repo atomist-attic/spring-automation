@@ -19,13 +19,18 @@ export function verifyPom(p: Project): Promise<ProjectReview> {
     return p.findFile("pom.xml")
         .then(f => f.getContent())
         .then(content => {
+                if (!content.includes("spring-boot")) {
+                    // We don't care if it doesn't use Spring Boot at all
+                    return clean(p.id);
+                }
                 const parser = new xml2js.Parser();
                 return promisify(parser.parseString)(content)
                     .then(parsed => {
                         const parent = _.get(parsed, "project.parent");
-                        if (!!parent && parent.artifactId.toString() === SpringBootStarter) {
+                        if (!!parent && !!parent.artifactId && parent.artifactId.toString() === SpringBootStarter) {
                             return clean(p.id);
                         }
+
                         // TODO check dependency management
                         return {
                             repoId: p.id,
@@ -38,7 +43,9 @@ export function verifyPom(p: Project): Promise<ProjectReview> {
                         };
                     });
             },
-        ).catch(err => clean(p.id));
+        ).catch(err => {
+            return clean(p.id)
+        });
 }
 
 export const verifyPomCommand: HandleCommand =

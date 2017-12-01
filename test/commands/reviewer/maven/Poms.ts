@@ -10,7 +10,7 @@ export const NonSpringPom = `<project>
   </modules>
 </project>`;
 
-export function springBootPom(bootVersion: string) {
+export function springBootPom(bootVersion: string, parent: string = "spring-boot-starter-parent") {
     return `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -25,7 +25,7 @@ export function springBootPom(bootVersion: string) {
 	<description>Seed for creating Spring REST services</description>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
+		<artifactId>${parent}</artifactId>
 		<version>${bootVersion}</version>
 		<relativePath/>
 	</parent>
