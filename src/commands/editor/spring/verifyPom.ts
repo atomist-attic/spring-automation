@@ -44,7 +44,7 @@ export function verifyPom(p: Project): Promise<ProjectReview> {
                     });
             },
         ).catch(err => {
-            return clean(p.id)
+            return clean(p.id);
         });
 }
 
