@@ -3,8 +3,8 @@ import { BaseEditorParameters } from "@atomist/automation-client/operations/edit
 import { reviewerHandler } from "@atomist/automation-client/operations/review/reviewerToCommand";
 import { clean, ProjectReview } from "@atomist/automation-client/operations/review/ReviewResult";
 import { Project } from "@atomist/automation-client/project/Project";
-import { SpringBootStarter, SpringBootTags } from "./springConstants";
 import { promisify } from "util";
+import { SpringBootStarter, SpringBootTags } from "./springConstants";
 
 import * as _ from "lodash";
 
@@ -33,11 +33,11 @@ export function verifyPom(p: Project): Promise<ProjectReview> {
                                 {
                                     severity: "warn",
                                     comment: `POM should extend ${SpringBootStarter} or use Spring Boot dependency management`,
-                                    sourceLocation: {path: "pom.xml", offset: -1,},
+                                    sourceLocation: {path: "pom.xml", offset: -1},
                                 }],
-                        }
+                        };
                     });
-            }
+            },
         ).catch(err => clean(p.id));
 }
 

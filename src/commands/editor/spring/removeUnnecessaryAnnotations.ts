@@ -49,6 +49,8 @@ export const removeAutowiredOnSoleConstructorCommand: HandleCommand =
         BaseEditorParameters,
         "RemoveAutowiredOnSoleConstructor",
         {
+            description: "Remove @Autowired on sole constructor as it's not necessary",
             tags: SpringBootTags,
+            intent: "remove unnecessary Autowired",
         },
     );

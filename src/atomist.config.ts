@@ -1,10 +1,13 @@
 import { initMemoryMonitoring } from "@atomist/automation-client/internal/util/memory";
 import * as appRoot from "app-root-path";
+import { findMutableInjectionsCommand } from "./commands/editor/spring/findMutableInjections";
 import { findNonSpecificMvcAnnotationsCommand } from "./commands/editor/spring/findNonSpecificMvcAnnotations";
 import {
     removeAutowiredOnSoleConstructorCommand,
     removeUnnecessaryComponentScanCommand,
 } from "./commands/editor/spring/removeUnnecessaryAnnotations";
+import { unleashPhilCommand } from "./commands/editor/spring/unleashPhil";
+import { verifyPomCommand } from "./commands/editor/spring/verifyPom";
 import { kotlinSpring5Generator } from "./commands/generator/spring/kotlinSpring5Generator";
 import { springBootGenerator } from "./commands/generator/spring/springBootGenerator";
 import { MessagingReviewRouter } from "./commands/messagingReviewRouter";
@@ -43,9 +46,12 @@ export const configuration: any = {
         () => removeUnnecessaryComponentScanCommand,
         () => removeAutowiredOnSoleConstructorCommand,
         () => springBootGenerator(),
-        () => kotlinSpring5Generator(), // TODO is this one bad?
-        // () => springBootVersionUpgrade, // And this one?
+        () => kotlinSpring5Generator(),
+        // () => springBootVersionUpgrade, // Is this one bad?
         () => findNonSpecificMvcAnnotationsCommand,
+        () => findMutableInjectionsCommand,
+        () => verifyPomCommand,
+        () => unleashPhilCommand,
         () => springBootVersionReviewerCommand(MessagingReviewRouter),
         // CopyGenerator,
     ],
