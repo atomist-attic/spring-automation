@@ -5,10 +5,11 @@ import {
     removeAutowiredOnSoleConstructorCommand,
     removeUnnecessaryComponentScanCommand,
 } from "./commands/editor/spring/removeUnnecessaryAnnotations";
-import { springBootVersionUpgrade } from "./commands/editor/spring/SpringBootVersionUpgrade";
 import { kotlinSpring5Generator } from "./commands/generator/spring/kotlinSpring5Generator";
 import { springBootGenerator } from "./commands/generator/spring/springBootGenerator";
-import { LogzioAutomationEventListener, LogzioOptions } from "./util/logzio";
+import { MessagingReviewRouter } from "./commands/messagingReviewRouter";
+import { springBootVersionReviewerCommand } from "./commands/reviewer/spring/SpringBootVersionReviewer";
+import { LogzioOptions } from "./util/logzio";
 import { secret } from "./util/secrets";
 
 const pj = require(`${appRoot.path}/package.json`);
@@ -45,6 +46,7 @@ export const configuration: any = {
         () => kotlinSpring5Generator(), // TODO is this one bad?
         // () => springBootVersionUpgrade, // And this one?
         () => findNonSpecificMvcAnnotationsCommand,
+        () => springBootVersionReviewerCommand(MessagingReviewRouter),
         // CopyGenerator,
     ],
     events: [],

@@ -2,7 +2,7 @@ import { HandleCommand } from "@atomist/automation-client";
 import { CommandHandler, Parameter, Parameters, Tags } from "@atomist/automation-client/decorators";
 import { BaseEditorParameters } from "@atomist/automation-client/operations/edit/BaseEditorParameters";
 import { ProjectReviewer } from "@atomist/automation-client/operations/review/projectReviewer";
-import { reviewerHandler } from "@atomist/automation-client/operations/review/reviewerToCommand";
+import { reviewerHandler, ReviewRouter } from "@atomist/automation-client/operations/review/reviewerToCommand";
 import { clean, Severity } from "@atomist/automation-client/operations/review/ReviewResult";
 import { findMatches } from "@atomist/automation-client/project/util/parseUtils";
 import { ParentStanzaGrammar } from "../../../grammars/mavenGrammars";
@@ -18,20 +18,22 @@ export class SpringBootVersionReviewerParameters extends BaseEditorParameters {
         validInput: "Semantic version",
         required: false,
     })
-    public desiredBootVersion: string = "1.5.6.RELEASE";
+    public desiredBootVersion: string = "1.5.9.RELEASE";
 
 }
 
-export const springBootVersionReviewerCommand: HandleCommand =
-    reviewerHandler(() => springBootVersionReviewer,
+export function springBootVersionReviewerCommand(reviewRouter?: ReviewRouter<SpringBootVersionReviewerParameters>): HandleCommand {
+    return reviewerHandler(() => springBootVersionReviewer,
         SpringBootVersionReviewerParameters,
         "SpringBootVersionReviewer",
         {
             description: "Reviewer that flags old versions of Spring Boot",
             tags: SpringBootTags,
             intent: "review spring boot version",
+            reviewRouter,
         },
     );
+}
 
 export const springBootVersionReviewer: ProjectReviewer<SpringBootVersionReviewerParameters> =
     (p, context, params) => {
