@@ -31,7 +31,7 @@ export function verifyPom(p: Project): Promise<ProjectReview> {
                             return clean(p.id);
                         }
 
-                        // TODO check dependency management
+                        // TODO check dependency management block also
                         return {
                             repoId: p.id,
                             comments: [

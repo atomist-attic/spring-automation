@@ -5,10 +5,11 @@ import { JavaSourceFiles } from "../../generator/java/javaProjectUtils";
 import { HandleCommand } from "@atomist/automation-client";
 import { SourceLocation } from "@atomist/automation-client/operations/common/SourceLocation";
 import { BaseEditorParameters } from "@atomist/automation-client/operations/edit/BaseEditorParameters";
-import { reviewerHandler } from "@atomist/automation-client/operations/review/reviewerToCommand";
+import { reviewerHandler, ReviewRouter } from "@atomist/automation-client/operations/review/reviewerToCommand";
 import { ProjectReview, ReviewComment, Severity } from "@atomist/automation-client/operations/review/ReviewResult";
 import { Project } from "@atomist/automation-client/project/Project";
 import { SpringBootTags } from "./springConstants";
+import { MessagingReviewRouter } from "../../messagingReviewRouter";
 
 export class MutableInjection implements ReviewComment {
 
@@ -58,12 +59,14 @@ export function findMutableInjections(p: Project,
         });
 }
 
-export const findMutableInjectionsCommand: HandleCommand =
-    reviewerHandler(() => p => findMutableInjections(p),
+export function findMutableInjectionsCommand(reviewRouter: ReviewRouter<any> = MessagingReviewRouter): HandleCommand {
+    return reviewerHandler(() => p => findMutableInjections(p),
         BaseEditorParameters,
         "FindMutableInjections",
         {
             tags: SpringBootTags,
             intent: "find mutable injections",
+            reviewRouter,
         },
     );
+}
