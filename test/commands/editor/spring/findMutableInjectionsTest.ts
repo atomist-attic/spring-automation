@@ -1,5 +1,5 @@
 import { InMemoryProject } from "@atomist/automation-client/project/mem/InMemoryProject";
-import { findMutableInjections } from "../../../../src/commands/editor/spring/findMutableInjections";
+import { findMutableInjections, MutableInjection } from "../../../../src/commands/editor/spring/findMutableInjections";
 
 import * as assert from "power-assert";
 
@@ -8,8 +8,8 @@ describe("find mutable injections", () => {
     it("finds none in empty project", done => {
         const p = new InMemoryProject();
         findMutableInjections(p)
-            .then(r => {
-                assert(r.length === 0);
+            .then(pr => {
+                assert(pr.comments.length === 0);
                 done();
             }).catch(done);
     });
@@ -20,8 +20,8 @@ describe("find mutable injections", () => {
         const p = InMemoryProject.of(
             {path, content});
         findMutableInjections(p)
-            .then(r => {
-                assert(r.length === 0);
+            .then(pr => {
+                assert(pr.comments.length === 0);
                 done();
             }).catch(done);
     });
@@ -32,13 +32,14 @@ describe("find mutable injections", () => {
         const p = InMemoryProject.of(
             {path, content});
         findMutableInjections(p)
-            .then(r => {
-                assert(r.length === 1);
-                assert(r[0].name === "dog");
-                assert(r[0].type === "field");
-                assert(r[0].sourceLocation.path === path);
-                assert(r[0].sourceLocation.lineFrom1 === 1);
-                assert(r[0].sourceLocation.columnFrom1 > 1);
+            .then(pr => {
+                assert(pr.comments.length === 1);
+                const c = pr.comments[0] as MutableInjection;
+                assert(c.name === "dog");
+                assert(c.type === "field");
+                assert(c.sourceLocation.path === path);
+                assert(c.sourceLocation.lineFrom1 === 1);
+                assert(c.sourceLocation.columnFrom1 > 1);
                 done();
             }).catch(done);
     });
@@ -50,9 +51,10 @@ describe("find mutable injections", () => {
             {path, content});
         findMutableInjections(p)
             .then(r => {
-                assert(r.length === 1);
-                assert(r[0].name === "dog");
-                r.forEach(f => {
+                assert(r.comments.length === 1);
+                assert((r.comments[0] as MutableInjection).name === "dog");
+                r.comments.forEach(c => {
+                    const f = c as MutableInjection;
                     assert(f.sourceLocation.offset > 0);
                     assert(content.substr(f.sourceLocation.offset, f.name.length) === f.name);
                 });
@@ -68,9 +70,9 @@ describe("find mutable injections", () => {
             {path, content});
         findMutableInjections(p)
             .then(r => {
-                assert(r.length === 1);
-                assert(r[0].type === "setter");
-                assert(r[0].name === "setDog");
+                assert(r.comments.length === 1);
+                assert((r.comments[0] as MutableInjection).type === "setter");
+                assert((r.comments[0] as MutableInjection).name === "setDog");
                 done();
             }).catch(done);
     });

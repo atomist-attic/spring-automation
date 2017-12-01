@@ -3,8 +3,12 @@ import { findMatches } from "@atomist/automation-client/tree/ast/astUtils";
 import { JavaSourceFiles } from "../../generator/java/javaProjectUtils";
 
 import { SourceLocation } from "@atomist/automation-client/operations/common/SourceLocation";
-import { ReviewComment, Severity } from "@atomist/automation-client/operations/review/ReviewResult";
+import { ProjectReview, ReviewComment, Severity } from "@atomist/automation-client/operations/review/ReviewResult";
 import { Project } from "@atomist/automation-client/project/Project";
+import { HandleCommand } from "@atomist/automation-client";
+import { reviewerHandler } from "@atomist/automation-client/operations/review/reviewerToCommand";
+import { BaseEditorParameters } from "@atomist/automation-client/operations/edit/BaseEditorParameters";
+import { SpringBootTags } from "./springConstants";
 
 export class MutableInjection implements ReviewComment {
 
@@ -40,11 +44,26 @@ const InjectedFields = `//classBodyDeclaration[//annotation[@value='@Autowired']
  * location of source tree.
  */
 export function findMutableInjections(p: Project,
-                                      globPattern: string = JavaSourceFiles): Promise<MutableInjection[]> {
+                                      globPattern: string = JavaSourceFiles): Promise<ProjectReview> {
     return findMatches(p, JavaFileParser, globPattern, InjectedFields)
-        .then(fileHits =>
-            fileHits.map(m => new MutableInjection(
+        .then(fileHits => {
+            const comments = fileHits.map(m => new MutableInjection(
                 m.$value,
                 m.$value.startsWith("set") ? "setter" : "field",
-                m.sourceLocation)));
+                m.sourceLocation));
+            return {
+                repoId: p.id,
+                comments,
+            };
+        });
 }
+
+export const findMutableInjectionsCommand: HandleCommand =
+    reviewerHandler(() => p => findMutableInjections(p),
+        BaseEditorParameters,
+        "FindMutableInjections",
+        {
+            tags: SpringBootTags,
+            intent: "find mutable injections",
+        },
+    );
