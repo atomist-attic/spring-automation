@@ -7,8 +7,8 @@ import { ProjectReview, ReviewComment, Severity } from "@atomist/automation-clie
 import { Project } from "@atomist/automation-client/project/Project";
 import { findMatches } from "@atomist/automation-client/tree/ast/astUtils";
 import { JavaSourceFiles } from "../../generator/java/javaProjectUtils";
-import { SpringBootTags } from "./springConstants";
 import { MessagingReviewRouter } from "../../messagingReviewRouter";
+import { SpringBootTags } from "./springConstants";
 
 export class NonSpecificMvcAnnotation implements ReviewComment {
 

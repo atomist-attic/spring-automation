@@ -19,7 +19,7 @@ export const MessagingReviewRouter: ReviewRouter<any> =
     (pr, params, title, ctx) => {
         const mesg: SlackMessage = {
             text: `*${title} on ${pr.repoId.owner}/${pr.repoId.repo}*`,
-            attachments: pr.comments.map(c => reviewCommentToAttachment(pr.repoId as GitHubRepoRef, c))
+            attachments: pr.comments.map(c => reviewCommentToAttachment(pr.repoId as GitHubRepoRef, c)),
         };
         return ctx.messageClient.respond(mesg)
             .then(() => successOn(pr.repoId));

@@ -1,6 +1,7 @@
 import { HandleCommand, HandlerContext } from "@atomist/automation-client";
 import { commandHandlerFrom, OnCommand } from "@atomist/automation-client/onCommand";
 import { BaseEditorParameters } from "@atomist/automation-client/operations/edit/BaseEditorParameters";
+import * as slack from "@atomist/slack-messages";
 import { findMutableInjectionsCommand } from "./findMutableInjections";
 import { findNonSpecificMvcAnnotationsCommand } from "./findNonSpecificMvcAnnotations";
 import {
@@ -9,7 +10,6 @@ import {
 } from "./removeUnnecessaryAnnotations";
 import { SpringBootTags } from "./springConstants";
 import { verifyPomCommand } from "./verifyPom";
-import * as slack from "@atomist/slack-messages";
 
 const oldPhil = "http://www.victorianceramics.com/images/artists/philip-webb.jpg";
 const springPhil = "https://pbs.twimg.com/profile_images/606164636811984896/QEAnB8Xu.jpg";
@@ -29,11 +29,11 @@ const handler: OnCommand<BaseEditorParameters> =
     };
 
 function showPhil(ctx: HandlerContext) {
-    const msg : slack.SlackMessage = {text: "Phil", attachments: [{
+    const msg: slack.SlackMessage = {text: "Phil", attachments: [{
         image_url: oldPhil,
         fallback: "Phil",
     } ], unfurl_media: true};
-   return ctx.messageClient.respond(msg);
+    return ctx.messageClient.respond(msg);
 }
 
 export const unleashPhilCommand: HandleCommand = commandHandlerFrom(

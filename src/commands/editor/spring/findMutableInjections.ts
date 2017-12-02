@@ -8,8 +8,8 @@ import { BaseEditorParameters } from "@atomist/automation-client/operations/edit
 import { reviewerHandler, ReviewRouter } from "@atomist/automation-client/operations/review/reviewerToCommand";
 import { ProjectReview, ReviewComment, Severity } from "@atomist/automation-client/operations/review/ReviewResult";
 import { Project } from "@atomist/automation-client/project/Project";
-import { SpringBootTags } from "./springConstants";
 import { MessagingReviewRouter } from "../../messagingReviewRouter";
+import { SpringBootTags } from "./springConstants";
 
 export class MutableInjection implements ReviewComment {
 
