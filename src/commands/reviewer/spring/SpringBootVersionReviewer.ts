@@ -56,6 +56,13 @@ export const springBootVersionReviewer: ProjectReviewer<SpringBootVersionReviewe
                                         path: "pom.xml",
                                         offset: 0,
                                     },
+                                    fix: {
+                                        command: "SpringBootVersionUpgrade",
+                                        params: {
+                                            owner: p.id.owner,
+                                            repo: p.id.repo,
+                                        }
+                                    },
                                 },
                             ],
                             version,

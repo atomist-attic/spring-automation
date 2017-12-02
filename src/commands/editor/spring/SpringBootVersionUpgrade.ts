@@ -46,8 +46,3 @@ export function springBootVersionUpgrade(repoFinder: RepoFinder = allReposInTeam
         });
 }
 
-// constructor() {
-//     // Check with an API call if the repo has a POM,
-//     // to save unnecessary cloning
-//     super(r => this.local ? true : hasFile(this.githubToken, r.owner, r.repo, "pom.xml"));
-// }

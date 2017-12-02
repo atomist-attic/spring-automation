@@ -34,12 +34,8 @@ function reviewCommentToAttachment(grr: GitHubRepoRef, rc: ReviewComment): Attac
         text: `${slack.url(deepLink(grr, rc.sourceLocation), "jump to")} ${rc.detail}`,
         mrkdwn_in: ["text"],
         fallback: "error",
-        actions: [
-            buttonForCommand({text: "Fix"},
-                "SpringBootVersionUpgrade", {
-                    owner: grr.owner,
-                    repo: grr.repo,
-                }),
-        ],
+        actions: !!rc.fix ? [
+            buttonForCommand({text: "Fix"}, rc.fix.command, rc.fix.params),
+        ] : [],
     };
 }
