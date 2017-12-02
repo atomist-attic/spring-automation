@@ -8,6 +8,8 @@ import { findMatches } from "@atomist/automation-client/project/util/parseUtils"
 import { ParentStanzaGrammar } from "../../../grammars/mavenGrammars";
 import { SpringBootStarter, SpringBootTags } from "../../editor/spring/springConstants";
 
+export const CurrentSpringBootVersion = "1.5.9.RELEASE";
+
 @Parameters()
 export class SpringBootVersionReviewerParameters extends BaseEditorParameters {
 
@@ -18,7 +20,7 @@ export class SpringBootVersionReviewerParameters extends BaseEditorParameters {
         validInput: "Semantic version",
         required: false,
     })
-    public desiredBootVersion: string = "1.5.9.RELEASE";
+    public desiredBootVersion: string = CurrentSpringBootVersion;
 
 }
 

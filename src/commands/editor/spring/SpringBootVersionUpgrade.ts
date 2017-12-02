@@ -8,6 +8,7 @@ import { BaseEditorParameters } from "@atomist/automation-client/operations/edit
 import { EditMode, PullRequest } from "@atomist/automation-client/operations/edit/editModes";
 import { editorHandler } from "@atomist/automation-client/operations/edit/editorToCommand";
 import { setSpringBootVersionEditor } from "./setSpringBootVersionEditor";
+import { CurrentSpringBootVersion } from "../../reviewer/spring/SpringBootVersionReviewer";
 
 @Parameters()
 export class SpringBootVersionUpgradeParameters extends BaseEditorParameters {
@@ -19,7 +20,7 @@ export class SpringBootVersionUpgradeParameters extends BaseEditorParameters {
         validInput: "Semantic version",
         required: false,
     })
-    public desiredBootVersion: string = "1.5.8.RELEASE";
+    public desiredBootVersion: string = CurrentSpringBootVersion;
 
 }
 

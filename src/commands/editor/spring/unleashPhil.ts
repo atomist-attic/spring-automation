@@ -1,6 +1,5 @@
 import { HandleCommand, HandlerContext } from "@atomist/automation-client";
 import { commandHandlerFrom, OnCommand } from "@atomist/automation-client/onCommand";
-import { BaseEditorParameters } from "@atomist/automation-client/operations/edit/BaseEditorParameters";
 import * as slack from "@atomist/slack-messages";
 import { MessagingReviewRouter } from "../../messagingReviewRouter";
 import {
