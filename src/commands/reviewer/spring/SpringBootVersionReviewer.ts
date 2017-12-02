@@ -6,12 +6,12 @@ import { clean, Severity } from "@atomist/automation-client/operations/review/Re
 import { findMatches } from "@atomist/automation-client/project/util/parseUtils";
 import { ParentStanzaGrammar } from "../../../grammars/mavenGrammars";
 import { SpringBootStarter, SpringBootTags } from "../../editor/spring/springConstants";
-import { MappedRepoParameters } from "@atomist/automation-client/operations/common/params/MappedRepoParameters";
+import { BaseEditorOrReviewerParameters } from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
 
 export const CurrentSpringBootVersion = "1.5.9.RELEASE";
 
 @Parameters()
-export class SpringBootVersionReviewerParameters extends MappedRepoParameters {
+export class SpringBootVersionReviewerParameters extends BaseEditorOrReviewerParameters {
 
     @Parameter({
         displayName: "Desired Spring Boot version",

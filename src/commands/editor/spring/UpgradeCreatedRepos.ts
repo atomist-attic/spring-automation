@@ -3,10 +3,16 @@ import { RepoFinder } from "@atomist/automation-client/operations/common/repoFin
 import { editAll } from "@atomist/automation-client/operations/edit/editAll";
 import { PullRequest } from "@atomist/automation-client/operations/edit/editModes";
 import { setSpringBootVersionEditor } from "./setSpringBootVersionEditor";
+import {
+    BaseEditorOrReviewerParameters,
+    EditorOrReviewerParameters
+} from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
+import { MappedRepoParameters } from "@atomist/automation-client/operations/common/params/MappedRepoParameters";
+import { GitHubTargetsParams } from "@atomist/automation-client/operations/common/params/GitHubTargetsParams";
 
 @CommandHandler("update spring boot version on all created repos",
     "upgrade boot repos")
-export class UpgradeCreatedRepos implements HandleCommand {
+export class UpgradeCreatedRepos implements HandleCommand, EditorOrReviewerParameters {
 
     @Parameter({
         displayName: "Desired Spring Boot version",
@@ -17,9 +23,7 @@ export class UpgradeCreatedRepos implements HandleCommand {
     })
     public desiredBootVersion: string;
 
-    public owner: string;
-    public repo: string;
-    public sha: string;
+    public targets: GitHubTargetsParams = new MappedRepoParameters();
 
     constructor(private repoFinder: RepoFinder, private collaboratorToken: string) {
     }

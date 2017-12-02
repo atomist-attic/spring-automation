@@ -12,7 +12,7 @@ import { cleanTravisBuildFiles, doUpdatePom, inferStructureAndMovePackage } from
 import { inferSpringStructureAndRename, SpringBootGeneratorParameters } from "./SpringBootProjectParameters";
 
 export function springBootGenerator(projectPersister: ProjectPersister = GitHubProjectPersister): HandleCommand<SpringBootGeneratorParameters> {
-    return generatorHandler(
+    return generatorHandler<SpringBootGeneratorParameters>(
         springBootProjectEditor,
         SpringBootGeneratorParameters,
         "springBootGenerator",
@@ -23,13 +23,14 @@ export function springBootGenerator(projectPersister: ProjectPersister = GitHubP
         });
 }
 
-export function springBootProjectEditor(params: SpringBootGeneratorParameters): AnyProjectEditor {
-    const starterEditors: AnyProjectEditor[] =
+// TODO detyping here is nasty
+export function springBootProjectEditor(params: SpringBootGeneratorParameters): AnyProjectEditor<any> {
+    const starterEditors: AnyProjectEditor<any>[] =
         params.starters.map(starter =>
             addSpringBootStarter("spring-boot-starter-" + starter));
     logger.debug("Starters: [%s]. Editor count=%d", params.starters.join(), starterEditors.length);
 
-    const editors: AnyProjectEditor[] = [
+    const editors: AnyProjectEditor<SpringBootGeneratorParameters>[] = [
         curry(cleanReadMe)(params.target.description),
         curry(cleanTravisBuildFiles)(slackTeamTravisWebhookUrl(params.slackTeam)),
         curry(doUpdatePom)(params),

@@ -1,4 +1,7 @@
-import { HandleCommand, HandlerContext, Parameter } from "@atomist/automation-client";
+import {
+    HandleCommand, HandlerContext, MappedParameter, MappedParameters,
+    Parameter
+} from "@atomist/automation-client";
 import { commandHandlerFrom, OnCommand } from "@atomist/automation-client/onCommand";
 import * as slack from "@atomist/slack-messages";
 import { MessagingReviewRouter } from "../../messagingReviewRouter";
@@ -16,22 +19,36 @@ import {
 import { SpringBootTags } from "./springConstants";
 import { verifyPomCommand } from "./verifyPom";
 import { Parameters } from "@atomist/automation-client/decorators";
-import { MappedRepoParameters } from "@atomist/automation-client/operations/common/params/MappedRepoParameters";
+import {
+    BaseEditorOrReviewerParameters,
+    EditorOrReviewerParameters
+} from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
 import { AlwaysAskRepoParameters } from "@atomist/automation-client/operations/common/params/AlwaysAskRepoParameters";
-import { GitHubParams } from "@atomist/automation-client/operations/common/params/GitHubParams";
+import { GitHubTargetsParams } from "@atomist/automation-client/operations/common/params/GitHubTargetsParams";
+import { MappedRepoParameters } from "@atomist/automation-client/operations/common/params/MappedRepoParameters";
+import { GitBranchRegExp } from "@atomist/automation-client/operations/common/params/gitHubPatterns";
 
 const oldPhil = "http://www.victorianceramics.com/images/artists/philip-webb.jpg";
 const springPhil = "https://pbs.twimg.com/profile_images/606164636811984896/QEAnB8Xu.jpg";
 
-@Parameters()
-export class UnleashPhilParameters extends GitHubParams {
+export class RegexReposParameters extends GitHubTargetsParams {
 
     public owner: string;
 
     @Parameter({required: false})
     public repo: string = ".*";
 
-    public sha;
+    @Parameter({description: "Branch or ref. Defaults to 'master'", ...GitBranchRegExp, required: false})
+    public sha: string;
+
+}
+
+@Parameters()
+export class UnleashPhilParameters extends BaseEditorOrReviewerParameters {
+
+    constructor() {
+        super(new RegexReposParameters());
+    }
 
     @Parameter({
         displayName: "Desired Spring Boot version",

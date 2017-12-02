@@ -10,10 +10,10 @@ import * as _ from "lodash";
 import { dependencyOfGrammar } from "../../../grammars/mavenGrammars";
 import { VersionedArtifact } from "../../../grammars/VersionedArtifact";
 import { SpringBootTags } from "../../editor/spring/springConstants";
-import { MappedRepoParameters } from "@atomist/automation-client/operations/common/params/MappedRepoParameters";
+import { BaseEditorOrReviewerParameters } from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
 
 @Parameters()
-export class VersionSpreadReviewerParameters extends MappedRepoParameters {
+export class VersionSpreadReviewerParameters extends BaseEditorOrReviewerParameters {
 
     @Parameter({
         displayName: "Maven Group ID",

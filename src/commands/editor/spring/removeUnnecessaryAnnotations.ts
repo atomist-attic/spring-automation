@@ -9,6 +9,7 @@ import { ZapTrailingWhitespace } from "@atomist/automation-client/tree/ast/FileH
 import { JavaSourceFiles } from "../../generator/java/javaProjectUtils";
 import { SpringBootTags } from "./springConstants";
 import { MappedRepoParameters } from "@atomist/automation-client/operations/common/params/MappedRepoParameters";
+import { BaseEditorOrReviewerParameters } from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
 
 const UnnecessaryComponentScanAnnotations = `//typeDeclaration[/classDeclaration]
                             [//annotation[@value='@SpringBootApplication']]
@@ -24,7 +25,7 @@ export const removeUnnecessaryComponentScanEditor: SimpleProjectEditor = p => {
 
 export const removeUnnecessaryComponentScanCommand: HandleCommand =
     editorHandler(() => removeUnnecessaryComponentScanEditor,
-        MappedRepoParameters,
+        BaseEditorOrReviewerParameters,
         "RemoveUnnecessaryComponentScanAnnotations", {
             description: "Remove unnecessary component scan annotations",
             editMode: new PullRequest("remove-unnecessary-component-scan", "Remove unnecessary component scan annotations",
@@ -46,7 +47,7 @@ export const removeAutowiredOnSoleConstructor: SimpleProjectEditor = p => {
 
 export const removeAutowiredOnSoleConstructorCommand: HandleCommand =
     editorHandler(() => removeAutowiredOnSoleConstructor,
-        MappedRepoParameters,
+        BaseEditorOrReviewerParameters,
         "RemoveAutowiredOnSoleConstructor",
         {
             description: "Remove @Autowired on sole constructor as it's not necessary",

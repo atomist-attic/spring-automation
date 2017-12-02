@@ -8,10 +8,10 @@ import { EditMode, PullRequest } from "@atomist/automation-client/operations/edi
 import { editorHandler } from "@atomist/automation-client/operations/edit/editorToCommand";
 import { setSpringBootVersionEditor } from "./setSpringBootVersionEditor";
 import { CurrentSpringBootVersion } from "../../reviewer/spring/SpringBootVersionReviewer";
-import { MappedRepoParameters } from "@atomist/automation-client/operations/common/params/MappedRepoParameters";
+import { BaseEditorOrReviewerParameters } from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
 
 @Parameters()
-export class SpringBootVersionUpgradeParameters extends MappedRepoParameters {
+export class SpringBootVersionUpgradeParameters extends BaseEditorOrReviewerParameters {
 
     @Parameter({
         displayName: "Desired Spring Boot version",
@@ -29,7 +29,7 @@ export class SpringBootVersionUpgradeParameters extends MappedRepoParameters {
  */
 export function springBootVersionUpgrade(repoFinder: RepoFinder = allReposInTeam(),
                                          repoLoader: (p: SpringBootVersionUpgradeParameters) => RepoLoader =
-                                             p => gitHubRepoLoader({token: p.githubToken}),
+                                             p => gitHubRepoLoader({token: p.targets.githubToken}),
                                          testEditMode?: EditMode): HandleCommand<SpringBootVersionUpgradeParameters> {
 
     console.log("RepoFinder = " + repoFinder + ", RepoLoader = " + repoLoader + ", editMode=" + testEditMode);
