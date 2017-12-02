@@ -17,6 +17,10 @@ export class UpgradeCreatedRepos implements HandleCommand {
     })
     public desiredBootVersion: string;
 
+    public owner: string;
+    public repo: string;
+    public sha: string;
+
     constructor(private repoFinder: RepoFinder, private collaboratorToken: string) {
     }
 

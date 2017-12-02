@@ -41,13 +41,15 @@ describe("springBootVersionUpgrade", () => {
         const v = "1.3.0";
         const proj = InMemoryProject.from(new SimpleRepoId("x", "y"), {path: "pom.xml", content: springBootPom(v)});
         const rf = fromListRepoFinder([proj]);
+        const params = new SpringBootVersionUpgradeParameters();
+        params.repo = ".*";
         (springBootVersionUpgrade(rf, p => fromListRepoLoader([proj]),
             new VerifyEditMode(p => {
                 const updated = p.findFileSync("pom.xml");
                 assert(!updated.getContentSync().includes(v));
                 assert(updated.getContentSync().includes(new SpringBootVersionUpgradeParameters().desiredBootVersion));
                 verified = true;
-            })) as any).handle(null, new SpringBootVersionUpgradeParameters())
+            })) as any).handle(null, params)
             .then(() => {
                 assert(verified, "Not verified");
                 done();

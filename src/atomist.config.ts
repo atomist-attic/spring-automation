@@ -7,7 +7,7 @@ import {
     removeUnnecessaryComponentScanCommand,
 } from "./commands/editor/spring/removeUnnecessaryAnnotations";
 import { springBootVersionUpgrade } from "./commands/editor/spring/SpringBootVersionUpgrade";
-import { unleashPhilCommand } from "./commands/editor/spring/unleashPhil";
+import { askPhilCommand, unleashPhilCommand } from "./commands/editor/spring/unleashPhil";
 import { verifyPomCommand } from "./commands/editor/spring/verifyPom";
 import { kotlinSpring5Generator } from "./commands/generator/spring/kotlinSpring5Generator";
 import { springBootGenerator } from "./commands/generator/spring/springBootGenerator";
@@ -52,6 +52,7 @@ export const configuration: any = {
         () => findNonSpecificMvcAnnotationsCommand(),
         () => findMutableInjectionsCommand(),
         () => verifyPomCommand(),
+        () => askPhilCommand,
         () => unleashPhilCommand,
         () => springBootVersionReviewerCommand(MessagingReviewRouter),
         // CopyGenerator,

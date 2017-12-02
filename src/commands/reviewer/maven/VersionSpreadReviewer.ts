@@ -2,7 +2,6 @@ import { HandleCommand } from "@atomist/automation-client";
 import { Parameter, Parameters } from "@atomist/automation-client/decorators";
 import { RepoFinder } from "@atomist/automation-client/operations/common/repoFinder";
 import { RepoLoader } from "@atomist/automation-client/operations/common/repoLoader";
-import { BaseEditorParameters } from "@atomist/automation-client/operations/edit/BaseEditorParameters";
 import { ProjectReviewer } from "@atomist/automation-client/operations/review/projectReviewer";
 import { reviewerHandler } from "@atomist/automation-client/operations/review/reviewerToCommand";
 import { clean, ProjectReview, ReviewResult } from "@atomist/automation-client/operations/review/ReviewResult";
@@ -11,9 +10,10 @@ import * as _ from "lodash";
 import { dependencyOfGrammar } from "../../../grammars/mavenGrammars";
 import { VersionedArtifact } from "../../../grammars/VersionedArtifact";
 import { SpringBootTags } from "../../editor/spring/springConstants";
+import { MappedRepoParameters } from "@atomist/automation-client/operations/common/params/MappedRepoParameters";
 
 @Parameters()
-export class VersionSpreadReviewerParameters extends BaseEditorParameters {
+export class VersionSpreadReviewerParameters extends MappedRepoParameters {
 
     @Parameter({
         displayName: "Maven Group ID",

@@ -1,5 +1,4 @@
 import { HandleCommand } from "@atomist/automation-client";
-import { BaseEditorParameters } from "@atomist/automation-client/operations/edit/BaseEditorParameters";
 import { reviewerHandler, ReviewRouter } from "@atomist/automation-client/operations/review/reviewerToCommand";
 import { clean, ProjectReview } from "@atomist/automation-client/operations/review/ReviewResult";
 import { Project } from "@atomist/automation-client/project/Project";
@@ -8,6 +7,7 @@ import { SpringBootStarter, SpringBootTags } from "./springConstants";
 
 import * as _ from "lodash";
 import { MessagingReviewRouter } from "../../messagingReviewRouter";
+import { MappedRepoParameters } from "@atomist/automation-client/operations/common/params/MappedRepoParameters";
 
 const xml2js = require("xml2js");
 
@@ -51,7 +51,7 @@ export function verifyPom(p: Project): Promise<ProjectReview> {
 
 export function verifyPomCommand(reviewRouter: ReviewRouter<any> = MessagingReviewRouter): HandleCommand {
     return reviewerHandler(() => verifyPom,
-        BaseEditorParameters,
+        MappedRepoParameters,
         "VerifyPOM",
         {
             tags: SpringBootTags,

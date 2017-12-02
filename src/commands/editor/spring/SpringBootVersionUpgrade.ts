@@ -4,14 +4,14 @@ import { allReposInTeam } from "@atomist/automation-client/operations/common/all
 import { gitHubRepoLoader } from "@atomist/automation-client/operations/common/gitHubRepoLoader";
 import { RepoFinder } from "@atomist/automation-client/operations/common/repoFinder";
 import { RepoLoader } from "@atomist/automation-client/operations/common/repoLoader";
-import { BaseEditorParameters } from "@atomist/automation-client/operations/edit/BaseEditorParameters";
 import { EditMode, PullRequest } from "@atomist/automation-client/operations/edit/editModes";
 import { editorHandler } from "@atomist/automation-client/operations/edit/editorToCommand";
-import { CurrentSpringBootVersion } from "../../reviewer/spring/SpringBootVersionReviewer";
 import { setSpringBootVersionEditor } from "./setSpringBootVersionEditor";
+import { CurrentSpringBootVersion } from "../../reviewer/spring/SpringBootVersionReviewer";
+import { MappedRepoParameters } from "@atomist/automation-client/operations/common/params/MappedRepoParameters";
 
 @Parameters()
-export class SpringBootVersionUpgradeParameters extends BaseEditorParameters {
+export class SpringBootVersionUpgradeParameters extends MappedRepoParameters {
 
     @Parameter({
         displayName: "Desired Spring Boot version",

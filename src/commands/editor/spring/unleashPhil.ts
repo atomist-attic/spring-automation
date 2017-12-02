@@ -1,8 +1,9 @@
-import { HandleCommand, HandlerContext } from "@atomist/automation-client";
+import { HandleCommand, HandlerContext, Parameter } from "@atomist/automation-client";
 import { commandHandlerFrom, OnCommand } from "@atomist/automation-client/onCommand";
 import * as slack from "@atomist/slack-messages";
 import { MessagingReviewRouter } from "../../messagingReviewRouter";
 import {
+    CurrentSpringBootVersion,
     springBootVersionReviewerCommand,
     SpringBootVersionReviewerParameters,
 } from "../../reviewer/spring/SpringBootVersionReviewer";
@@ -14,9 +15,34 @@ import {
 } from "./removeUnnecessaryAnnotations";
 import { SpringBootTags } from "./springConstants";
 import { verifyPomCommand } from "./verifyPom";
+import { Parameters } from "@atomist/automation-client/decorators";
+import { MappedRepoParameters } from "@atomist/automation-client/operations/common/params/MappedRepoParameters";
+import { AlwaysAskRepoParameters } from "@atomist/automation-client/operations/common/params/AlwaysAskRepoParameters";
+import { GitHubParams } from "@atomist/automation-client/operations/common/params/GitHubParams";
 
 const oldPhil = "http://www.victorianceramics.com/images/artists/philip-webb.jpg";
 const springPhil = "https://pbs.twimg.com/profile_images/606164636811984896/QEAnB8Xu.jpg";
+
+@Parameters()
+export class UnleashPhilParameters extends GitHubParams {
+
+    public owner: string;
+
+    @Parameter({required: false})
+    public repo: string = ".*";
+
+    public sha;
+
+    @Parameter({
+        displayName: "Desired Spring Boot version",
+        description: "The desired Spring Boot version across these repos",
+        pattern: /^.+$/,
+        validInput: "Semantic version",
+        required: false,
+    })
+    public desiredBootVersion: string = CurrentSpringBootVersion;
+
+}
 
 const handler: OnCommand<SpringBootVersionReviewerParameters> =
     (ctx, parameters) => {
@@ -34,18 +60,29 @@ const handler: OnCommand<SpringBootVersionReviewerParameters> =
     };
 
 function showPhil(ctx: HandlerContext) {
-    const msg: slack.SlackMessage = {text: "Phil", attachments: [{
-        image_url: oldPhil,
-        fallback: "Phil",
-    } ], unfurl_media: true};
+    const msg: slack.SlackMessage = {
+        text: "Phil", attachments: [{
+            image_url: oldPhil,
+            fallback: "Phil",
+        }], unfurl_media: true
+    };
     return ctx.messageClient.respond(msg);
 }
 
 export const unleashPhilCommand: HandleCommand = commandHandlerFrom(
     handler,
-    SpringBootVersionReviewerParameters,
+    UnleashPhilParameters,
     "UnleashPhil",
     "Unleash Phil Webb",
     "unleash phil",
+    SpringBootTags,
+);
+
+export const askPhilCommand: HandleCommand = commandHandlerFrom(
+    handler,
+    SpringBootVersionReviewerParameters,
+    "askPhil",
+    "Ask Phil Webb",
+    "ask phil",
     SpringBootTags,
 );
