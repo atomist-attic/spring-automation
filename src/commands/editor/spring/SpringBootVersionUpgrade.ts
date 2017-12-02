@@ -7,8 +7,8 @@ import { RepoLoader } from "@atomist/automation-client/operations/common/repoLoa
 import { BaseEditorParameters } from "@atomist/automation-client/operations/edit/BaseEditorParameters";
 import { EditMode, PullRequest } from "@atomist/automation-client/operations/edit/editModes";
 import { editorHandler } from "@atomist/automation-client/operations/edit/editorToCommand";
-import { setSpringBootVersionEditor } from "./setSpringBootVersionEditor";
 import { CurrentSpringBootVersion } from "../../reviewer/spring/SpringBootVersionReviewer";
+import { setSpringBootVersionEditor } from "./setSpringBootVersionEditor";
 
 @Parameters()
 export class SpringBootVersionUpgradeParameters extends BaseEditorParameters {
