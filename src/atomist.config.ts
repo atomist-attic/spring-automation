@@ -6,6 +6,7 @@ import {
     removeAutowiredOnSoleConstructorCommand,
     removeUnnecessaryComponentScanCommand,
 } from "./commands/editor/spring/removeUnnecessaryAnnotations";
+import { springBootVersionUpgrade } from "./commands/editor/spring/SpringBootVersionUpgrade";
 import { unleashPhilCommand } from "./commands/editor/spring/unleashPhil";
 import { verifyPomCommand } from "./commands/editor/spring/verifyPom";
 import { kotlinSpring5Generator } from "./commands/generator/spring/kotlinSpring5Generator";
@@ -14,7 +15,6 @@ import { MessagingReviewRouter } from "./commands/messagingReviewRouter";
 import { springBootVersionReviewerCommand } from "./commands/reviewer/spring/SpringBootVersionReviewer";
 import { LogzioOptions } from "./util/logzio";
 import { secret } from "./util/secrets";
-import { springBootVersionUpgrade } from "./commands/editor/spring/SpringBootVersionUpgrade";
 
 const pj = require(`${appRoot.path}/package.json`);
 

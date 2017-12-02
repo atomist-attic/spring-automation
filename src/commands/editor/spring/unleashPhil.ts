@@ -2,6 +2,11 @@ import { HandleCommand, HandlerContext } from "@atomist/automation-client";
 import { commandHandlerFrom, OnCommand } from "@atomist/automation-client/onCommand";
 import { BaseEditorParameters } from "@atomist/automation-client/operations/edit/BaseEditorParameters";
 import * as slack from "@atomist/slack-messages";
+import { MessagingReviewRouter } from "../../messagingReviewRouter";
+import {
+    springBootVersionReviewerCommand,
+    SpringBootVersionReviewerParameters,
+} from "../../reviewer/spring/SpringBootVersionReviewer";
 import { findMutableInjectionsCommand } from "./findMutableInjections";
 import { findNonSpecificMvcAnnotationsCommand } from "./findNonSpecificMvcAnnotations";
 import {
@@ -10,11 +15,6 @@ import {
 } from "./removeUnnecessaryAnnotations";
 import { SpringBootTags } from "./springConstants";
 import { verifyPomCommand } from "./verifyPom";
-import {
-    springBootVersionReviewerCommand,
-    SpringBootVersionReviewerParameters
-} from "../../reviewer/spring/SpringBootVersionReviewer";
-import { MessagingReviewRouter } from "../../messagingReviewRouter";
 
 const oldPhil = "http://www.victorianceramics.com/images/artists/philip-webb.jpg";
 const springPhil = "https://pbs.twimg.com/profile_images/606164636811984896/QEAnB8Xu.jpg";

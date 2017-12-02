@@ -61,7 +61,7 @@ export const springBootVersionReviewer: ProjectReviewer<SpringBootVersionReviewe
                                         params: {
                                             owner: p.id.owner,
                                             repo: p.id.repo,
-                                        }
+                                        },
                                     },
                                 },
                             ],

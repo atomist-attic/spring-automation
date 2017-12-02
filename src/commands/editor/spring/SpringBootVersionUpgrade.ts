@@ -45,4 +45,3 @@ export function springBootVersionUpgrade(repoFinder: RepoFinder = allReposInTeam
                 "Upgrade Spring Boot to " + params.desiredBootVersion)),
         });
 }
-

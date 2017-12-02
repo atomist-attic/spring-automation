@@ -2,10 +2,10 @@ import { successOn } from "@atomist/automation-client/action/ActionResult";
 import { GitHubRepoRef } from "@atomist/automation-client/operations/common/GitHubRepoRef";
 import { ReviewRouter } from "@atomist/automation-client/operations/review/reviewerToCommand";
 import { ReviewComment } from "@atomist/automation-client/operations/review/ReviewResult";
+import { buttonForCommand } from "@atomist/automation-client/spi/message/MessageClient";
 import { deepLink } from "@atomist/automation-client/util/gitHub";
 import * as slack from "@atomist/slack-messages";
 import { Attachment, SlackMessage } from "@atomist/slack-messages";
-import { buttonForCommand } from "@atomist/automation-client/spi/message/MessageClient";
 
 /**
  * ReviewRouter that messages to client
