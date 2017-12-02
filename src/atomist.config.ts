@@ -14,6 +14,7 @@ import { MessagingReviewRouter } from "./commands/messagingReviewRouter";
 import { springBootVersionReviewerCommand } from "./commands/reviewer/spring/SpringBootVersionReviewer";
 import { LogzioOptions } from "./util/logzio";
 import { secret } from "./util/secrets";
+import { springBootVersionUpgrade } from "./commands/editor/spring/SpringBootVersionUpgrade";
 
 const pj = require(`${appRoot.path}/package.json`);
 
@@ -47,7 +48,7 @@ export const configuration: any = {
         () => removeAutowiredOnSoleConstructorCommand,
         () => springBootGenerator(),
         () => kotlinSpring5Generator(),
-        // () => springBootVersionUpgrade, // Is this one bad?
+        () => springBootVersionUpgrade(), // Is this one bad?
         () => findNonSpecificMvcAnnotationsCommand(),
         () => findMutableInjectionsCommand(),
         () => verifyPomCommand(),

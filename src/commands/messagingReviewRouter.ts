@@ -5,6 +5,7 @@ import { ReviewComment } from "@atomist/automation-client/operations/review/Revi
 import { deepLink } from "@atomist/automation-client/util/gitHub";
 import * as slack from "@atomist/slack-messages";
 import { Attachment, SlackMessage } from "@atomist/slack-messages";
+import { buttonForCommand } from "@atomist/automation-client/spi/message/MessageClient";
 
 /**
  * ReviewRouter that messages to client
@@ -31,7 +32,14 @@ function reviewCommentToAttachment(grr: GitHubRepoRef, rc: ReviewComment): Attac
         author_name: rc.category,
         author_icon: "https://image.shutterstock.com/z/stock-vector-an-image-of-a-red-grunge-x-572409526.jpg",
         text: `${slack.url(deepLink(grr, rc.sourceLocation), "jump to")} ${rc.detail}`,
-        mrkdwn_in: [ "text"],
+        mrkdwn_in: ["text"],
         fallback: "error",
+        actions: [
+            buttonForCommand({text: "Fix"},
+                "SpringBootVersionUpgrade", {
+                    owner: grr.owner,
+                    repo: grr.repo,
+                }),
+        ],
     };
 }
