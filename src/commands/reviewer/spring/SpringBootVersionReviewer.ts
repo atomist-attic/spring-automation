@@ -1,5 +1,5 @@
 import { HandleCommand } from "@atomist/automation-client";
-import { CommandHandler, Parameter, Parameters, Tags } from "@atomist/automation-client/decorators";
+import { Parameter, Parameters } from "@atomist/automation-client/decorators";
 import { BaseEditorParameters } from "@atomist/automation-client/operations/edit/BaseEditorParameters";
 import { ProjectReviewer } from "@atomist/automation-client/operations/review/projectReviewer";
 import { reviewerHandler, ReviewRouter } from "@atomist/automation-client/operations/review/reviewerToCommand";
@@ -45,20 +45,22 @@ export const springBootVersionReviewer: ProjectReviewer<SpringBootVersionReviewe
                     if (outDated) {
                         const detail = `Old version of Spring Boot: [${version}] - ` +
                             `should have been [${params.desiredBootVersion}]`;
-                        return context.messageClient.respond(`\`${p.id.owner}:${p.id.repo}\`: ${detail}`)
-                            .then(_ =>
-                                Promise.resolve({
-                                    repoId: p.id,
-                                    comments: [
-                                        {
-                                            severity: "warn" as Severity,
-                                            category: "Spring Boot version",
-                                            detail,
-                                        },
-                                    ],
-                                    version,
-                                    desiredVersion: params.desiredBootVersion,
-                                }));
+                        return Promise.resolve({
+                            repoId: p.id,
+                            comments: [
+                                {
+                                    severity: "warn" as Severity,
+                                    category: "Spring Boot version",
+                                    detail,
+                                    sourceLocation: {
+                                        path: "pom.xml",
+                                        offset: 0,
+                                    },
+                                },
+                            ],
+                            version,
+                            desiredVersion: params.desiredBootVersion,
+                        });
                     }
                 }
                 return Promise.resolve(clean(p.id));

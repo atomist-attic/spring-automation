@@ -10,11 +10,16 @@ import {
 } from "./removeUnnecessaryAnnotations";
 import { SpringBootTags } from "./springConstants";
 import { verifyPomCommand } from "./verifyPom";
+import {
+    springBootVersionReviewerCommand,
+    SpringBootVersionReviewerParameters
+} from "../../reviewer/spring/SpringBootVersionReviewer";
+import { MessagingReviewRouter } from "../../messagingReviewRouter";
 
 const oldPhil = "http://www.victorianceramics.com/images/artists/philip-webb.jpg";
 const springPhil = "https://pbs.twimg.com/profile_images/606164636811984896/QEAnB8Xu.jpg";
 
-const handler: OnCommand<BaseEditorParameters> =
+const handler: OnCommand<SpringBootVersionReviewerParameters> =
     (ctx, parameters) => {
         // Fortunately all these commands have the same parameters
         return showPhil(ctx)
@@ -22,6 +27,7 @@ const handler: OnCommand<BaseEditorParameters> =
             .then(() => findNonSpecificMvcAnnotationsCommand().handle(ctx, parameters))
             .then(() => findMutableInjectionsCommand().handle(ctx, parameters))
             .then(() => verifyPomCommand().handle(ctx, parameters))
+            .then(() => springBootVersionReviewerCommand(MessagingReviewRouter).handle(ctx, parameters))
             .then(() => ctx.messageClient.respond("Phil is suggesting changes. Ignore his PRs at your peril!"))
             .then(() => removeUnnecessaryComponentScanCommand.handle(ctx, parameters))
             .then(() => removeAutowiredOnSoleConstructorCommand.handle(ctx, parameters))
@@ -38,7 +44,7 @@ function showPhil(ctx: HandlerContext) {
 
 export const unleashPhilCommand: HandleCommand = commandHandlerFrom(
     handler,
-    BaseEditorParameters,
+    SpringBootVersionReviewerParameters,
     "UnleashPhil",
     "Unleash Phil Webb",
     "unleash phil",

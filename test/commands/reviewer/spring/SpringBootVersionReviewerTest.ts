@@ -44,6 +44,7 @@ describe("SpringBootVersionReviewer", () => {
                 assert(rev.repoId.owner === id.owner);
                 assert(rev.repoId.repo === id.repo);
                 assert(rev.comments.length === 1);
+                assert(rev.comments[0].detail.includes(new SpringBootVersionReviewerParameters().desiredBootVersion))
                 assert(rev.desiredVersion === new SpringBootVersionReviewerParameters().desiredBootVersion);
                 assert(rev.version === v, rev.version);
                 done();
