@@ -14,14 +14,14 @@ import { MessagingReviewRouter } from "../../messagingReviewRouter";
 export class MutableInjection implements ReviewComment {
 
     public severity: Severity = "warn";
+    public category = "Mutable injection";
 
     constructor(public name: string, public type: "field" | "setter",
                 public sourceLocation: SourceLocation) {
     }
 
-    get comment() {
-        return `Improper Spring injection: ${this.type} $ this.name} is injected ` +
-            `in file ${this.sourceLocation.path}:${this.sourceLocation.lineFrom1}:${this.sourceLocation.columnFrom1}`;
+    get detail() {
+        return `Improper Spring injection: Mutable ${this.type} ${this.name} is injected`;
     }
 
 }

@@ -50,7 +50,7 @@ export const configuration: any = {
         // () => springBootVersionUpgrade, // Is this one bad?
         () => findNonSpecificMvcAnnotationsCommand(),
         () => findMutableInjectionsCommand(),
-        () => verifyPomCommand,
+        () => verifyPomCommand(),
         () => unleashPhilCommand,
         () => springBootVersionReviewerCommand(MessagingReviewRouter),
         // CopyGenerator,

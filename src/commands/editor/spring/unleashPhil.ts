@@ -21,7 +21,7 @@ const handler: OnCommand<BaseEditorParameters> =
             .then(() => ctx.messageClient.respond("Phil is inspecting..."))
             .then(() => findNonSpecificMvcAnnotationsCommand().handle(ctx, parameters))
             .then(() => findMutableInjectionsCommand().handle(ctx, parameters))
-            .then(() => verifyPomCommand.handle(ctx, parameters))
+            .then(() => verifyPomCommand().handle(ctx, parameters))
             .then(() => ctx.messageClient.respond("Phil is suggesting changes. Ignore his PRs at your peril!"))
             .then(() => removeUnnecessaryComponentScanCommand.handle(ctx, parameters))
             .then(() => removeAutowiredOnSoleConstructorCommand.handle(ctx, parameters))
@@ -29,7 +29,10 @@ const handler: OnCommand<BaseEditorParameters> =
     };
 
 function showPhil(ctx: HandlerContext) {
-    const msg : slack.SlackMessage = {text: springPhil};
+    const msg : slack.SlackMessage = {text: "Phil", attachments: [{
+        image_url: oldPhil,
+        fallback: "Phil",
+    } ], unfurl_media: true};
    return ctx.messageClient.respond(msg);
 }
 

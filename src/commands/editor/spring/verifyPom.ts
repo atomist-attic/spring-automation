@@ -1,12 +1,13 @@
 import { HandleCommand } from "@atomist/automation-client";
 import { BaseEditorParameters } from "@atomist/automation-client/operations/edit/BaseEditorParameters";
-import { reviewerHandler } from "@atomist/automation-client/operations/review/reviewerToCommand";
+import { reviewerHandler, ReviewRouter } from "@atomist/automation-client/operations/review/reviewerToCommand";
 import { clean, ProjectReview } from "@atomist/automation-client/operations/review/ReviewResult";
 import { Project } from "@atomist/automation-client/project/Project";
 import { promisify } from "util";
 import { SpringBootStarter, SpringBootTags } from "./springConstants";
 
 import * as _ from "lodash";
+import { MessagingReviewRouter } from "../../messagingReviewRouter";
 
 const xml2js = require("xml2js");
 
@@ -27,7 +28,7 @@ export function verifyPom(p: Project): Promise<ProjectReview> {
                 return promisify(parser.parseString)(content)
                     .then(parsed => {
                         const parent = _.get(parsed, "project.parent");
-                        if (!!parent && !!parent.artifactId && parent.artifactId.toString() === SpringBootStarter) {
+                        if (JSON.stringify(parent).includes(SpringBootStarter)) {
                             return clean(p.id);
                         }
 
@@ -48,12 +49,14 @@ export function verifyPom(p: Project): Promise<ProjectReview> {
         });
 }
 
-export const verifyPomCommand: HandleCommand =
-    reviewerHandler(() => verifyPom,
+export function verifyPomCommand(reviewRouter: ReviewRouter<any> = MessagingReviewRouter): HandleCommand {
+    return reviewerHandler(() => verifyPom,
         BaseEditorParameters,
         "VerifyPOM",
         {
             tags: SpringBootTags,
             intent: "verify pom",
+            reviewRouter,
         },
     );
+}

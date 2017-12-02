@@ -43,16 +43,17 @@ export const springBootVersionReviewer: ProjectReviewer<SpringBootVersionReviewe
                     const version = matches[0].gav.version;
                     const outDated = version !== params.desiredBootVersion;
                     if (outDated) {
-                        const comment = `Old version of Spring Boot: [${version}] - ` +
+                        const detail = `Old version of Spring Boot: [${version}] - ` +
                             `should have been [${params.desiredBootVersion}]`;
-                        return context.messageClient.respond(`\`${p.id.owner}:${p.id.repo}\`: ${comment}`)
+                        return context.messageClient.respond(`\`${p.id.owner}:${p.id.repo}\`: ${detail}`)
                             .then(_ =>
                                 Promise.resolve({
                                     repoId: p.id,
                                     comments: [
                                         {
                                             severity: "warn" as Severity,
-                                            comment,
+                                            category: "Spring Boot version",
+                                            detail,
                                         },
                                     ],
                                     version,

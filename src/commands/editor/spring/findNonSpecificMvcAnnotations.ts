@@ -13,13 +13,13 @@ import { MessagingReviewRouter } from "../../messagingReviewRouter";
 export class NonSpecificMvcAnnotation implements ReviewComment {
 
     public severity: Severity = "info";
+    public category = "Old style MVC annotation";
 
     constructor(public raw: string, public sourceLocation: SourceLocation) {
     }
 
-    get comment() {
-        return `Old style Spring MVC \`@RequestAnnotation\` ` +
-            `in file ${this.sourceLocation.path}:${this.sourceLocation.lineFrom1}:${this.sourceLocation.columnFrom1}: Use specific mapping`;
+    get detail() {
+        return `Old style Spring MVC \`@RequestAnnotation\`: Use specific mapping`;
     }
 }
 
