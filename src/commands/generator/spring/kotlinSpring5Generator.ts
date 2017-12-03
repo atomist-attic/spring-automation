@@ -32,7 +32,7 @@ export function kotlinSpring5Generator(projectPersister: ProjectPersister = GitH
         "kotlinSpring5",
         {
             description: "Generate a Spring 5.0 reactive web project using Kotlin",
-            intent: "generate spring",
+            intent: "generate kotlin spring",
             tags: ["spring", "boot", "kotlin", "reactive"],
             projectPersister,
         });
