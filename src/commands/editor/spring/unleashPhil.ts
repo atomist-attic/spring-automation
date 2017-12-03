@@ -35,7 +35,7 @@ export class RegexReposParameters extends GitHubTargetsParams {
 
     public owner: string;
 
-    @Parameter({required: false})
+    @Parameter({required: true})
     public repo: string = ".*";
 
     @Parameter({description: "Branch or ref. Defaults to 'master'", ...GitBranchRegExp, required: false})
