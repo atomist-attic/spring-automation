@@ -10,6 +10,7 @@ import { editorHandler } from "@atomist/automation-client/operations/edit/editor
 import { CurrentSpringBootVersion } from "../../reviewer/spring/SpringBootVersionReviewer";
 import { setSpringBootVersionEditor } from "./setSpringBootVersionEditor";
 import { AllReposParameters } from "./unleashPhil";
+import { DefaultDirectoryManager } from "@atomist/automation-client/project/git/GitCommandGitProject";
 
 @Parameters()
 export class SpringBootVersionUpgradeParameters extends BaseEditorOrReviewerParameters {
@@ -34,7 +35,7 @@ export class SpringBootVersionUpgradeParameters extends BaseEditorOrReviewerPara
  */
 export function springBootVersionUpgrade(repoFinder: RepoFinder = allReposInTeam(),
                                          repoLoader: (p: SpringBootVersionUpgradeParameters) => RepoLoader =
-                                             p => gitHubRepoLoader({token: p.targets.githubToken}),
+                                             p => gitHubRepoLoader({token: p.targets.githubToken}, DefaultDirectoryManager),
                                          testEditMode?: EditMode): HandleCommand<SpringBootVersionUpgradeParameters> {
 
     console.log("RepoFinder = " + repoFinder + ", RepoLoader = " + repoLoader + ", editMode=" + testEditMode);
