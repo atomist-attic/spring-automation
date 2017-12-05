@@ -7,10 +7,10 @@ import { RepoFinder } from "@atomist/automation-client/operations/common/repoFin
 import { RepoLoader } from "@atomist/automation-client/operations/common/repoLoader";
 import { EditMode, PullRequest } from "@atomist/automation-client/operations/edit/editModes";
 import { editorHandler } from "@atomist/automation-client/operations/edit/editorToCommand";
+import { DefaultDirectoryManager } from "@atomist/automation-client/project/git/GitCommandGitProject";
 import { CurrentSpringBootVersion } from "../../reviewer/spring/SpringBootVersionReviewer";
 import { setSpringBootVersionEditor } from "./setSpringBootVersionEditor";
 import { AllReposParameters } from "./unleashPhil";
-import { DefaultDirectoryManager } from "@atomist/automation-client/project/git/GitCommandGitProject";
 
 @Parameters()
 export class SpringBootVersionUpgradeParameters extends BaseEditorOrReviewerParameters {
