@@ -13,9 +13,9 @@ import { kotlinSpring5Generator } from "./commands/generator/spring/kotlinSpring
 import { springBootGenerator } from "./commands/generator/spring/springBootGenerator";
 import { MessagingReviewRouter } from "./commands/messagingReviewRouter";
 import { springBootVersionReviewerCommand } from "./commands/reviewer/spring/SpringBootVersionReviewer";
+import { springBootTaggerCommand } from "./commands/tag/springTagger";
 import { LogzioOptions } from "./util/logzio";
 import { secret } from "./util/secrets";
-import { springBootTaggerCommand } from "./commands/tag/springTagger";
 
 const pj = require(`${appRoot.path}/package.json`);
 

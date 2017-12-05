@@ -1,15 +1,76 @@
-import { taggerHandler, TagRouter } from "./taggerToCommand";
-import { HandleCommand } from "@atomist/automation-client";
+import { HandleCommand, logger } from "@atomist/automation-client";
+import { GitHubRepoRef, isGitHubRepoRef } from "@atomist/automation-client/operations/common/GitHubRepoRef";
 import { BaseEditorOrReviewerParameters } from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
-import { SpringBootTags } from "../editor/spring/springConstants";
+import { SpringBootStarter, SpringBootTags } from "../editor/spring/springConstants";
 
-const springBootTagger = p => {
-    return Promise.resolve({
-        tags: ["spring", "spring-boot"],
-    });
+import { successOn } from "@atomist/automation-client/action/ActionResult";
+import axios, { AxiosPromise, AxiosRequestConfig } from "axios";
+
+import { DefaultTags } from "@atomist/automation-client/operations/tagger/Tagger";
+import { TagRouter } from "@atomist/automation-client/operations/tagger/Tagger";
+import { taggerHandler } from "@atomist/automation-client/operations/tagger/taggerHandler";
+import { toPromise } from "@atomist/automation-client/project/util/projectUtils";
+import { AllJavaFiles } from "../generator/java/javaProjectUtils";
+
+/**
+ * Persist tags to GitHub
+ * @param {Tags} tags
+ * @param {PARAMS} params
+ * @return {Promise<ActionResult<Tags>>}
+ * @constructor
+ */
+export const GitHubTagRouter: TagRouter = (tags, params) => {
+    const grr = isGitHubRepoRef(tags.repoId) ? tags.repoId : new GitHubRepoRef(tags.repoId.owner, tags.repoId.repo, tags.repoId.sha);
+    const url = `${grr.apiBase}/repos/${grr.owner}/${grr.repo}/topics`;
+    logger.debug(`Request to '${url}' to raise issue`);
+    return axios.put(url, { names: tags.tags },
+        // Mix in custom media type for
+        {
+            ...authHeaders(params.targets.githubToken),
+            headers: {
+                Accept: "application/vnd.github.mercy-preview+json",
+            },
+        },
+    )
+        .then(x => successOn(tags));
 };
 
-export function springBootTaggerCommand(tagRouter?: TagRouter): HandleCommand {
+function authHeaders(token: string): AxiosRequestConfig {
+    return token ? {
+            headers: {
+                Authorization: `token ${token}`,
+            },
+        }
+        : {};
+}
+
+const springBootTagger = p => {
+    return p.findFile("pom.xml")
+        .then(f => f.getContent())
+        .then(content => {
+            const tags: string[] = [];
+            if (content.includes(SpringBootStarter)) {
+                tags.push("spring-boot");
+                tags.push("spring");
+            }
+            if (content.includes("org.springframework")) {
+                tags.push("spring");
+            }
+            // TODO need to simplify this
+            return toPromise(p.stream(AllJavaFiles))
+                .then(javaFiles => {
+                    if (javaFiles.length > 0) {
+                        tags.push("java");
+                    }
+                    return new DefaultTags(p.id, tags);
+                });
+        })
+        .catch(() => {
+            return new DefaultTags(p.id, []);
+        });
+};
+
+export function springBootTaggerCommand(tagRouter: TagRouter = GitHubTagRouter): HandleCommand {
     return taggerHandler(springBootTagger,
         BaseEditorOrReviewerParameters,
         "SpringBootTagger",
@@ -17,7 +78,7 @@ export function springBootTaggerCommand(tagRouter?: TagRouter): HandleCommand {
             description: "Tag Spring Boot projects",
             tags: SpringBootTags,
             intent: "tag spring",
-            //tagRouter: tagRouter,
+            tagRouter,
         },
     );
 }

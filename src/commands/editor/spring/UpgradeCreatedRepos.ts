@@ -1,14 +1,14 @@
 import { CommandHandler, HandleCommand, HandlerContext, HandlerResult, Parameter } from "@atomist/automation-client";
+import {
+    BaseEditorOrReviewerParameters,
+    EditorOrReviewerParameters,
+} from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
+import { GitHubTargetsParams } from "@atomist/automation-client/operations/common/params/GitHubTargetsParams";
+import { MappedRepoParameters } from "@atomist/automation-client/operations/common/params/MappedRepoParameters";
 import { RepoFinder } from "@atomist/automation-client/operations/common/repoFinder";
 import { editAll } from "@atomist/automation-client/operations/edit/editAll";
 import { PullRequest } from "@atomist/automation-client/operations/edit/editModes";
 import { setSpringBootVersionEditor } from "./setSpringBootVersionEditor";
-import {
-    BaseEditorOrReviewerParameters,
-    EditorOrReviewerParameters
-} from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
-import { MappedRepoParameters } from "@atomist/automation-client/operations/common/params/MappedRepoParameters";
-import { GitHubTargetsParams } from "@atomist/automation-client/operations/common/params/GitHubTargetsParams";
 
 @CommandHandler("update spring boot version on all created repos",
     "upgrade boot repos")

@@ -1,5 +1,9 @@
 import { HandleCommand, HandlerContext, Parameter } from "@atomist/automation-client";
+import { Parameters } from "@atomist/automation-client/decorators";
 import { commandHandlerFrom, OnCommand } from "@atomist/automation-client/onCommand";
+import { BaseEditorOrReviewerParameters } from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
+import { GitBranchRegExp } from "@atomist/automation-client/operations/common/params/gitHubPatterns";
+import { GitHubTargetsParams } from "@atomist/automation-client/operations/common/params/GitHubTargetsParams";
 import * as slack from "@atomist/slack-messages";
 import { MessagingReviewRouter } from "../../messagingReviewRouter";
 import {
@@ -15,10 +19,6 @@ import {
 } from "./removeUnnecessaryAnnotations";
 import { SpringBootTags } from "./springConstants";
 import { verifyPomCommand } from "./verifyPom";
-import { Parameters } from "@atomist/automation-client/decorators";
-import { BaseEditorOrReviewerParameters } from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
-import { GitHubTargetsParams } from "@atomist/automation-client/operations/common/params/GitHubTargetsParams";
-import { GitBranchRegExp } from "@atomist/automation-client/operations/common/params/gitHubPatterns";
 
 const oldPhil = "http://www.victorianceramics.com/images/artists/philip-webb.jpg";
 const springPhil = "https://pbs.twimg.com/profile_images/606164636811984896/QEAnB8Xu.jpg";
@@ -84,7 +84,7 @@ function showPhil(ctx: HandlerContext) {
         text: "Phil", attachments: [{
             image_url: springPhil,
             fallback: "Phil",
-        }], unfurl_media: true
+        }], unfurl_media: true,
     };
     return ctx.messageClient.respond(msg);
 }

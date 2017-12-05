@@ -2,13 +2,13 @@ import { HandleCommand, Parameter } from "@atomist/automation-client";
 import { Parameters } from "@atomist/automation-client/decorators";
 import { allReposInTeam } from "@atomist/automation-client/operations/common/allReposInTeamRepoFinder";
 import { gitHubRepoLoader } from "@atomist/automation-client/operations/common/gitHubRepoLoader";
+import { BaseEditorOrReviewerParameters } from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
 import { RepoFinder } from "@atomist/automation-client/operations/common/repoFinder";
 import { RepoLoader } from "@atomist/automation-client/operations/common/repoLoader";
 import { EditMode, PullRequest } from "@atomist/automation-client/operations/edit/editModes";
 import { editorHandler } from "@atomist/automation-client/operations/edit/editorToCommand";
-import { setSpringBootVersionEditor } from "./setSpringBootVersionEditor";
 import { CurrentSpringBootVersion } from "../../reviewer/spring/SpringBootVersionReviewer";
-import { BaseEditorOrReviewerParameters } from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
+import { setSpringBootVersionEditor } from "./setSpringBootVersionEditor";
 import { AllReposParameters } from "./unleashPhil";
 
 @Parameters()

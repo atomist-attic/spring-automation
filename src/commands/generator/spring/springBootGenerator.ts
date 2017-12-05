@@ -25,12 +25,12 @@ export function springBootGenerator(projectPersister: ProjectPersister = GitHubP
 
 // TODO detyping here is nasty
 export function springBootProjectEditor(params: SpringBootGeneratorParameters): AnyProjectEditor<any> {
-    const starterEditors: AnyProjectEditor<any>[] =
+    const starterEditors: Array<AnyProjectEditor<any>> =
         params.starters.map(starter =>
             addSpringBootStarter("spring-boot-starter-" + starter));
     logger.debug("Starters: [%s]. Editor count=%d", params.starters.join(), starterEditors.length);
 
-    const editors: AnyProjectEditor<SpringBootGeneratorParameters>[] = [
+    const editors: Array<AnyProjectEditor<SpringBootGeneratorParameters>> = [
         curry(cleanReadMe)(params.target.description),
         curry(cleanTravisBuildFiles)(slackTeamTravisWebhookUrl(params.slackTeam)),
         curry(doUpdatePom)(params),

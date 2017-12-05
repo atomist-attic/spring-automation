@@ -1,5 +1,6 @@
 import { HandleCommand } from "@atomist/automation-client";
 import { Parameter, Parameters } from "@atomist/automation-client/decorators";
+import { BaseEditorOrReviewerParameters } from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
 import { RepoFinder } from "@atomist/automation-client/operations/common/repoFinder";
 import { RepoLoader } from "@atomist/automation-client/operations/common/repoLoader";
 import { ProjectReviewer } from "@atomist/automation-client/operations/review/projectReviewer";
@@ -10,7 +11,6 @@ import * as _ from "lodash";
 import { dependencyOfGrammar } from "../../../grammars/mavenGrammars";
 import { VersionedArtifact } from "../../../grammars/VersionedArtifact";
 import { SpringBootTags } from "../../editor/spring/springConstants";
-import { BaseEditorOrReviewerParameters } from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
 
 @Parameters()
 export class VersionSpreadReviewerParameters extends BaseEditorOrReviewerParameters {

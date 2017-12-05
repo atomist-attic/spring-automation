@@ -5,9 +5,9 @@ import { Project } from "@atomist/automation-client/project/Project";
 import { promisify } from "util";
 import { SpringBootStarter, SpringBootTags } from "./springConstants";
 
+import { MappedRepoParameters } from "@atomist/automation-client/operations/common/params/MappedRepoParameters";
 import * as _ from "lodash";
 import { MessagingReviewRouter } from "../../messagingReviewRouter";
-import { MappedRepoParameters } from "@atomist/automation-client/operations/common/params/MappedRepoParameters";
 
 const xml2js = require("xml2js");
 

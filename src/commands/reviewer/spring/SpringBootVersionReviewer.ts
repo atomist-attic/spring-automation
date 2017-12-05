@@ -1,12 +1,12 @@
 import { HandleCommand } from "@atomist/automation-client";
 import { Parameter, Parameters } from "@atomist/automation-client/decorators";
+import { BaseEditorOrReviewerParameters } from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
 import { ProjectReviewer } from "@atomist/automation-client/operations/review/projectReviewer";
 import { reviewerHandler, ReviewRouter } from "@atomist/automation-client/operations/review/reviewerToCommand";
 import { clean, Severity } from "@atomist/automation-client/operations/review/ReviewResult";
 import { findMatches } from "@atomist/automation-client/project/util/parseUtils";
 import { ParentStanzaGrammar } from "../../../grammars/mavenGrammars";
 import { SpringBootStarter, SpringBootTags } from "../../editor/spring/springConstants";
-import { BaseEditorOrReviewerParameters } from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
 
 export const CurrentSpringBootVersion = "1.5.9.RELEASE";
 
