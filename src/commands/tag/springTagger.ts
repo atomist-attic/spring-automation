@@ -77,7 +77,7 @@ export function springBootTaggerCommand(tagRouter: TagRouter = GitHubTagRouter):
         "SpringBootTagger",
         {
             description: "Tag Spring Boot projects",
-            tags: SpringBootTags,
+            tags: SpringBootTags.concat("tagger"),
             intent: "tag spring",
             tagRouter,
         },
