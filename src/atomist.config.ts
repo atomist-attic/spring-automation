@@ -15,6 +15,7 @@ import { MessagingReviewRouter } from "./commands/messagingReviewRouter";
 import { springBootVersionReviewerCommand } from "./commands/reviewer/spring/SpringBootVersionReviewer";
 import { LogzioOptions } from "./util/logzio";
 import { secret } from "./util/secrets";
+import { springBootTaggerCommand } from "./commands/tag/springTagger";
 
 const pj = require(`${appRoot.path}/package.json`);
 
@@ -52,6 +53,7 @@ export const configuration: any = {
         () => findNonSpecificMvcAnnotationsCommand(),
         () => findMutableInjectionsCommand(),
         () => verifyPomCommand(),
+        () => springBootTaggerCommand(),
         () => askPhilCommand,
         () => unleashPhilCommand,
         () => springBootVersionReviewerCommand(MessagingReviewRouter),
