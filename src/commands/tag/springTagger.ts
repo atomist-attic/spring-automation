@@ -22,8 +22,8 @@ import { AllJavaFiles } from "../generator/java/javaProjectUtils";
 export const GitHubTagRouter: TagRouter = (tags, params) => {
     const grr = isGitHubRepoRef(tags.repoId) ? tags.repoId : new GitHubRepoRef(tags.repoId.owner, tags.repoId.repo, tags.repoId.sha);
     const url = `${grr.apiBase}/repos/${grr.owner}/${grr.repo}/topics`;
-    logger.debug(`Request to '${url}' to raise issue`);
-    return axios.put(url, { names: tags.tags },
+    logger.debug(`Request to '${url}' to raise tags: [${tags.tags.join()}]`);
+    return axios.put(url, {names: tags.tags},
         // Mix in custom media type for
         {
             headers: {
@@ -57,7 +57,7 @@ const springBootTagger = p => {
                 tags.push("spring");
             }
             // TODO need to simplify this
-            return toPromise(p.stream(AllJavaFiles))
+            return toPromise(p.streamFiles(AllJavaFiles))
                 .then(javaFiles => {
                     if (javaFiles.length > 0) {
                         tags.push("java");
@@ -65,7 +65,8 @@ const springBootTagger = p => {
                     return new DefaultTags(p.id, tags);
                 });
         })
-        .catch(() => {
+        .catch(err => {
+            console.log("Tag error: " + err);
             return new DefaultTags(p.id, []);
         });
 };

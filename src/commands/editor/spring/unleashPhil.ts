@@ -1,4 +1,7 @@
-import { HandleCommand, HandlerContext, Parameter } from "@atomist/automation-client";
+import {
+    HandleCommand, HandlerContext, MappedParameter, MappedParameters,
+    Parameter
+} from "@atomist/automation-client";
 import { Parameters } from "@atomist/automation-client/decorators";
 import { commandHandlerFrom, OnCommand } from "@atomist/automation-client/onCommand";
 import { BaseEditorOrReviewerParameters } from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
@@ -28,6 +31,19 @@ export class RegexReposParameters extends GitHubTargetsParams {
     public owner: string;
 
     @Parameter({required: true})
+    public repo: string;
+
+    @Parameter({description: "Branch or ref. Defaults to 'master'", ...GitBranchRegExp, required: false})
+    public sha: string;
+
+}
+
+export class FallbackReposParameters extends GitHubTargetsParams {
+
+    @MappedParameter(MappedParameters.GitHubOwner)
+    public owner: string;
+
+    @MappedParameter(MappedParameters.GitHubRepository)
     public repo: string;
 
     @Parameter({description: "Branch or ref. Defaults to 'master'", ...GitBranchRegExp, required: false})
