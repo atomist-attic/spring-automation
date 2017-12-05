@@ -9,9 +9,14 @@ import { editorHandler } from "@atomist/automation-client/operations/edit/editor
 import { setSpringBootVersionEditor } from "./setSpringBootVersionEditor";
 import { CurrentSpringBootVersion } from "../../reviewer/spring/SpringBootVersionReviewer";
 import { BaseEditorOrReviewerParameters } from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
+import { AllReposParameters } from "./unleashPhil";
 
 @Parameters()
 export class SpringBootVersionUpgradeParameters extends BaseEditorOrReviewerParameters {
+
+    constructor() {
+        super(new AllReposParameters());
+    }
 
     @Parameter({
         displayName: "Desired Spring Boot version",

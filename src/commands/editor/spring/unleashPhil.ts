@@ -1,7 +1,4 @@
-import {
-    HandleCommand, HandlerContext, MappedParameter, MappedParameters,
-    Parameter
-} from "@atomist/automation-client";
+import { HandleCommand, HandlerContext, Parameter } from "@atomist/automation-client";
 import { commandHandlerFrom, OnCommand } from "@atomist/automation-client/onCommand";
 import * as slack from "@atomist/slack-messages";
 import { MessagingReviewRouter } from "../../messagingReviewRouter";
@@ -19,13 +16,8 @@ import {
 import { SpringBootTags } from "./springConstants";
 import { verifyPomCommand } from "./verifyPom";
 import { Parameters } from "@atomist/automation-client/decorators";
-import {
-    BaseEditorOrReviewerParameters,
-    EditorOrReviewerParameters
-} from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
-import { AlwaysAskRepoParameters } from "@atomist/automation-client/operations/common/params/AlwaysAskRepoParameters";
+import { BaseEditorOrReviewerParameters } from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
 import { GitHubTargetsParams } from "@atomist/automation-client/operations/common/params/GitHubTargetsParams";
-import { MappedRepoParameters } from "@atomist/automation-client/operations/common/params/MappedRepoParameters";
 import { GitBranchRegExp } from "@atomist/automation-client/operations/common/params/gitHubPatterns";
 
 const oldPhil = "http://www.victorianceramics.com/images/artists/philip-webb.jpg";
@@ -37,6 +29,17 @@ export class RegexReposParameters extends GitHubTargetsParams {
 
     @Parameter({required: true})
     public repo: string;
+
+    @Parameter({description: "Branch or ref. Defaults to 'master'", ...GitBranchRegExp, required: false})
+    public sha: string;
+
+}
+
+export class AllReposParameters extends GitHubTargetsParams {
+
+    public owner: string;
+
+    public repo: string = ".*";
 
     @Parameter({description: "Branch or ref. Defaults to 'master'", ...GitBranchRegExp, required: false})
     public sha: string;
@@ -79,7 +82,7 @@ const handler: OnCommand<SpringBootVersionReviewerParameters> =
 function showPhil(ctx: HandlerContext) {
     const msg: slack.SlackMessage = {
         text: "Phil", attachments: [{
-            image_url: oldPhil,
+            image_url: springPhil,
             fallback: "Phil",
         }], unfurl_media: true
     };
