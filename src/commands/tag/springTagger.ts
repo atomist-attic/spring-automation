@@ -26,8 +26,8 @@ export const GitHubTagRouter: TagRouter = (tags, params) => {
     return axios.put(url, { names: tags.tags },
         // Mix in custom media type for
         {
-            ...authHeaders(params.targets.githubToken),
             headers: {
+                ...authHeaders(params.targets.githubToken).headers,
                 Accept: "application/vnd.github.mercy-preview+json",
             },
         },
