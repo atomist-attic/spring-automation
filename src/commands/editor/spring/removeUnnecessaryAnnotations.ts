@@ -4,12 +4,11 @@ import { findMatches, zapAllMatches } from "@atomist/automation-client/tree/ast/
 
 import { HandleCommand } from "@atomist/automation-client";
 import { BaseEditorOrReviewerParameters } from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
-import { MappedRepoParameters } from "@atomist/automation-client/operations/common/params/MappedRepoParameters";
 import { PullRequest } from "@atomist/automation-client/operations/edit/editModes";
 import { editorHandler } from "@atomist/automation-client/operations/edit/editorToCommand";
 import { ZapTrailingWhitespace } from "@atomist/automation-client/tree/ast/FileHits";
 import { JavaSourceFiles } from "../../generator/java/javaProjectUtils";
-import { SpringBootTags } from "./springConstants";
+import { SpringBootEditorTags } from "./springConstants";
 
 const UnnecessaryComponentScanAnnotations = `//typeDeclaration[/classDeclaration]
                             [//annotation[@value='@SpringBootApplication']]
@@ -31,7 +30,7 @@ export const removeUnnecessaryComponentScanCommand: HandleCommand =
             editMode: new PullRequest("remove-unnecessary-component-scan", "Remove unnecessary component scan annotations",
                 "`@ComponentScan` annotations are not necessary on `@SpringBootApplication` classes as they are inherited"),
             intent: "remove unnecessary component scan",
-            tags: SpringBootTags,
+            tags: SpringBootEditorTags,
         },
     );
 
@@ -51,7 +50,7 @@ export const removeAutowiredOnSoleConstructorCommand: HandleCommand =
         "RemoveAutowiredOnSoleConstructor",
         {
             description: "Remove @Autowired on sole constructor as it's not necessary",
-            tags: SpringBootTags,
+            tags: SpringBootEditorTags,
             intent: "remove unnecessary Autowired",
         },
     );

@@ -8,7 +8,7 @@ import { Project } from "@atomist/automation-client/project/Project";
 import { findMatches } from "@atomist/automation-client/tree/ast/astUtils";
 import { JavaSourceFiles } from "../../generator/java/javaProjectUtils";
 import { MessagingReviewRouter } from "../../messagingReviewRouter";
-import { SpringBootTags } from "./springConstants";
+import { SpringBootReviewerTags } from "./springConstants";
 
 export class NonSpecificMvcAnnotation implements ReviewComment {
 
@@ -47,7 +47,7 @@ export function findNonSpecificMvcAnnotationsCommand(reviewRouter: ReviewRouter<
         MappedRepoParameters,
         "FindNonSpecificMvcAnnotations",
         {
-            tags: SpringBootTags,
+            tags: SpringBootReviewerTags,
             intent: "review mvc",
             reviewRouter,
         },

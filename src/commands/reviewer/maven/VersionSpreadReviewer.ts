@@ -10,7 +10,7 @@ import { findMatches } from "@atomist/automation-client/project/util/parseUtils"
 import * as _ from "lodash";
 import { dependencyOfGrammar } from "../../../grammars/mavenGrammars";
 import { VersionedArtifact } from "../../../grammars/VersionedArtifact";
-import { SpringBootTags } from "../../editor/spring/springConstants";
+import { SpringBootReviewerTags } from "../../editor/spring/springConstants";
 
 @Parameters()
 export class VersionSpreadReviewerParameters extends BaseEditorOrReviewerParameters {
@@ -48,7 +48,7 @@ export function versionSpreadReviewerCommand(repoFinder?: RepoFinder, repoLoader
         "SpringBootVersionReviewer",
         {
             description: "Reviewer that reports the range of versions of an artifact",
-            tags: SpringBootTags,
+            tags: SpringBootReviewerTags,
             intent: "version spread",
             repoFinder,
             repoLoader: repoLoader ? () => repoLoader : undefined,

@@ -6,7 +6,7 @@ import { reviewerHandler, ReviewRouter } from "@atomist/automation-client/operat
 import { clean, Severity } from "@atomist/automation-client/operations/review/ReviewResult";
 import { findMatches } from "@atomist/automation-client/project/util/parseUtils";
 import { ParentStanzaGrammar } from "../../../grammars/mavenGrammars";
-import { SpringBootStarter, SpringBootTags } from "../../editor/spring/springConstants";
+import { SpringBootStarter, SpringBootReviewerTags } from "../../editor/spring/springConstants";
 
 export const CurrentSpringBootVersion = "1.5.9.RELEASE";
 
@@ -30,7 +30,7 @@ export function springBootVersionReviewerCommand(reviewRouter?: ReviewRouter<Spr
         "SpringBootVersionReviewer",
         {
             description: "Reviewer that flags old versions of Spring Boot",
-            tags: SpringBootTags,
+            tags: SpringBootReviewerTags,
             intent: "review spring boot version",
             reviewRouter,
         },

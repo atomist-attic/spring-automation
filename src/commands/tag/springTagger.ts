@@ -1,7 +1,7 @@
 import { HandleCommand, logger } from "@atomist/automation-client";
 import { GitHubRepoRef, isGitHubRepoRef } from "@atomist/automation-client/operations/common/GitHubRepoRef";
 import { BaseEditorOrReviewerParameters } from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
-import { SpringBootStarter, SpringBootTags } from "../editor/spring/springConstants";
+import { SpringBootStarter, SpringBootTaggerTags } from "../editor/spring/springConstants";
 
 import { successOn } from "@atomist/automation-client/action/ActionResult";
 import axios, { AxiosPromise, AxiosRequestConfig } from "axios";
@@ -77,7 +77,7 @@ export function springBootTaggerCommand(tagRouter: TagRouter = GitHubTagRouter):
         "SpringBootTagger",
         {
             description: "Tag Spring Boot projects",
-            tags: SpringBootTags.concat("tagger"),
+            tags: SpringBootTaggerTags.concat("tagger"),
             intent: "tag spring",
             tagRouter,
         },

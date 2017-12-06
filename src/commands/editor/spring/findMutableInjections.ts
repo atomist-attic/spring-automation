@@ -9,7 +9,7 @@ import { reviewerHandler, ReviewRouter } from "@atomist/automation-client/operat
 import { ProjectReview, ReviewComment, Severity } from "@atomist/automation-client/operations/review/ReviewResult";
 import { Project } from "@atomist/automation-client/project/Project";
 import { MessagingReviewRouter } from "../../messagingReviewRouter";
-import { SpringBootTags } from "./springConstants";
+import { SpringBootReviewerTags } from "./springConstants";
 
 export class MutableInjection implements ReviewComment {
 
@@ -64,7 +64,7 @@ export function findMutableInjectionsCommand(reviewRouter: ReviewRouter<any> = M
         MappedRepoParameters,
         "FindMutableInjections",
         {
-            tags: SpringBootTags,
+            tags: SpringBootReviewerTags,
             intent: "find mutable injections",
             reviewRouter,
         },
