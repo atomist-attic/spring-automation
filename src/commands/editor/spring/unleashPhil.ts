@@ -1,5 +1,5 @@
 import {
-    HandleCommand, HandlerContext, MappedParameter, MappedParameters,
+    HandleCommand, HandlerContext, logger, MappedParameter, MappedParameters,
     Parameter,
 } from "@atomist/automation-client";
 import { Parameters } from "@atomist/automation-client/decorators";
@@ -22,6 +22,9 @@ import {
 } from "./removeUnnecessaryAnnotations";
 import { SpringBootTags } from "./springConstants";
 import { verifyPomCommand } from "./verifyPom";
+import { SmartParameters } from "@atomist/automation-client/SmartParameters";
+
+import * as assert from "power-assert";
 
 const oldPhil = "http://www.victorianceramics.com/images/artists/philip-webb.jpg";
 const springPhil = "https://pbs.twimg.com/profile_images/606164636811984896/QEAnB8Xu.jpg";
@@ -40,14 +43,17 @@ export class RegexReposParameters extends GitHubTargetsParams {
 
 export class FallbackReposParameters extends GitHubTargetsParams {
 
-    @MappedParameter(MappedParameters.GitHubOwner)
+    @MappedParameter(MappedParameters.GitHubOwner, false)
     public owner: string;
 
-    @MappedParameter(MappedParameters.GitHubRepository)
+    @MappedParameter(MappedParameters.GitHubRepository, false)
     public repo: string;
 
     @Parameter({description: "Branch or ref. Defaults to 'master'", ...GitBranchRegExp, required: false})
     public sha: string;
+
+    @Parameter({description: "regex", required: false})
+    public repos: string;
 
 }
 
@@ -63,10 +69,10 @@ export class AllReposParameters extends GitHubTargetsParams {
 }
 
 @Parameters()
-export class UnleashPhilParameters extends BaseEditorOrReviewerParameters {
+export class UnleashPhilParameters extends BaseEditorOrReviewerParameters implements SmartParameters {
 
     constructor() {
-        super(new RegexReposParameters());
+        super(new FallbackReposParameters());
     }
 
     @Parameter({
@@ -77,6 +83,16 @@ export class UnleashPhilParameters extends BaseEditorOrReviewerParameters {
         required: false,
     })
     public desiredBootVersion: string = CurrentSpringBootVersion;
+
+    public bindAndValidate() {
+        logger.info("*********** bind and validate, targets=%j", this.targets);
+        const targets = this.targets as FallbackReposParameters;
+        if (!targets.repo) {
+            assert(!!targets.repos, "Must set repos or repo");
+            console.log("Harmonizing regex");
+            targets.repo = targets.repos;
+        }
+    }
 
 }
 
