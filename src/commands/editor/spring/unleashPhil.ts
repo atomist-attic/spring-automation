@@ -1,6 +1,6 @@
 import {
     HandleCommand, HandlerContext, MappedParameter, MappedParameters,
-    Parameter
+    Parameter,
 } from "@atomist/automation-client";
 import { Parameters } from "@atomist/automation-client/decorators";
 import { commandHandlerFrom, OnCommand } from "@atomist/automation-client/onCommand";

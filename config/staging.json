@@ -1,0 +1,15 @@
+{
+  "groups": ["all"],
+  "teamIds": null,
+  "policy": "durable",
+  "http": {
+    "auth": {
+      "basic": {
+        "enabled": false
+      },
+      "bearer": {
+        "enabled": true
+      }
+    }
+  }
+}

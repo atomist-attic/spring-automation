@@ -1,5 +1,9 @@
+import { Configuration } from "@atomist/automation-client";
 import { initMemoryMonitoring } from "@atomist/automation-client/internal/util/memory";
+
 import * as appRoot from "app-root-path";
+import * as config from "config";
+
 import { findMutableInjectionsCommand } from "./commands/editor/spring/findMutableInjections";
 import { findNonSpecificMvcAnnotationsCommand } from "./commands/editor/spring/findNonSpecificMvcAnnotations";
 import {
@@ -17,6 +21,7 @@ import { springBootTaggerCommand } from "./commands/tag/springTagger";
 import { LogzioOptions } from "./util/logzio";
 import { secret } from "./util/secrets";
 
+// tslint:disable-next-line:no-var-requires
 const pj = require(`${appRoot.path}/package.json`);
 
 const token = secret("github.token", process.env.GITHUB_TOKEN);
@@ -28,22 +33,13 @@ const logzioOptions: LogzioOptions = {
     token: secret("logzio.token", process.env.LOGZIO_TOKEN),
 };
 
-// Set up automation event listeners
-const listeners = [];
-
-// Logz.io will only work in certain environments
-if (logzioOptions.token) {
-    // listeners.push(new LogzioAutomationEventListener(logzioOptions));
-}
-
-const AtomistUser: string = "atomist-bot";
-const AtomistToken: string = process.env.ATOMIST_GITHUB_TOKEN || token;
-
-export const configuration: any = {
+export const configuration: Configuration = {
     name: pj.name,
     version: pj.version,
-    teamIds: ["T5964N9B7"],
-    // groups: ["all"],
+    keywords: pj.keywords,
+    policy: config.get("policy"),
+    teamIds: config.get("teamIds"),
+    token,
     commands: [
         () => removeUnnecessaryComponentScanCommand,
         () => removeAutowiredOnSoleConstructorCommand,
@@ -60,35 +56,40 @@ export const configuration: any = {
         // CopyGenerator,
     ],
     events: [],
-    token,
-    listeners,
-    ws: {
-        enabled: true,
-    },
+    listeners: [],
     http: {
         enabled: true,
         auth: {
             basic: {
-                enabled: false,
+                enabled: config.get("http.auth.basic.enabled"),
+                username: secret("dashboard.user"),
+                password: secret("dashboard.password"),
             },
             bearer: {
-                enabled: true,
-            },
-            github: {
-                enabled: false,
+                enabled: config.get("http.auth.bearer.enabled"),
+                adminOrg: "atomisthq",
             },
         },
-        forceSecure: false,
+    },
+    endpoints: {
+        api: config.get("endpoints.api"),
+        graphql: config.get("endpoints.graphql"),
     },
     applicationEvents: {
         enabled: true,
         teamId: "T29E48P34",
     },
     cluster: {
-        enabled: false,
-        workers: 2,
+        enabled: notLocal,
+        // worker: 2,
+    },
+    ws: {
+        enabled: true,
+        termination: {
+            graceful: true,
+        },
     },
 };
+(configuration as any).groups = config.get("groups");
 
-// For now, we enable a couple of interesting memory and heap commands on this automation-client
-initMemoryMonitoring(`${appRoot.path}/node_modules/@atomist/automation-client/public/heap`);
+initMemoryMonitoring();

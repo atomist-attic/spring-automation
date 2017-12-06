@@ -1,7 +1,7 @@
 import { promisify } from "util";
 import { VersionedArtifact } from "../../../../src/grammars/VersionedArtifact";
 
-const xml2js = require("xml2js");
+import * as xml2js from "xml2js";
 
 /**
  * Return version info from the POM

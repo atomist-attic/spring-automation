@@ -4,6 +4,17 @@ applications:
   memory: 512M
   buildpack: https://github.com/cloudfoundry/nodejs-buildpack
   env:
+    NODE_ENV: production
+    SUPPRESS_NO_CONFIG_WARNING: true
+  services:
+  - github-token
+  - logzio-credentials
+- name: spring-automation-staging
+  command: node --trace-warnings --expose_gc --optimize_for_size --always_compact --max_old_space_size=100 build/src/start.client.js
+  memory: 512M
+  buildpack: https://github.com/cloudfoundry/nodejs-buildpack
+  env:
+    NODE_ENV: staging
     SUPPRESS_NO_CONFIG_WARNING: true
   services:
   - github-token
