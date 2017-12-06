@@ -8,7 +8,3 @@ export const SpringBootReviewerTags = SpringBootTags.concat("atomist:reviewer");
 export const SpringBootEditorTags = SpringBootTags.concat("atomist:editor");
 
 export const SpringBootTaggerTags = SpringBootTags.concat("atomist:tagger");
-
-
-
-
