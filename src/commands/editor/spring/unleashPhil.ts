@@ -1,4 +1,4 @@
-import { HandleCommand, HandlerContext, logger, Parameter } from "@atomist/automation-client";
+import { HandleCommand, HandlerContext, Parameter } from "@atomist/automation-client";
 import { Parameters } from "@atomist/automation-client/decorators";
 import { commandHandlerFrom, OnCommand } from "@atomist/automation-client/onCommand";
 import { BaseEditorOrReviewerParameters } from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
@@ -12,15 +12,12 @@ import {
 } from "../../reviewer/spring/SpringBootVersionReviewer";
 import { findMutableInjectionsCommand } from "./findMutableInjections";
 import { findNonSpecificMvcAnnotationsCommand } from "./findNonSpecificMvcAnnotations";
-import {
-    removeAutowiredOnSoleConstructorCommand,
-    removeUnnecessaryComponentScanCommand,
-} from "./removeUnnecessaryAnnotations";
-import { SpringBootTags } from "./springConstants";
+import { removeAutowiredOnSoleConstructorCommand } from "./removeUnnecessaryAutowiredAnnotations";
 import { verifyPomCommand } from "./verifyPom";
 
 import * as assert from "power-assert";
 import { FallbackReposParameters } from "../FallbackReposParameters";
+import { removeUnnecessaryComponentScanCommand } from "./removeUnnecessaryComponentScanAnnotations";
 
 const oldPhil = "http://www.victorianceramics.com/images/artists/philip-webb.jpg";
 const springPhil = "https://pbs.twimg.com/profile_images/606164636811984896/QEAnB8Xu.jpg";

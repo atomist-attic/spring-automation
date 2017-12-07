@@ -6,10 +6,11 @@ import * as config from "config";
 
 import { findMutableInjectionsCommand } from "./commands/editor/spring/findMutableInjections";
 import { findNonSpecificMvcAnnotationsCommand } from "./commands/editor/spring/findNonSpecificMvcAnnotations";
+import { removeAutowiredOnSoleConstructorCommand } from "./commands/editor/spring/removeUnnecessaryAutowiredAnnotations";
 import {
     findUnnecessaryComponentScanReviewerCommand,
-    removeAutowiredOnSoleConstructorCommand, removeUnnecessaryComponentScanCommand, unnecessaryComponentScanReviewer,
-} from "./commands/editor/spring/removeUnnecessaryAnnotations";
+    removeUnnecessaryComponentScanCommand,
+} from "./commands/editor/spring/removeUnnecessaryComponentScanAnnotations";
 import { springBootVersionUpgrade } from "./commands/editor/spring/SpringBootVersionUpgrade";
 import { unleashPhilCommand } from "./commands/editor/spring/unleashPhil";
 import { verifyPomCommand } from "./commands/editor/spring/verifyPom";
@@ -45,7 +46,7 @@ export const configuration: Configuration = {
         () => removeAutowiredOnSoleConstructorCommand,
         () => springBootGenerator(),
         () => kotlinSpring5Generator(),
-        () => springBootVersionUpgrade(), // Is this one bad?
+        () => springBootVersionUpgrade(),
         () => findNonSpecificMvcAnnotationsCommand(),
         () => findUnnecessaryComponentScanReviewerCommand(),
         () => findMutableInjectionsCommand(),

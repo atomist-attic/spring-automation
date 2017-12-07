@@ -4,8 +4,8 @@ import { InMemoryProject } from "@atomist/automation-client/project/mem/InMemory
 import * as assert from "power-assert";
 import {
     removeAutowiredOnSoleConstructor,
-    removeUnnecessaryComponentScanEditor,
-} from "../../../../src/commands/editor/spring/removeUnnecessaryAnnotations";
+} from "../../../../src/commands/editor/spring/removeUnnecessaryAutowiredAnnotations";
+import { removeUnnecessaryComponentScanEditor } from "../../../../src/commands/editor/spring/removeUnnecessaryComponentScanAnnotations";
 
 describe("remove unnecessary annotations", () => {
 
