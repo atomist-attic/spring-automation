@@ -7,11 +7,16 @@ import { clean, Severity } from "@atomist/automation-client/operations/review/Re
 import { findMatches } from "@atomist/automation-client/project/util/parseUtils";
 import { ParentStanzaGrammar } from "../../../grammars/mavenGrammars";
 import { SpringBootReviewerTags, SpringBootStarter } from "../../editor/spring/springConstants";
+import { FallbackReposParameters } from "../../editor/FallbackReposParameters";
 
 export const CurrentSpringBootVersion = "1.5.9.RELEASE";
 
 @Parameters()
 export class SpringBootVersionReviewerParameters extends BaseEditorOrReviewerParameters {
+
+    constructor() {
+        super(new FallbackReposParameters());
+    }
 
     @Parameter({
         displayName: "Desired Spring Boot version",

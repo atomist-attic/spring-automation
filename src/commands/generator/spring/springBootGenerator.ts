@@ -8,8 +8,14 @@ import { GitHubProjectPersister } from "@atomist/automation-client/operations/ge
 import { cleanReadMe } from "@atomist/automation-client/operations/generate/UniversalSeed";
 import { curry } from "@typed/curry";
 import { addSpringBootStarter } from "../../editor/spring/addStarterEditor";
-import { cleanTravisBuildFiles, doUpdatePom, inferStructureAndMovePackage } from "../java/JavaProjectParameters";
+import {
+    cleanTravisBuildFiles, doUpdatePom, inferStructureAndMovePackage,
+    JavaGeneratorParameters
+} from "../java/JavaProjectParameters";
 import { inferSpringStructureAndRename, SpringBootGeneratorParameters } from "./SpringBootProjectParameters";
+import { GitHubTagRouter, springBootTagger } from "../../tag/springTagger";
+import { BaseEditorOrReviewerParameters } from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
+import { doWithRetry } from "@atomist/automation-client/util/retry";
 
 export function springBootGenerator(projectPersister: ProjectPersister = GitHubProjectPersister): HandleCommand<SpringBootGeneratorParameters> {
     return generatorHandler<SpringBootGeneratorParameters>(
@@ -20,6 +26,20 @@ export function springBootGenerator(projectPersister: ProjectPersister = GitHubP
             intent: "generate spring",
             tags: ["spring", "boot", "java"],
             projectPersister,
+            afterAction: (p, params: JavaGeneratorParameters) =>
+                springBootTagger(p)
+                    .then(tags => {
+                        console.log("Tagging with " + tags.tags.join());
+                        const edp = new BaseEditorOrReviewerParameters();
+                        // TODO this is hacky but we need the different parameter format
+                        // Anyway, we don't want this to be part of generation long term
+                        edp.targets.githubToken = params.target.githubToken;
+                        return doWithRetry(() => GitHubTagRouter(tags, edp, undefined),
+                            "Publish tags", {
+                                randomize: true,
+                                retries: 30,
+                            });
+                    }),
         });
 }
 

@@ -12,6 +12,8 @@ import { taggerHandler } from "@atomist/automation-client/operations/tagger/tagg
 import { toPromise } from "@atomist/automation-client/project/util/projectUtils";
 import { AllJavaFiles } from "../generator/java/javaProjectUtils";
 
+import * as _ from "underscore";
+
 /**
  * Persist tags to GitHub
  * @param {Tags} tags
@@ -23,7 +25,7 @@ export const GitHubTagRouter: TagRouter = (tags, params) => {
     const grr = isGitHubRepoRef(tags.repoId) ? tags.repoId : new GitHubRepoRef(tags.repoId.owner, tags.repoId.repo, tags.repoId.sha);
     const url = `${grr.apiBase}/repos/${grr.owner}/${grr.repo}/topics`;
     logger.debug(`Request to '${url}' to raise tags: [${tags.tags.join()}]`);
-    return axios.put(url, {names: tags.tags},
+    return axios.put(url, {names: _.uniq(tags.tags)},
         // Mix in custom media type for
         {
             headers: {
@@ -44,7 +46,7 @@ function authHeaders(token: string): AxiosRequestConfig {
         : {};
 }
 
-const springBootTagger = p => {
+export const springBootTagger = p => {
     return p.findFile("pom.xml")
         .then(f => f.getContent())
         .then(content => {
