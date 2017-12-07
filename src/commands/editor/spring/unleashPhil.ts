@@ -42,7 +42,6 @@ export class UnleashPhilParameters extends BaseEditorOrReviewerParameters implem
     public desiredBootVersion: string = CurrentSpringBootVersion;
 
     public bindAndValidate() {
-        // logger.info("*********** bind and validate, targets=%j", this.targets);
         const targets = this.targets as FallbackReposParameters;
         if (!targets.repo) {
             assert(!!targets.repos, "Must set repos or repo");

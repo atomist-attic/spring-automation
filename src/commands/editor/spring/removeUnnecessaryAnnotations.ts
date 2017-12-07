@@ -56,6 +56,7 @@ export function findUnnecessaryComponentScanReviewerCommand(reviewRouter: Review
             description: "Find unnecessary component scan annotations",
             intent: "find unnecessary component scan",
             tags: SpringBootReviewerTags,
+            reviewRouter,
         },
     );
 }
