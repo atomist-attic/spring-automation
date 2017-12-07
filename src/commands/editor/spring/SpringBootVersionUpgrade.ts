@@ -48,7 +48,7 @@ export function springBootVersionUpgrade(repoFinder: RepoFinder = allReposInTeam
             description: "Upgrade versions of Spring Boot across an org",
             intent: "upgrade spring boot version",
             editMode: testEditMode || (params => new PullRequest(
-                "spring-boot-" + params.desiredBootVersion,
+                "spring-boot-" + params.desiredBootVersion + "-" + Date.now(),
                 "Upgrade Spring Boot to " + params.desiredBootVersion)),
         });
 }

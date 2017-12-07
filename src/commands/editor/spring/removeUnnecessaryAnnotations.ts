@@ -66,7 +66,8 @@ export const removeUnnecessaryComponentScanCommand: HandleCommand =
         BaseEditorOrReviewerParameters,
         "RemoveUnnecessaryComponentScanAnnotations", {
             description: "Remove unnecessary component scan annotations",
-            editMode: new PullRequest("remove-unnecessary-component-scan", "Remove unnecessary component scan annotations",
+            editMode: () => new PullRequest("remove-unnecessary-component-scan-" + Date.now(),
+                "Remove unnecessary component scan annotations",
                 "`@ComponentScan` annotations are not necessary on `@SpringBootApplication` classes as they are inherited"),
             intent: "remove unnecessary component scan",
             tags: SpringBootEditorTags,

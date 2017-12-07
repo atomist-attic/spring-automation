@@ -4,7 +4,6 @@ import { JavaSourceFiles } from "../../generator/java/javaProjectUtils";
 
 import { HandleCommand } from "@atomist/automation-client";
 import { BaseEditorOrReviewerParameters } from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
-import { MappedRepoParameters } from "@atomist/automation-client/operations/common/params/MappedRepoParameters";
 import { SourceLocation } from "@atomist/automation-client/operations/common/SourceLocation";
 import { reviewerHandler, ReviewRouter } from "@atomist/automation-client/operations/review/reviewerToCommand";
 import { ProjectReview, ReviewComment, Severity } from "@atomist/automation-client/operations/review/ReviewResult";
