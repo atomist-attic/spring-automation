@@ -1,6 +1,6 @@
-import { GitHubTargetsParams } from "@atomist/automation-client/operations/common/params/GitHubTargetsParams";
 import { MappedParameter, MappedParameters, Parameter } from "@atomist/automation-client";
 import { GitBranchRegExp } from "@atomist/automation-client/operations/common/params/gitHubPatterns";
+import { GitHubTargetsParams } from "@atomist/automation-client/operations/common/params/GitHubTargetsParams";
 
 /**
  * Resolve from a Mapped parameter or from a supplied repos regex if not found

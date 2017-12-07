@@ -1,5 +1,6 @@
 import { JavaFileParser } from "@atomist/antlr/tree/ast/antlr/java/JavaFileParser";
 import { HandleCommand } from "@atomist/automation-client";
+import { BaseEditorOrReviewerParameters } from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
 import { MappedRepoParameters } from "@atomist/automation-client/operations/common/params/MappedRepoParameters";
 import { SourceLocation } from "@atomist/automation-client/operations/common/SourceLocation";
 import { reviewerHandler, ReviewRouter } from "@atomist/automation-client/operations/review/reviewerToCommand";
@@ -9,7 +10,6 @@ import { findMatches } from "@atomist/automation-client/tree/ast/astUtils";
 import { JavaSourceFiles } from "../../generator/java/javaProjectUtils";
 import { MessagingReviewRouter } from "../../messagingReviewRouter";
 import { SpringBootReviewerTags } from "./springConstants";
-import { BaseEditorOrReviewerParameters } from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
 
 export class NonSpecificMvcAnnotation implements ReviewComment {
 

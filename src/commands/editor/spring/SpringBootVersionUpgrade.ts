@@ -9,8 +9,8 @@ import { EditMode, PullRequest } from "@atomist/automation-client/operations/edi
 import { editorHandler } from "@atomist/automation-client/operations/edit/editorToCommand";
 import { DefaultDirectoryManager } from "@atomist/automation-client/project/git/GitCommandGitProject";
 import { CurrentSpringBootVersion } from "../../reviewer/spring/SpringBootVersionReviewer";
-import { setSpringBootVersionEditor } from "./setSpringBootVersionEditor";
 import { FallbackReposParameters } from "../FallbackReposParameters";
+import { setSpringBootVersionEditor } from "./setSpringBootVersionEditor";
 
 @Parameters()
 export class SpringBootVersionUpgradeParameters extends BaseEditorOrReviewerParameters {

@@ -1,7 +1,8 @@
-import { HandleCommand, HandlerContext, logger, Parameter, } from "@atomist/automation-client";
+import { HandleCommand, HandlerContext, logger, Parameter } from "@atomist/automation-client";
 import { Parameters } from "@atomist/automation-client/decorators";
 import { commandHandlerFrom, OnCommand } from "@atomist/automation-client/onCommand";
 import { BaseEditorOrReviewerParameters } from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
+import { SmartParameters } from "@atomist/automation-client/SmartParameters";
 import * as slack from "@atomist/slack-messages";
 import { MessagingReviewRouter } from "../../messagingReviewRouter";
 import {
@@ -17,7 +18,6 @@ import {
 } from "./removeUnnecessaryAnnotations";
 import { SpringBootTags } from "./springConstants";
 import { verifyPomCommand } from "./verifyPom";
-import { SmartParameters } from "@atomist/automation-client/SmartParameters";
 
 import * as assert from "power-assert";
 import { FallbackReposParameters } from "../FallbackReposParameters";
