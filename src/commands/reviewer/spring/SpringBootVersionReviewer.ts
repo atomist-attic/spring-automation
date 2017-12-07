@@ -61,8 +61,8 @@ export const springBootVersionReviewer: ProjectReviewer<SpringBootVersionReviewe
                                     fix: {
                                         command: "SpringBootVersionUpgrade",
                                         params: {
-                                            owner: p.id.owner,
-                                            repo: p.id.repo,
+                                            "targets.owner": p.id.owner,
+                                            "targets.repo": p.id.repo,
                                         },
                                     },
                                 },
