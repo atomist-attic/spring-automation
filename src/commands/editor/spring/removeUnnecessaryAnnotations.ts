@@ -6,13 +6,13 @@ import { HandleCommand } from "@atomist/automation-client";
 import { BaseEditorOrReviewerParameters } from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
 import { PullRequest } from "@atomist/automation-client/operations/edit/editModes";
 import { editorHandler } from "@atomist/automation-client/operations/edit/editorToCommand";
+import { ProjectReviewer } from "@atomist/automation-client/operations/review/projectReviewer";
+import { reviewerHandler, ReviewRouter } from "@atomist/automation-client/operations/review/reviewerToCommand";
+import { clean, DefaultReviewComment } from "@atomist/automation-client/operations/review/ReviewResult";
 import { ZapTrailingWhitespace } from "@atomist/automation-client/tree/ast/FileHits";
 import { JavaSourceFiles } from "../../generator/java/javaProjectUtils";
-import { SpringBootEditorTags, SpringBootReviewerTags } from "./springConstants";
-import { reviewerHandler, ReviewRouter } from "@atomist/automation-client/operations/review/reviewerToCommand";
-import { ProjectReviewer } from "@atomist/automation-client/operations/review/projectReviewer";
-import { clean, DefaultReviewComment } from "@atomist/automation-client/operations/review/ReviewResult";
 import { MessagingReviewRouter } from "../../messagingReviewRouter";
+import { SpringBootEditorTags, SpringBootReviewerTags } from "./springConstants";
 
 const UnnecessaryComponentScanAnnotations = `//typeDeclaration[/classDeclaration]
                             [//annotation[@value='@SpringBootApplication']]
@@ -42,10 +42,10 @@ export const unnecessaryComponentScanReviewer: ProjectReviewer<any> = p => {
                             params: {
                                 "target.owner": p.id.owner,
                                 "target.repo": p.id.repo,
-                            }
+                            },
                         });
                 }),
-            }
+            };
         });
 };
 

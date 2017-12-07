@@ -1,21 +1,21 @@
 import { HandleCommand } from "@atomist/automation-client";
 import { logger } from "@atomist/automation-client/internal/util/logger";
+import { BaseEditorOrReviewerParameters } from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
 import { AnyProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
 import { chainEditors } from "@atomist/automation-client/operations/edit/projectEditorOps";
 import { generatorHandler } from "@atomist/automation-client/operations/generate/generatorToCommand";
 import { ProjectPersister } from "@atomist/automation-client/operations/generate/generatorUtils";
 import { GitHubProjectPersister } from "@atomist/automation-client/operations/generate/gitHubProjectPersister";
 import { cleanReadMe } from "@atomist/automation-client/operations/generate/UniversalSeed";
+import { doWithRetry } from "@atomist/automation-client/util/retry";
 import { curry } from "@typed/curry";
 import { addSpringBootStarter } from "../../editor/spring/addStarterEditor";
+import { GitHubTagRouter, springBootTagger } from "../../tag/springTagger";
 import {
     cleanTravisBuildFiles, doUpdatePom, inferStructureAndMovePackage,
-    JavaGeneratorParameters
+    JavaGeneratorParameters,
 } from "../java/JavaProjectParameters";
 import { inferSpringStructureAndRename, SpringBootGeneratorParameters } from "./SpringBootProjectParameters";
-import { GitHubTagRouter, springBootTagger } from "../../tag/springTagger";
-import { BaseEditorOrReviewerParameters } from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
-import { doWithRetry } from "@atomist/automation-client/util/retry";
 
 export function springBootGenerator(projectPersister: ProjectPersister = GitHubProjectPersister): HandleCommand<SpringBootGeneratorParameters> {
     return generatorHandler<SpringBootGeneratorParameters>(

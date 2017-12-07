@@ -7,8 +7,8 @@ import * as config from "config";
 import { findMutableInjectionsCommand } from "./commands/editor/spring/findMutableInjections";
 import { findNonSpecificMvcAnnotationsCommand } from "./commands/editor/spring/findNonSpecificMvcAnnotations";
 import {
-    removeAutowiredOnSoleConstructorCommand,
-    removeUnnecessaryComponentScanCommand, unnecessaryComponentScanReviewer, findUnnecessaryComponentScanReviewerCommand,
+    findUnnecessaryComponentScanReviewerCommand,
+    removeAutowiredOnSoleConstructorCommand, removeUnnecessaryComponentScanCommand, unnecessaryComponentScanReviewer,
 } from "./commands/editor/spring/removeUnnecessaryAnnotations";
 import { springBootVersionUpgrade } from "./commands/editor/spring/SpringBootVersionUpgrade";
 import { unleashPhilCommand } from "./commands/editor/spring/unleashPhil";
