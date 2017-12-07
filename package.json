@@ -40,11 +40,13 @@
   },
   "devDependencies": {
     "@types/app-root-path": "^1.2.4",
+    "@types/axios-mock-adapter": "^1.9.0",
     "@types/config": "0.0.33",
     "@types/mocha": "^2.2.41",
     "@types/node": "^8.0.46",
     "@types/power-assert": "^1.4.29",
     "@types/tmp": "0.0.33",
+    "axios-mock-adapter": "^1.10.0",
     "copyfiles": "^1.2.0",
     "espower-typescript": "^8.0.2",
     "fs-extra": "^4.0.2",

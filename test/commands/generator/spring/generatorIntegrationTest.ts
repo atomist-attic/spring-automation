@@ -1,29 +1,37 @@
+import "mocha";
+import * as assert from "power-assert";
+
 import { HandleCommand, HandlerContext } from "@atomist/automation-client";
 import { CommandResult, runCommand } from "@atomist/automation-client/action/cli/commandLine";
 import { ConsoleMessageClient } from "@atomist/automation-client/internal/message/ConsoleMessageClient";
 import { LocalProject } from "@atomist/automation-client/project/local/LocalProject";
 import { Project } from "@atomist/automation-client/project/Project";
 
-import { localProjectPersister } from "./localProjectPersister";
-
 import { SmartParameters } from "@atomist/automation-client/SmartParameters";
-import "mocha";
-import * as assert from "power-assert";
 import { springBootGenerator } from "../../../../src/commands/generator/spring/springBootGenerator";
 import { SpringBootGeneratorParameters } from "../../../../src/commands/generator/spring/SpringBootProjectParameters";
-import { createdProject } from "./localProjectPersister";
+import { createdProject, localProjectPersister } from "./localProjectPersister";
+
+import axios from "axios";
+import MockAdapter = require("axios-mock-adapter");
 
 export const GishPath = "src/main/java/com/smashing/pumpkins/Gish.java";
 
 describe("spring generator integration test", () => {
 
     it("edits, verifies and compiles", done => {
+        const mock = new MockAdapter(axios);
+        mock.onPut(`https://api.github.com/repos/johnsonr/foo/topics`).replyOnce(200, {
+            names: [
+                "spring-boot",
+                "spring",
+                "java",
+            ],
+        });
+
         generate()
             .then(verifyAndCompile)
-            .then(cr => {
-                    done();
-                },
-            ).catch(done);
+            .then(() => done(), done);
     }).timeout(200000);
 
     function generate(): Promise<LocalProject> {
