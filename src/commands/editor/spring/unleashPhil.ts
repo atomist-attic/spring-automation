@@ -84,5 +84,6 @@ export const unleashPhilCommand: HandleCommand = commandHandlerFrom(
     "UnleashPhil",
     "Unleash Phil Webb",
     ["unleash phil", "ask phil"],
-    SpringBootTags,
+    // No tags as we only want to run from the bot
+    [],
 );

@@ -8,7 +8,11 @@ import { PullRequest } from "@atomist/automation-client/operations/edit/editMode
 import { editorHandler } from "@atomist/automation-client/operations/edit/editorToCommand";
 import { ZapTrailingWhitespace } from "@atomist/automation-client/tree/ast/FileHits";
 import { JavaSourceFiles } from "../../generator/java/javaProjectUtils";
-import { SpringBootEditorTags } from "./springConstants";
+import { SpringBootEditorTags, SpringBootReviewerTags } from "./springConstants";
+import { reviewerHandler, ReviewRouter } from "@atomist/automation-client/operations/review/reviewerToCommand";
+import { ProjectReviewer } from "@atomist/automation-client/operations/review/projectReviewer";
+import { clean, DefaultReviewComment } from "@atomist/automation-client/operations/review/ReviewResult";
+import { MessagingReviewRouter } from "../../messagingReviewRouter";
 
 const UnnecessaryComponentScanAnnotations = `//typeDeclaration[/classDeclaration]
                             [//annotation[@value='@SpringBootApplication']]
@@ -21,6 +25,40 @@ export const removeUnnecessaryComponentScanEditor: SimpleProjectEditor = p => {
         UnnecessaryComponentScanAnnotations,
         ZapTrailingWhitespace);
 };
+
+// TODO cast issue
+export const unnecessaryComponentScanReviewer: ProjectReviewer<any> = p => {
+    return findMatches(p, JavaFileParser, JavaSourceFiles,
+        UnnecessaryComponentScanAnnotations)
+        .then(matches => {
+            return {
+                repoId: p.id,
+                comments: matches.map(m => {
+                    return new DefaultReviewComment("info", "unnecessary annotations",
+                        "`@ComponentScan` annotations are not necessary on `@SpringBootApplication` classes as they are inherited",
+                        m.sourceLocation,
+                        {
+                            command: "RemoveUnnecessaryComponentScanAnnotations",
+                            params: {
+                                "target.owner": p.id.owner,
+                                "target.repo": p.id.repo,
+                            }
+                        });
+                }),
+            }
+        });
+};
+
+export function findUnnecessaryComponentScanReviewerCommand(reviewRouter: ReviewRouter<any> = MessagingReviewRouter): HandleCommand {
+    return reviewerHandler(() => unnecessaryComponentScanReviewer,
+        BaseEditorOrReviewerParameters,
+        "UnnecessaryComponentScanAnnotationReviewer", {
+            description: "Find unnecessary component scan annotations",
+            intent: "find unnecessary component scan",
+            tags: SpringBootReviewerTags,
+        },
+    );
+}
 
 export const removeUnnecessaryComponentScanCommand: HandleCommand =
     editorHandler(() => removeUnnecessaryComponentScanEditor,

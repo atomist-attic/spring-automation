@@ -8,7 +8,7 @@ import { findMutableInjectionsCommand } from "./commands/editor/spring/findMutab
 import { findNonSpecificMvcAnnotationsCommand } from "./commands/editor/spring/findNonSpecificMvcAnnotations";
 import {
     removeAutowiredOnSoleConstructorCommand,
-    removeUnnecessaryComponentScanCommand,
+    removeUnnecessaryComponentScanCommand, unnecessaryComponentScanReviewer, findUnnecessaryComponentScanReviewerCommand,
 } from "./commands/editor/spring/removeUnnecessaryAnnotations";
 import { springBootVersionUpgrade } from "./commands/editor/spring/SpringBootVersionUpgrade";
 import { unleashPhilCommand } from "./commands/editor/spring/unleashPhil";
@@ -47,6 +47,7 @@ export const configuration: Configuration = {
         () => kotlinSpring5Generator(),
         () => springBootVersionUpgrade(), // Is this one bad?
         () => findNonSpecificMvcAnnotationsCommand(),
+        () => findUnnecessaryComponentScanReviewerCommand(),
         () => findMutableInjectionsCommand(),
         () => verifyPomCommand(),
         () => springBootTaggerCommand(),
