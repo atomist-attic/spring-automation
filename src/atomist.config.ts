@@ -11,7 +11,7 @@ import {
     removeUnnecessaryComponentScanCommand,
 } from "./commands/editor/spring/removeUnnecessaryAnnotations";
 import { springBootVersionUpgrade } from "./commands/editor/spring/SpringBootVersionUpgrade";
-import { askPhilCommand, unleashPhilCommand } from "./commands/editor/spring/unleashPhil";
+import { unleashPhilCommand } from "./commands/editor/spring/unleashPhil";
 import { verifyPomCommand } from "./commands/editor/spring/verifyPom";
 import { kotlinSpring5Generator } from "./commands/generator/spring/kotlinSpring5Generator";
 import { springBootGenerator } from "./commands/generator/spring/springBootGenerator";
@@ -50,7 +50,6 @@ export const configuration: Configuration = {
         () => findMutableInjectionsCommand(),
         () => verifyPomCommand(),
         () => springBootTaggerCommand(),
-        () => askPhilCommand,
         () => unleashPhilCommand,
         () => springBootVersionReviewerCommand(MessagingReviewRouter),
         // CopyGenerator,

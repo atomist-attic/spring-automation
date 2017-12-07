@@ -10,6 +10,7 @@ import { ProjectReview, ReviewComment, Severity } from "@atomist/automation-clie
 import { Project } from "@atomist/automation-client/project/Project";
 import { MessagingReviewRouter } from "../../messagingReviewRouter";
 import { SpringBootReviewerTags } from "./springConstants";
+import { BaseEditorOrReviewerParameters } from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
 
 export class MutableInjection implements ReviewComment {
 
@@ -61,7 +62,7 @@ export function findMutableInjections(p: Project,
 
 export function findMutableInjectionsCommand(reviewRouter: ReviewRouter<any> = MessagingReviewRouter): HandleCommand {
     return reviewerHandler(() => p => findMutableInjections(p),
-        MappedRepoParameters,
+        BaseEditorOrReviewerParameters,
         "FindMutableInjections",
         {
             tags: SpringBootReviewerTags,

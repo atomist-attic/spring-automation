@@ -10,13 +10,13 @@ import { editorHandler } from "@atomist/automation-client/operations/edit/editor
 import { DefaultDirectoryManager } from "@atomist/automation-client/project/git/GitCommandGitProject";
 import { CurrentSpringBootVersion } from "../../reviewer/spring/SpringBootVersionReviewer";
 import { setSpringBootVersionEditor } from "./setSpringBootVersionEditor";
-import { AllReposParameters } from "./unleashPhil";
+import { FallbackReposParameters } from "../FallbackReposParameters";
 
 @Parameters()
 export class SpringBootVersionUpgradeParameters extends BaseEditorOrReviewerParameters {
 
     constructor() {
-        super(new AllReposParameters());
+        super(new FallbackReposParameters());
     }
 
     @Parameter({

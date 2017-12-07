@@ -9,6 +9,7 @@ import { findMatches } from "@atomist/automation-client/tree/ast/astUtils";
 import { JavaSourceFiles } from "../../generator/java/javaProjectUtils";
 import { MessagingReviewRouter } from "../../messagingReviewRouter";
 import { SpringBootReviewerTags } from "./springConstants";
+import { BaseEditorOrReviewerParameters } from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
 
 export class NonSpecificMvcAnnotation implements ReviewComment {
 
@@ -44,7 +45,7 @@ export function findNonSpecificMvcAnnotations(p: Project,
 
 export function findNonSpecificMvcAnnotationsCommand(reviewRouter: ReviewRouter<any> = MessagingReviewRouter): HandleCommand {
     return reviewerHandler(() => p => findNonSpecificMvcAnnotations(p),
-        MappedRepoParameters,
+        BaseEditorOrReviewerParameters,
         "FindNonSpecificMvcAnnotations",
         {
             tags: SpringBootReviewerTags,

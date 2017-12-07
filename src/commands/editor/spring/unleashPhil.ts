@@ -1,12 +1,7 @@
-import {
-    HandleCommand, HandlerContext, logger, MappedParameter, MappedParameters,
-    Parameter,
-} from "@atomist/automation-client";
+import { HandleCommand, HandlerContext, logger, Parameter, } from "@atomist/automation-client";
 import { Parameters } from "@atomist/automation-client/decorators";
 import { commandHandlerFrom, OnCommand } from "@atomist/automation-client/onCommand";
 import { BaseEditorOrReviewerParameters } from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
-import { GitBranchRegExp } from "@atomist/automation-client/operations/common/params/gitHubPatterns";
-import { GitHubTargetsParams } from "@atomist/automation-client/operations/common/params/GitHubTargetsParams";
 import * as slack from "@atomist/slack-messages";
 import { MessagingReviewRouter } from "../../messagingReviewRouter";
 import {
@@ -25,48 +20,10 @@ import { verifyPomCommand } from "./verifyPom";
 import { SmartParameters } from "@atomist/automation-client/SmartParameters";
 
 import * as assert from "power-assert";
+import { FallbackReposParameters } from "../FallbackReposParameters";
 
 const oldPhil = "http://www.victorianceramics.com/images/artists/philip-webb.jpg";
 const springPhil = "https://pbs.twimg.com/profile_images/606164636811984896/QEAnB8Xu.jpg";
-
-export class RegexReposParameters extends GitHubTargetsParams {
-
-    public owner: string;
-
-    @Parameter({required: true})
-    public repo: string;
-
-    @Parameter({description: "Branch or ref. Defaults to 'master'", ...GitBranchRegExp, required: false})
-    public sha: string;
-
-}
-
-export class FallbackReposParameters extends GitHubTargetsParams {
-
-    @MappedParameter(MappedParameters.GitHubOwner, false)
-    public owner: string;
-
-    @MappedParameter(MappedParameters.GitHubRepository, false)
-    public repo: string;
-
-    @Parameter({description: "Branch or ref. Defaults to 'master'", ...GitBranchRegExp, required: false})
-    public sha: string;
-
-    @Parameter({description: "regex", required: false})
-    public repos: string;
-
-}
-
-export class AllReposParameters extends GitHubTargetsParams {
-
-    public owner: string;
-
-    public repo: string = ".*";
-
-    @Parameter({description: "Branch or ref. Defaults to 'master'", ...GitBranchRegExp, required: false})
-    public sha: string;
-
-}
 
 @Parameters()
 export class UnleashPhilParameters extends BaseEditorOrReviewerParameters implements SmartParameters {
@@ -85,7 +42,7 @@ export class UnleashPhilParameters extends BaseEditorOrReviewerParameters implem
     public desiredBootVersion: string = CurrentSpringBootVersion;
 
     public bindAndValidate() {
-        logger.info("*********** bind and validate, targets=%j", this.targets);
+        // logger.info("*********** bind and validate, targets=%j", this.targets);
         const targets = this.targets as FallbackReposParameters;
         if (!targets.repo) {
             assert(!!targets.repos, "Must set repos or repo");
@@ -108,7 +65,7 @@ const handler: OnCommand<SpringBootVersionReviewerParameters> =
             .then(() => ctx.messageClient.respond("Phil is suggesting changes. Ignore his PRs at your peril!"))
             .then(() => removeUnnecessaryComponentScanCommand.handle(ctx, parameters))
             .then(() => removeAutowiredOnSoleConstructorCommand.handle(ctx, parameters))
-            .then(() => ctx.messageClient.respond("Phil is finished with your organization"));
+            .then(() => ctx.messageClient.respond("Phil is finished with you"));
     };
 
 function showPhil(ctx: HandlerContext) {
@@ -126,15 +83,6 @@ export const unleashPhilCommand: HandleCommand = commandHandlerFrom(
     UnleashPhilParameters,
     "UnleashPhil",
     "Unleash Phil Webb",
-    "unleash phil",
-    SpringBootTags,
-);
-
-export const askPhilCommand: HandleCommand = commandHandlerFrom(
-    handler,
-    SpringBootVersionReviewerParameters,
-    "askPhil",
-    "Ask Phil Webb",
-    "ask phil",
+    ["unleash phil", "ask phil"],
     SpringBootTags,
 );
