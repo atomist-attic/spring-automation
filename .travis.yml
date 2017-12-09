@@ -6,11 +6,23 @@ node_js:
 branches:
   except:
   - "/\\+travis\\.\\d+$/"
+  - "/^\\d+\\.\\d+\\.\\d+-\\d+$/"
+addons:
+  apt:
+    sources:
+    - sourceline: "deb http://packages.cloudfoundry.org/debian stable main"
+      key_url: "https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key"
+    packages:
+    - cf-cli
 env:
   global:
   - NPM_REGISTRY=https://atomist.jfrog.io/atomist/api/npm/npm-dev-local
   - secure: 5e5EoOVbE116gJFdZo7QqRfgbDiOQpDBNohdXj5OBoOSJVTIOALIgOO4H/xkUDoda4JUBOhyr8R4NbI5IWiL5GuHqYhRmmihFfTrJcwxFB8StDIu6v+YhKO9W97DuEC1DcJazRbrIBEDFK2s9GvH8mcaEU2P8rLdvTQOFwcEUWQqo9BnTRiZSbk216a3RN9eGGYblu0Qmx5lr2m+2OABAkDbf+i92BlNWhgNPFNii1RzO++/dnMVD/Oudd1nMim5JlF0b627gtGIoHqWFSWSyXOEg5w1OLgj45uBGGXOrUTDE3PVpBY3Bp1/M92O8ojTYIXO6BxjZGrr5/wLgJXEvqoK3hB0xpcbTJT9oI7enB2LRiBCpNdFVsIw2672k3UPvkazeuW2BVUKZJpvUu5wBxsJvTNcznk5TuFpzW3AF24evtptNRgdfLMGueeDGfug5r6MxfC2NWPb3lcYZ+avcISbr7d17or5Wo8FYcC+TzKBLc6ztFLIAqDZOBBn4/txjOUJVpVOfJ7hJSos5obPPJNPYuFA9ctyBYQDnujMV5mIhNwoxantHXD3QvNip8REK+eu9oIc2YHIzGiIdMwEXq0J0itBHiPoVRJMwvqyJPKpMuRRc3PNJe1ngr8WHJDYTqIXWeVMNVNRxfJs6ZAjaRTZjWO0xJ2qPHyijkgRPtw=
+  - secure: eVRAgmKLiJ1QQUX/PORXFZK3l/YN0QAc9sliKWTJLAscmCFsez4uDJwlFGsaPnzijDXAk/g0MVDTgqeWhhVsA98fIqlSSMO9eIhh0RZYKsVOfE4t6fctWCZXhqZAAfIZnxXIp67JZxCjvFqpXg1I15eF7IxdefgM7Tye9OqtbViIdXKHYBHW8Hdb8qC64w38T367r/q7bAUsuMoHGc4kEQMQ0ng1KLqOc71wLIAZLAbx+Ftjq1HWpCqMxHHpGanEXBnCMcNa/RtlzKWtmvBggVQHSuZXbaZ0taJpj9d6ptlJQHZeL9FPR7EL4Guvq+khmr9NnixcT+gZ1BryGyfjeUf0t4yDzlNwRnAqeS03jeUWegu2ivN9Hyy1oYBndKHubkEeTdkUBMkZhgR+F4fkhCha8S3FD2sjhspLsn8eh7In9TQCbHRSk3cmNRDI174ek62R1Ao7sdw9giLuMmYqni5QcccbXLMyAA5VZQLNDopC0nwY7yCbB2oWD9OAuwPBb2adSq8x7zqFRm9Te4QylkAgz6kh4IujIiipVJn+slKeSYkmi0kCuD1BOV0/YM6xTjrVlMCcO2H7wZZkWuqDmqrCAIo6+m8R0hrmNJfZdUo6nQ2uyps0xSKMnd7+NDP6T8V2DVHEHrJKhfQJIA370KD7WNgLbetDldytVYRW5x4=
+  - secure: 0JyLXPTWJTr2TVtktc0w/btdatoblG2QMQRvK67rWcjNBR8v2jEZZTtFBfSRvAkpE7N+1+K8pl0R1/+wfpzs88wgqat/8DR+547W8cHE9z7VTZKQLIY+TucsYANcp+GaHMf/KhZNTzH4dmVXqaaE376yD0caGfQAYKSTr45ZO5whhLBg9YCsTVuRdX4kAIa4dVX0XYi3uT1PhFro4W/UietcJImHB846nAphn2e1fT2wxD1qWq4eOsKYBjVFfg5RQMQLnmIBnT2js8+6T2ZQbqolErFk/9RBU8LVnY7pOqDnZN+71iwV58wC8VWRvjyKaaI/yhXy9TB5zwQHRsx4dLWCHe+Q577CQvhNtY3vwcnhYFtY5dWgCWQe1JX7YQeZ4xukneSRxABtVmncjcN3ow2zZOv+ucbfNbxc9uwX3QN7u6/mJclG/DsswdiaaZtgyVdi2c3iQfQZ5TlZnywGhGfWVsw4RvSHzxieHpdgOSGJzKzm4w/m6R5/IZEg55Wgdypz3iFJcPn5OxHOAakWocLtxZoFGHRRJ9xd0kyDHu5BT5mIMMrXYjjnL7tLELDmqU+b6/VFtetj7j5CKaQEXEQgGBlVbaXc4+XZXVhHFe4ztpeiJUC3l6Otmptz7FQsC3KU59sVO1ho0ioDObGXfGuryaD1Lqtg8nE7b4dLgpY=
+  - CF_ORG=atomist
 before_install:
+- "rm -f $HOME/.npm/_logs/*-debug.log"
 - openssl aes-256-cbc -K $encrypted_bab9b497981d_key -iv $encrypted_bab9b497981d_iv
   -in scripts/.npmrc.enc -out $HOME/.npmrc -d
 script: bash scripts/travis-build.bash
@@ -29,11 +41,15 @@ cache:
   - "$HOME/.npm"
   - "$HOME/.m2"
 deploy:
-  provider: releases
-  api_key:
-    secure: hcWTbCGdStcOjqwZOCkc+1DQD2SF9hWLBOZftxZynI+58y4cIJwMwuISzIWc/HCRQFeb4TBp+zQm2+i3dpyCE42nabF0J3hzhHzV1r36qKohltT4GL8+0WKb4/j7dPL+XkJwMpMGjWQyjFqXyFF+G5nptKLTYNRdz8QCkZ6ISKJ+78/iQIVOkB96rALtOwz+hT61pExZ2xp4dAA2xjlpdAUaJhYhL2Xskw+/tt3m2rXrGvGJOPVRQAXqnlrAXSc2U9Sm2PZ2KW9hys0YgL5zXOs1U5trsJZCgQr9CUxzmWYRX+LW1aFLnBoOER4nhza9CDW0okkLl2J2D4skQ8+usUDKTxxrqpYRcBC3IljdFf6qU9p7PlaCzT77KRyeHASfIWwwZB++icnuz5cFAWXtJ5IJSFl3JrGvdZ44kYUU1npYGnn6FhpUOm2+kJRnHflYq/mcR5CkE65be3hR0R6OUP4kYJMN7GKujc5rq1iH+RvLHRm/7uxs3ec8mzM/aFS1KoM6wyMBZiO+d5/ypAmecyt3PKd0GsaeiIkFCXJb0afPRXDoLgUn2Ym/HS+DPVhwYOgEcDp/SqtSlUkhupjKOBzdqchldrPSV6WU2R5WUoxQmwxcxiEXBtr4SJXcFfuXY1+/q/JH8sRVd5SOSap3xti/jM+PefOvyVcarSJvgNc=
+- provider: pages
+  skip_cleanup: true
+  github_token: "$GITHUB_TOKEN"
+  local_dir: build/typedoc
   on:
     tags: true
     condition: "$TRAVIS_TAG =~ ^[0-9]+\\.[0-9]+\\.[0-9]+(-(m|rc)\\.[0-9]+)?$"
-after_deploy:
-- bash scripts/gh-publish.bash $TRAVIS_REPO_SLUG
+- provider: releases
+  api_key: "$GITHUB_TOKEN"
+  on:
+    tags: true
+    condition: "$TRAVIS_TAG =~ ^[0-9]+\\.[0-9]+\\.[0-9]+(-(m|rc)\\.[0-9]+)?$"
