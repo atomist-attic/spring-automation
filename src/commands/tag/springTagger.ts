@@ -12,7 +12,9 @@ import { taggerHandler } from "@atomist/automation-client/operations/tagger/tagg
 import { toPromise } from "@atomist/automation-client/project/util/projectUtils";
 import { AllJavaFiles } from "../generator/java/javaProjectUtils";
 
+import { Parameters } from "@atomist/automation-client/decorators";
 import * as _ from "underscore";
+import { FallbackReposParameters } from "../editor/FallbackReposParameters";
 
 /**
  * Persist tags to GitHub
@@ -73,9 +75,17 @@ export const springBootTagger = p => {
         });
 };
 
+@Parameters()
+export class SpringBootTaggerParameters extends BaseEditorOrReviewerParameters {
+
+    constructor() {
+        super(new FallbackReposParameters());
+    }
+}
+
 export function springBootTaggerCommand(tagRouter: TagRouter = GitHubTagRouter): HandleCommand {
     return taggerHandler(springBootTagger,
-        BaseEditorOrReviewerParameters,
+        SpringBootTaggerParameters,
         "SpringBootTagger",
         {
             description: "Tag Spring Boot projects",
