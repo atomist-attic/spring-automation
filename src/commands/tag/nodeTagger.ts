@@ -40,7 +40,7 @@ export function nodeTaggerCommand(tagRouter: TagRouter = GitHubTagRouter): Handl
         {
             description: "Tag node projects",
             tags: SpringBootTaggerTags.concat("tagger"),
-            intent: "tag spring",
+            intent: "tag node",
             tagRouter,
         },
     );
