@@ -22,6 +22,9 @@ import { removeUnnecessaryComponentScanCommand } from "./removeUnnecessaryCompon
 const oldPhil = "http://www.victorianceramics.com/images/artists/philip-webb.jpg";
 const springPhil = "https://pbs.twimg.com/profile_images/606164636811984896/QEAnB8Xu.jpg";
 
+/**
+ * Parameters with fallback
+ */
 @Parameters()
 export class UnleashPhilParameters extends BaseEditorOrReviewerParameters implements SmartParameters {
 

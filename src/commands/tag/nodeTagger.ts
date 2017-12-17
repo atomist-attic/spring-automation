@@ -4,14 +4,14 @@ import { SpringBootTaggerTags } from "../editor/spring/springConstants";
 import { DefaultTags, TagRouter } from "@atomist/automation-client/operations/tagger/Tagger";
 import { taggerHandler } from "@atomist/automation-client/operations/tagger/taggerHandler";
 import { toPromise } from "@atomist/automation-client/project/util/projectUtils";
+import { UnleashPhilParameters } from "../editor/spring/unleashPhil";
 import { GitHubTagRouter } from "./gitHubTagRouter";
-import { MappedOrFallbackParameters } from "./MappedOrFallbackParameters";
 
 export const nodeTagger = p => {
     return p.findFile("package.json")
         .then(f => f.getContent())
         .then(content => {
-            const tags: string[] = [ "node", "npm" ];
+            const tags: string[] = ["node", "npm"];
             if (content.includes("what")) {
                 // TODO add something
             } else if (content.includes("org.springframework")) {
@@ -35,7 +35,7 @@ export const nodeTagger = p => {
 
 export function nodeTaggerCommand(tagRouter: TagRouter = GitHubTagRouter): HandleCommand {
     return taggerHandler(nodeTagger,
-        MappedOrFallbackParameters,
+        UnleashPhilParameters,
         "NodeTagger",
         {
             description: "Tag node projects",
