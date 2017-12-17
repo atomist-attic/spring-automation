@@ -4,14 +4,14 @@ import { MappedOrFallbackParameters } from "./MappedOrFallbackParameters";
 import { nodeTaggerCommand } from "./nodeTagger";
 import { springBootTaggerCommand } from "./springTagger";
 
-/*
-
-  // TODO why compiler error
 const handler: OnCommand<MappedOrFallbackParameters> =
     (ctx, parameters) => {
         // Fortunately all these commands have the same parameters
-        return springBootTaggerCommand().handle(ctx, parameters)
-            .then(() => nodeTaggerCommand().handle(ctx, parameters))
+        // TODO why do we need to break this up for compile checking?
+        const springTag: Promise<any> = springBootTaggerCommand().handle(ctx, parameters);
+        const nodeTag: Promise<any> = nodeTaggerCommand().handle(ctx, parameters);
+        return springTag
+            .then(() => nodeTag)
             .then(() => ctx.messageClient.respond("Tagging complete"));
     };
 
@@ -20,9 +20,7 @@ export const tagAllCommand: HandleCommand = commandHandlerFrom(
     MappedOrFallbackParameters,
     "TagAll",
     "Tag all repos",
-    ["tag all"],
+    "tag all",
     // No tags as we only want to run from the bot
     [],
 );
-
-*/

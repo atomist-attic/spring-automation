@@ -18,6 +18,7 @@ import { kotlinSpring5Generator } from "./commands/generator/spring/kotlinSpring
 import { springBootGenerator } from "./commands/generator/spring/springBootGenerator";
 import { MessagingReviewRouter } from "./commands/messagingReviewRouter";
 import { springBootVersionReviewerCommand } from "./commands/reviewer/spring/SpringBootVersionReviewer";
+import { tagAllCommand } from "./commands/tag/allTagger";
 import { nodeTaggerCommand } from "./commands/tag/nodeTagger";
 import { springBootTaggerCommand } from "./commands/tag/springTagger";
 import { LogzioOptions } from "./util/logzio";
@@ -54,6 +55,7 @@ export const configuration: Configuration = {
         () => verifyPomCommand(),
         () => springBootTaggerCommand(),
         () => nodeTaggerCommand(),
+        () => tagAllCommand,
         () => unleashPhilCommand,
         () => springBootVersionReviewerCommand(MessagingReviewRouter),
         // CopyGenerator,
