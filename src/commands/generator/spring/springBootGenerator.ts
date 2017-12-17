@@ -10,7 +10,8 @@ import { cleanReadMe } from "@atomist/automation-client/operations/generate/Univ
 import { doWithRetry } from "@atomist/automation-client/util/retry";
 import { curry } from "@typed/curry";
 import { addSpringBootStarter } from "../../editor/spring/addStarterEditor";
-import { GitHubTagRouter, springBootTagger } from "../../tag/springTagger";
+import { GitHubTagRouter } from "../../tag/gitHubTagRouter";
+import { springBootTagger } from "../../tag/springTagger";
 import {
     cleanTravisBuildFiles, doUpdatePom, inferStructureAndMovePackage,
     JavaGeneratorParameters,

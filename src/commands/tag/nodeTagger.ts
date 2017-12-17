@@ -1,29 +1,28 @@
 import { HandleCommand } from "@atomist/automation-client";
-import { SpringBootStarter, SpringBootTaggerTags } from "../editor/spring/springConstants";
+import { SpringBootTaggerTags } from "../editor/spring/springConstants";
 
 import { DefaultTags, TagRouter } from "@atomist/automation-client/operations/tagger/Tagger";
 import { taggerHandler } from "@atomist/automation-client/operations/tagger/taggerHandler";
 import { toPromise } from "@atomist/automation-client/project/util/projectUtils";
-import { AllJavaFiles } from "../generator/java/javaProjectUtils";
 import { GitHubTagRouter } from "./gitHubTagRouter";
 import { MappedOrFallbackParameters } from "./MappedOrFallbackParameters";
 
-export const springBootTagger = p => {
-    return p.findFile("pom.xml")
+export const nodeTagger = p => {
+    return p.findFile("package.json")
         .then(f => f.getContent())
         .then(content => {
-            const tags: string[] = [];
-            if (content.includes(SpringBootStarter)) {
-                tags.push("spring-boot");
-                tags.push("spring");
+            const tags: string[] = [ "node", "npm" ];
+            if (content.includes("what")) {
+                // TODO add something
             } else if (content.includes("org.springframework")) {
-                tags.push("spring");
+                // TODO similar
+                // tags.push("spring");
             }
             // TODO need to simplify this
-            return toPromise(p.streamFiles(AllJavaFiles))
-                .then(javaFiles => {
-                    if (javaFiles.length > 0) {
-                        tags.push("java");
+            return toPromise(p.streamFiles("**/*.ts"))
+                .then(tsFiles => {
+                    if (tsFiles.length > 0) {
+                        tags.push("typescript");
                     }
                     return new DefaultTags(p.id, tags);
                 });
@@ -34,12 +33,12 @@ export const springBootTagger = p => {
         });
 };
 
-export function springBootTaggerCommand(tagRouter: TagRouter = GitHubTagRouter): HandleCommand {
-    return taggerHandler(springBootTagger,
+export function nodeTaggerCommand(tagRouter: TagRouter = GitHubTagRouter): HandleCommand {
+    return taggerHandler(nodeTagger,
         MappedOrFallbackParameters,
-        "SpringBootTagger",
+        "NodeTagger",
         {
-            description: "Tag Spring Boot projects",
+            description: "Tag node projects",
             tags: SpringBootTaggerTags.concat("tagger"),
             intent: "tag spring",
             tagRouter,
