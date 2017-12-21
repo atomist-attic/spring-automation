@@ -4,7 +4,7 @@
 set -o pipefail
 
 declare Pkg=travis-build-node
-declare Version=1.0.0
+declare Version=1.2.0
 
 # write message to standard out (stdout)
 # usage: msg MESSAGE
@@ -51,40 +51,6 @@ function git-tag () {
     fi
 }
 
-# generate TypeDoc HTML
-# usage: typedoc-gen
-function typedoc-gen () {
-    local out_dir=.
-    local tsconfig=tsconfig.json td_tsconfig=tsconfig-typedoc.json
-    if [[ -f $tsconfig ]]; then
-        out_dir=$(jq -er '.compilerOptions.outDir' "$tsconfig")
-        if [[ $? -ne 0 || ! $out_dir ]]; then
-            out_dir=.
-            msg "outDir not set in $tsconfig, using '$out_dir'"
-        fi
-
-        if ! jq '.compilerOptions.rootDir = "src" | .exclude[.exclude | length] |= . + "test"' "$tsconfig" > "$td_tsconfig"
-        then
-            err "failed to modify tsconfig for typedoc"
-            return 1
-        fi
-    else
-        if ! echo '{"compilerOptions":{"outDir":"build","rootDir":"src"},"exclude":["build","node_modules","test"]}' | jq . > "$td_tsconfig"
-        then
-            err "failed to create tsconfig for typedoc"
-            return 1
-        fi
-    fi
-
-    local td_dir=$out_dir/typedoc
-    rm -rf "$td_dir"
-    if ! npm run typedoc -- --tsconfig "$td_tsconfig" --out "$td_dir"; then
-        err "failed to create typedoc"
-        return 1
-    fi
-    rm -f "$td_tsconfig"
-}
-
 # create and set a prerelease timestamped, and optionally branched, version
 # usage: set-timestamp-version [BRANCH]
 function set-timestamp-version () {
@@ -113,7 +79,7 @@ function set-timestamp-version () {
         return 1
     fi
     local project_version=$pkg_version-$prerelease$timestamp
-    if ! npm version "$project_version"; then
+    if ! npm version --git-tag-version false "$project_version"; then
         err "failed to set package version: $project_version"
         return 1
     fi
@@ -148,6 +114,59 @@ function npm-publish () {
     done
 }
 
+# post a status on a commit
+# usage: git-status [CONTEXT [DESCRIPTION [URL [STATE]]]]
+function git-status () {
+    local context=$1
+    if [[ $context ]]; then
+        shift
+    else
+        context=default
+    fi
+    local description=$1
+    if [[ $description ]]; then
+        shift
+    fi
+    local target_url=$1
+    if [[ $target_url ]]; then
+        shift
+    fi
+    local state=$1
+    if [[ $state ]]; then
+        shift
+        case "$state" in
+            error | failure | pending | success)
+                :;;
+            *)
+                err "invalid commit status state: '$state'"
+                return 10
+                ;;
+        esac
+
+    else
+        state=success
+    fi
+
+    local sha
+    if [[ $TRAVIS_PULL_REQUEST_SHA ]]; then
+        sha=$TRAVIS_PULL_REQUEST_SHA
+    else
+        sha=$TRAVIS_COMMIT
+    fi
+
+    local status_url=https://api.github.com/repos/$TRAVIS_REPO_SLUG/statuses/$sha
+    local post_data
+    printf -v post_data '{"state":"%s","target_url":"%s","description":"%s","context":"%s"}' "$state" "$target_url" "$description" "$context"
+    if ! curl -s -f -H 'Accept: application/vnd.github.v3+json' \
+            -H 'Content-Type: application/json' \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            -X POST -d "$post_data" "$status_url" > /dev/null
+    then
+        err "failed to post status on commit: $sha"
+        return 1
+    fi
+}
+
 # publish a public prerelease version to non-standard registry
 # usage: npm-publish-prerelease [BRANCH]
 function npm-publish-prerelease () {
@@ -169,32 +188,18 @@ function npm-publish-prerelease () {
         return 1
     fi
 
-    local sha
-    if [[ $TRAVIS_PULL_REQUEST_SHA ]]; then
-        sha=$TRAVIS_PULL_REQUEST_SHA
-    else
-        sha=$TRAVIS_COMMIT
-    fi
-
     local pkg_name pkg_json=package.json
     pkg_name=$(jq -er .name "$pkg_json")
     if [[ $? -ne 0 || ! $pkg_name ]]; then
         err "failed to parse NPM package name from '$pkg_json'"
         return 1
     fi
+
     local pkg_url=https://atomist.jfrog.io/atomist/npm-dev/$pkg_name/-/$pkg_name-$pkg_version.tgz
-    local status_url=https://api.github.com/repos/$TRAVIS_REPO_SLUG/statuses/$sha
-    local post_data
-    printf -v post_data '{"state":"success","target_url":"%s","description":"Pre-release NPM module publication","context":"npm/atomist/prerelease"}' "$pkg_url"
-    if ! curl -s -H 'Accept: application/vnd.github.v3+json' \
-            -H 'Content-Type: application/json' \
-            -H "Authorization: token $GITHUB_TOKEN" \
-            -X POST -d "$post_data" "$status_url" > /dev/null
-    then
-        err "failed to post status on commit: $sha"
+    if ! git-status npm/atomist/prerelease "Pre-release NPM package publication" "$pkg_url"; then
+        err "failed to create GitHub commit status for NPM package pre-release"
         return 1
     fi
-    msg "posted module URL '$pkg_url' to commit status '$status_url'"
 }
 
 # create and push a Docker image
@@ -235,7 +240,11 @@ function docker-push () {
         return 1
     fi
 
-    msg "built and pushed Docker image"
+    # github commit status requires an http(s) URL, so prepend tag with that
+    if ! git-status docker/atomist "Docker image tag" "https://$tag"; then
+       err "failed to create GitHub commit status for Docker image tag '$tag'"
+       return 1
+    fi
 }
 
 # push app to Cloud Foundry
@@ -318,7 +327,7 @@ function main () {
     fi
 
     msg "running typedoc"
-    if ! typedoc-gen; then
+    if ! npm run typedoc; then
         err "failed to generate TypeDoc"
         return 1
     fi
@@ -346,7 +355,7 @@ function main () {
             return 1
         fi
         local prerelease_version pkg_json=package.json
-        prerelease_version=$(jq -er --raw-output .version "$pkg_json")
+        prerelease_version=$(jq -er .version "$pkg_json")
         if [[ $? -ne 0 || ! $prerelease_version ]]; then
             err "failed to parse version from $pkg_json: $prerelease_version"
             return 1
@@ -368,9 +377,13 @@ function main () {
                 err "failed to push '$staging_app' to Cloud Foundry"
                 return 1
             fi
-        fi
-        if ! git-tag "$prerelease_version" "$prerelease_version+travis.$TRAVIS_BUILD_NUMBER"; then
-            return 1
+            if ! git-tag "$prerelease_version" "$prerelease_version+travis.$TRAVIS_BUILD_NUMBER"; then
+                return 1
+            fi
+        else
+            if ! git-tag "$prerelease_version+travis.$TRAVIS_BUILD_NUMBER"; then
+                return 1
+            fi
         fi
     fi
 }

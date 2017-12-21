@@ -40,6 +40,8 @@ cache:
   directories:
   - "$HOME/.npm"
   - "$HOME/.m2"
+before_deploy:
+- touch build/typedoc/.nojekyll
 deploy:
 - provider: pages
   skip_cleanup: true
