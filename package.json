@@ -82,7 +82,7 @@
     "lint": "tslint --format verbose --project . --exclude '{build,node_modules}/**' '**/*.ts'",
     "lint:fix": "npm run lint -- --fix",
     "start": "atomist start --no-install --no-compile",
-    "test": "mocha --require espower-typescript/guess 'test/**/*.ts'",
+    "test": "mocha --require espower-typescript/guess \"test/**/*.ts\"",
     "test:one": "mocha --require espower-typescript/guess \"test/**/${TEST:-*.ts}\"",
     "typedoc": "typedoc --mode modules --excludeExternals --out build/typedoc src",
     "watch:compile": "tsc --project . --watch",
