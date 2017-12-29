@@ -5,7 +5,10 @@ export interface Goal<T> {
 
     name: string;
 
-    // TODO what about querying for it? Not always need to do it
+    // TODO what about querying for the event? Not always need to do it
+    // Indicate shape of query?
+    // Subscription probably doesn't work as it may not always be a subscription
+
 
     /**
      * Return the object as a goal if it is a potential target
