@@ -22,6 +22,7 @@ export const MessagingReviewRouter: ReviewRouter<any> =
             text: `*${title} on ${pr.repoId.owner}/${pr.repoId.repo}*`,
             attachments: pr.comments.map(c => reviewCommentToAttachment(pr.repoId as GitHubRepoRef, c)),
         };
+        //tslint is going to hate this
         return ctx.messageClient.respond(mesg)
             .then(() => successOn(pr.repoId));
     };
