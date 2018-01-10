@@ -1,47 +1,26 @@
-import { HandleCommand, Parameter } from "@atomist/automation-client";
-import { Parameters } from "@atomist/automation-client/decorators";
+import { HandleCommand } from "@atomist/automation-client";
 import { allReposInTeam } from "@atomist/automation-client/operations/common/allReposInTeamRepoFinder";
 import { gitHubRepoLoader } from "@atomist/automation-client/operations/common/gitHubRepoLoader";
-import { BaseEditorOrReviewerParameters } from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
 import { RepoFinder } from "@atomist/automation-client/operations/common/repoFinder";
 import { RepoLoader } from "@atomist/automation-client/operations/common/repoLoader";
 import { EditMode, PullRequest } from "@atomist/automation-client/operations/edit/editModes";
 import { editorHandler } from "@atomist/automation-client/operations/edit/editorToCommand";
 import { DefaultDirectoryManager } from "@atomist/automation-client/project/git/GitCommandGitProject";
-import { CurrentSpringBootVersion } from "../../reviewer/spring/SpringBootVersionReviewer";
-import { FallbackReposParameters } from "../FallbackReposParameters";
 import { setSpringBootVersionEditor } from "./setSpringBootVersionEditor";
-
-@Parameters()
-export class SpringBootVersionUpgradeParameters extends BaseEditorOrReviewerParameters {
-
-    constructor() {
-        super(new FallbackReposParameters());
-    }
-
-    @Parameter({
-        displayName: "Desired Spring Boot version",
-        description: "The desired Spring Boot version across these repos",
-        pattern: /^.+$/,
-        validInput: "Semantic version",
-        required: false,
-    })
-    public desiredBootVersion: string = CurrentSpringBootVersion;
-
-}
+import { UnleashPhilParameters } from "./unleashPhil";
 
 /**
  * Upgrade the version of Spring Boot projects to a desired version
  */
 export function springBootVersionUpgrade(repoFinder: RepoFinder = allReposInTeam(),
-                                         repoLoader: (p: SpringBootVersionUpgradeParameters) => RepoLoader =
+                                         repoLoader: (p: UnleashPhilParameters) => RepoLoader =
                                              p => gitHubRepoLoader({token: p.targets.githubToken}, DefaultDirectoryManager),
-                                         testEditMode?: EditMode): HandleCommand<SpringBootVersionUpgradeParameters> {
+                                         testEditMode?: EditMode): HandleCommand<UnleashPhilParameters> {
 
     console.log("RepoFinder = " + repoFinder + ", RepoLoader = " + repoLoader + ", editMode=" + testEditMode);
-    return editorHandler<SpringBootVersionUpgradeParameters>(
+    return editorHandler<UnleashPhilParameters>(
         params => setSpringBootVersionEditor(params.desiredBootVersion),
-        SpringBootVersionUpgradeParameters,
+        UnleashPhilParameters,
         "SpringBootVersionUpgrade", {
             repoFinder,
             repoLoader,

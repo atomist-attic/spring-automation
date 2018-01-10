@@ -9,8 +9,8 @@ import "mocha";
 import * as assert from "power-assert";
 import {
     springBootVersionUpgrade,
-    SpringBootVersionUpgradeParameters,
 } from "../../../../src/commands/editor/spring/SpringBootVersionUpgrade";
+import { UnleashPhilParameters } from "../../../../src/commands/editor/spring/unleashPhil";
 import { NonSpringPom, springBootPom } from "../../reviewer/maven/Poms";
 
 describe("springBootVersionUpgrade", () => {
@@ -18,7 +18,7 @@ describe("springBootVersionUpgrade", () => {
     it("does nothing to non Spring project", done => {
         const proj = InMemoryProject.from(new SimpleRepoId("foo", "bar"), {path: "pom.xml", content: NonSpringPom});
         const rf = fromListRepoFinder([proj]);
-        (springBootVersionUpgrade(rf) as any).handle(null, new SpringBootVersionUpgradeParameters())
+        (springBootVersionUpgrade(rf) as any).handle(null, new UnleashPhilParameters())
             .then(() => {
                 done();
             }).catch(done);
@@ -27,10 +27,10 @@ describe("springBootVersionUpgrade", () => {
     it("does nothing when project is already up to date", done => {
         const proj = InMemoryProject.from(new SimpleRepoId("a", "b"), {
             path: "pom.xml",
-            content: springBootPom(new SpringBootVersionUpgradeParameters().desiredBootVersion),
+            content: springBootPom(new UnleashPhilParameters().desiredBootVersion),
         });
         const rf = fromListRepoFinder([proj]);
-        (springBootVersionUpgrade(rf) as any).handle(null, new SpringBootVersionUpgradeParameters())
+        (springBootVersionUpgrade(rf) as any).handle(null, new UnleashPhilParameters())
             .then(() => {
                 done();
             }).catch(done);
@@ -41,13 +41,13 @@ describe("springBootVersionUpgrade", () => {
         const v = "1.3.0";
         const proj = InMemoryProject.from(new SimpleRepoId("x", "y"), {path: "pom.xml", content: springBootPom(v)});
         const rf = fromListRepoFinder([proj]);
-        const params = new SpringBootVersionUpgradeParameters();
+        const params = new UnleashPhilParameters();
         params.targets.repo = ".*";
         (springBootVersionUpgrade(rf, p => fromListRepoLoader([proj]),
             new VerifyEditMode(p => {
                 const updated = p.findFileSync("pom.xml");
                 assert(!updated.getContentSync().includes(v));
-                assert(updated.getContentSync().includes(new SpringBootVersionUpgradeParameters().desiredBootVersion));
+                assert(updated.getContentSync().includes(new UnleashPhilParameters().desiredBootVersion));
                 verified = true;
             })) as any).handle(null, params)
             .then(() => {
