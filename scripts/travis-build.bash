@@ -242,8 +242,8 @@ function docker-push () {
 
     # github commit status requires an http(s) URL, so prepend tag with that
     if ! git-status docker/atomist "Docker image tag" "https://$tag"; then
-       err "failed to create GitHub commit status for Docker image tag '$tag'"
-       return 1
+        err "failed to create GitHub commit status for Docker image tag '$tag'"
+        return 1
     fi
 }
 
@@ -341,6 +341,7 @@ function main () {
             err "failed to publish tag build: '$TRAVIS_TAG'"
             return 1
         fi
+        find . -type l -print0 | xargs -0 ls -l | awk '{ print $(NF-2), $(NF-1), $NF }'
         msg "pushing app to Cloud Foundry"
         if ! cf-push "$app"; then
             err "failed to push '$app' to Cloud Foundry"

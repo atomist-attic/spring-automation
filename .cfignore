@@ -1,3 +1,4 @@
-/node_modules
-/heap
-/test
+/node_modules/
+/heap*
+/test/
+/build/typedoc/
