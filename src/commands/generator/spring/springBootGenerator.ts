@@ -1,6 +1,9 @@
 import { HandleCommand } from "@atomist/automation-client";
 import { logger } from "@atomist/automation-client/internal/util/logger";
-import { BaseEditorOrReviewerParameters } from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
+import {
+    BaseEditorOrReviewerParameters,
+    EditorOrReviewerParameters,
+} from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
 import { AnyProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
 import { chainEditors } from "@atomist/automation-client/operations/edit/projectEditorOps";
 import { generatorHandler } from "@atomist/automation-client/operations/generate/generatorToCommand";
@@ -31,9 +34,17 @@ export function springBootGenerator(projectPersister: ProjectPersister = GitHubP
                 springBootTagger(p)
                     .then(tags => {
                         console.log("Tagging with " + tags.tags.join());
-                        const edp = new BaseEditorOrReviewerParameters({
-                            credentials: { token: params.target.githubToken },
-                        });
+                        const edp: EditorOrReviewerParameters = {
+                            targets: {
+                                owner: params.target.owner,
+                                repo: params.target.repo,
+                                sha: "master",
+                                usesRegex: false,
+                                credentials: {token: params.target.githubToken},
+                                repoRef: params.target.repoRef,
+                                test: () => true,
+                            },
+                        };
                         // TODO this is hacky but we need the different parameter format
                         // Anyway, we don't want this to be part of generation long term
                         return doWithRetry(() => GitHubTagRouter(tags, edp, undefined),

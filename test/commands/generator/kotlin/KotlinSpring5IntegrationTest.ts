@@ -46,6 +46,7 @@ describe("Kotlin Spring5 generator integration test", () => {
         kgen.artifactId = "my-custom";
         kgen.groupId = "atomist";
         kgen.rootPackage = "com.the.smiths";
+        kgen.target.githubToken = process.env.GITHUB_TOKEN;
         kgen.bindAndValidate();
         const ctx: any = {
             messageClient: {

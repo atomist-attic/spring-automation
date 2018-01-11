@@ -1,6 +1,6 @@
 {
   "name": "@atomist/spring-automation",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Atomist automations for Spring: Generators, reviewers and editors",
   "author": "Atomist",
   "license": "Apache-2.0",
