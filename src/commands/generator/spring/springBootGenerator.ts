@@ -31,10 +31,11 @@ export function springBootGenerator(projectPersister: ProjectPersister = GitHubP
                 springBootTagger(p)
                     .then(tags => {
                         console.log("Tagging with " + tags.tags.join());
-                        const edp = new BaseEditorOrReviewerParameters();
+                        const edp = new BaseEditorOrReviewerParameters({
+                            credentials: { token: params.target.githubToken },
+                        });
                         // TODO this is hacky but we need the different parameter format
                         // Anyway, we don't want this to be part of generation long term
-                        edp.targets.githubToken = params.target.githubToken;
                         return doWithRetry(() => GitHubTagRouter(tags, edp, undefined),
                             "Publish tags", {
                                 randomize: true,

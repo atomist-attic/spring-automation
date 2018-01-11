@@ -4,6 +4,7 @@ import { GitHubRepoRef, isGitHubRepoRef } from "@atomist/automation-client/opera
 import { successOn } from "@atomist/automation-client/action/ActionResult";
 import axios, { AxiosRequestConfig } from "axios";
 
+import { TokenCredentials } from "@atomist/automation-client/operations/common/ProjectOperationCredentials";
 import { TagRouter } from "@atomist/automation-client/operations/tagger/Tagger";
 import * as _ from "underscore";
 
@@ -23,11 +24,11 @@ export const GitHubTagRouter: TagRouter = (tags, params) => {
         // Mix in custom media type for
         {
             headers: {
-                ...authHeaders(params.targets.githubToken).headers,
+                ...authHeaders((params.targets.credentials as TokenCredentials).token).headers,
                 Accept: "application/vnd.github.mercy-preview+json",
+                },
             },
-        },
-    )
+        )
         .then(x => successOn(tags));
 };
 
