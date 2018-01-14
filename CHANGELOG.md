@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 [0.4.0]: https://github.com/atomist/spring-automation/compare/0.3.0...0.4.0
 
-Staging release
+Freddom release
 
 ### Changed
 
