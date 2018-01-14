@@ -19,7 +19,6 @@ import * as assert from "power-assert";
 import { FallbackReposParameters } from "../FallbackReposParameters";
 import { removeUnnecessaryComponentScanCommand } from "./removeUnnecessaryComponentScanAnnotations";
 
-const oldPhil = "http://www.victorianceramics.com/images/artists/philip-webb.jpg";
 const springPhil = "https://pbs.twimg.com/profile_images/606164636811984896/QEAnB8Xu.jpg";
 
 /**
@@ -45,7 +44,6 @@ export class UnleashPhilParameters extends BaseEditorOrReviewerParameters implem
         const targets = this.targets as FallbackReposParameters;
         if (!targets.repo) {
             assert(!!targets.repos, "Must set repos or repo");
-            console.log("Harmonizing regex");
             targets.repo = targets.repos;
         }
     }

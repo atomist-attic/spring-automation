@@ -20,7 +20,7 @@ export function springBootVersionUpgrade(repoFinder: RepoFinder = allReposInTeam
                                              }, DefaultDirectoryManager),
                                          testEditMode?: EditMode): HandleCommand<UnleashPhilParameters> {
 
-    console.log("RepoFinder = " + repoFinder + ", RepoLoader = " + repoLoader + ", editMode=" + testEditMode);
+    // console.log("RepoFinder = " + repoFinder + ", RepoLoader = " + repoLoader + ", editMode=" + testEditMode);
     return editorHandler<UnleashPhilParameters>(
         params => setSpringBootVersionEditor(params.desiredBootVersion),
         UnleashPhilParameters,

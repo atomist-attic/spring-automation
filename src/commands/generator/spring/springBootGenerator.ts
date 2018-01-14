@@ -1,7 +1,6 @@
 import { HandleCommand } from "@atomist/automation-client";
 import { logger } from "@atomist/automation-client/internal/util/logger";
 import {
-    BaseEditorOrReviewerParameters,
     EditorOrReviewerParameters,
 } from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
 import { AnyProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
@@ -40,7 +39,7 @@ export function springBootGenerator(projectPersister: ProjectPersister = GitHubP
                                 repo: params.target.repo,
                                 sha: "master",
                                 usesRegex: false,
-                                credentials: {token: params.target.githubToken},
+                                credentials: params.target.credentials,
                                 repoRef: params.target.repoRef,
                                 test: () => true,
                             },
