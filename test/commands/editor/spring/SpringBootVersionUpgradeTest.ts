@@ -61,7 +61,7 @@ describe("springBootVersionUpgrade", () => {
         const v = "1.3.0";
         const proj = InMemoryProject.from(new SimpleRepoId("x", "y"),
             {path: "proj1/pom.xml", content: springBootPom(v)},
-            {path: "proj2/pom.xml", content: springBootPom(v)}
+            {path: "proj2/pom.xml", content: springBootPom(v)},
         );
         const rf = fromListRepoFinder([proj]);
         const params = new UnleashPhilParameters();

@@ -4,7 +4,7 @@ import {
     ProjectEditor,
     SimpleProjectEditor,
 } from "@atomist/automation-client/operations/edit/projectEditor";
-import { doWithAtMostOneMatch } from "@atomist/automation-client/project/util/parseUtils";
+import { doWithMatches } from "@atomist/automation-client/project/util/parseUtils";
 import { parentStanzaOfGrammar } from "../../../grammars/mavenGrammars";
 import { SpringBootStarter } from "./springConstants";
 
@@ -15,7 +15,7 @@ import { SpringBootStarter } from "./springConstants";
  */
 export function setSpringBootVersionEditor(desiredBootVersion: string): SimpleProjectEditor {
     return p => {
-        return doWithAtMostOneMatch(p, "pom.xml",
+        return doWithMatches(p, "**/pom.xml",
             parentStanzaOfGrammar(SpringBootStarter), m => {
                 if (m.version.value !== desiredBootVersion) {
                     logger.info("Updating Spring Boot version from [%s] to [%s]",
