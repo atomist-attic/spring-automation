@@ -7,11 +7,28 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][]
 
-[Unreleased]: https://github.com/atomist/spring-automation/compare/0.3.0...HEAD
+[Unreleased]: https://github.com/atomist/spring-automation/compare/0.4.0...HEAD
+
+## [0.4.0][]
+
+[0.4.0]: https://github.com/atomist/spring-automation/compare/0.3.0...0.4.0
+
+Staging release
 
 ### Changed
 
--   Update to @atomist/automation-client@0.5.0
+-   Update @atomist/automation-client
+-   Find POM files everywhere, not just at top-level of project
+-   General improvements making less Spring and GitHub specific
+
+### Added
+
+-   Add tags in generator
+
+### Fixed
+
+-   Fixed bug where version upgrades didn't work across all repos in
+    org
 
 ## [0.3.0][]
 
