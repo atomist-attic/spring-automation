@@ -36,7 +36,7 @@ describe("springBootVersionUpgrade", () => {
             }).catch(done);
     });
 
-    it("upgrade for old Spring project", done => {
+    it("upgrades old Spring project", done => {
         let verified = false;
         const v = "1.3.0";
         const proj = InMemoryProject.from(new SimpleRepoId("x", "y"), {path: "pom.xml", content: springBootPom(v)});
@@ -48,6 +48,32 @@ describe("springBootVersionUpgrade", () => {
                 const updated = p.findFileSync("pom.xml");
                 assert(!updated.getContentSync().includes(v));
                 assert(updated.getContentSync().includes(new UnleashPhilParameters().desiredBootVersion));
+                verified = true;
+            })) as any).handle(null, params)
+            .then(() => {
+                assert(verified, "Not verified");
+                done();
+            }).catch(done);
+    });
+
+    it("upgrades nested old Spring project: One down style", done => {
+        let verified = false;
+        const v = "1.3.0";
+        const proj = InMemoryProject.from(new SimpleRepoId("x", "y"),
+            {path: "proj1/pom.xml", content: springBootPom(v)},
+            {path: "proj2/pom.xml", content: springBootPom(v)}
+        );
+        const rf = fromListRepoFinder([proj]);
+        const params = new UnleashPhilParameters();
+        params.targets.repo = ".*";
+        (springBootVersionUpgrade(rf, p => fromListRepoLoader([proj]),
+            new VerifyEditMode(p => {
+                const updated1 = p.findFileSync("proj1/pom.xml");
+                assert(!updated1.getContentSync().includes(v));
+                assert(updated1.getContentSync().includes(new UnleashPhilParameters().desiredBootVersion));
+                const updated2 = p.findFileSync("proj2/pom.xml");
+                assert(!updated2.getContentSync().includes(v));
+                assert(updated2.getContentSync().includes(new UnleashPhilParameters().desiredBootVersion));
                 verified = true;
             })) as any).handle(null, params)
             .then(() => {
