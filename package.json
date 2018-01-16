@@ -20,7 +20,7 @@
   ],
   "dependencies": {
     "@atomist/antlr": "0.1.4",
-    "@atomist/automation-client": "https://r.atomist.com/BJHY6Dvc4z",
+    "@atomist/automation-client": "https://r.atomist.com/HyrHkZEjVf",
     "@atomist/microgrammar": "^0.7.0",
     "@atomist/slack-messages": "^0.12.1",
     "@atomist/tree-path": "^0.1.8",
