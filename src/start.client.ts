@@ -7,7 +7,8 @@ import {
     loadSecretsFromConfigServer,
 } from "./util/secrets";
 
-loadSecretsFromCloudFoundryEnvironment()
+loadSecretsFromConfigServer()
+    .then(() => loadSecretsFromCloudFoundryEnvironment())
     .then(() => {
         const configuration = enableDefaultScanning(findConfiguration());
         const node = automationClient(configuration);

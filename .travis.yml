@@ -1,30 +1,22 @@
 dist: trusty
-sudo: false
+sudo: required
 language: node_js
 node_js:
-- 8.7.0
+- 9.4.0
 branches:
   except:
   - "/\\+travis\\.\\d+$/"
   - "/^\\d+\\.\\d+\\.\\d+-\\d+$/"
-addons:
-  apt:
-    sources:
-    - sourceline: "deb http://packages.cloudfoundry.org/debian stable main"
-      key_url: "https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key"
-    packages:
-    - cf-cli
 env:
   global:
   - NPM_REGISTRY=https://atomist.jfrog.io/atomist/api/npm/npm-dev-local
   - secure: 5e5EoOVbE116gJFdZo7QqRfgbDiOQpDBNohdXj5OBoOSJVTIOALIgOO4H/xkUDoda4JUBOhyr8R4NbI5IWiL5GuHqYhRmmihFfTrJcwxFB8StDIu6v+YhKO9W97DuEC1DcJazRbrIBEDFK2s9GvH8mcaEU2P8rLdvTQOFwcEUWQqo9BnTRiZSbk216a3RN9eGGYblu0Qmx5lr2m+2OABAkDbf+i92BlNWhgNPFNii1RzO++/dnMVD/Oudd1nMim5JlF0b627gtGIoHqWFSWSyXOEg5w1OLgj45uBGGXOrUTDE3PVpBY3Bp1/M92O8ojTYIXO6BxjZGrr5/wLgJXEvqoK3hB0xpcbTJT9oI7enB2LRiBCpNdFVsIw2672k3UPvkazeuW2BVUKZJpvUu5wBxsJvTNcznk5TuFpzW3AF24evtptNRgdfLMGueeDGfug5r6MxfC2NWPb3lcYZ+avcISbr7d17or5Wo8FYcC+TzKBLc6ztFLIAqDZOBBn4/txjOUJVpVOfJ7hJSos5obPPJNPYuFA9ctyBYQDnujMV5mIhNwoxantHXD3QvNip8REK+eu9oIc2YHIzGiIdMwEXq0J0itBHiPoVRJMwvqyJPKpMuRRc3PNJe1ngr8WHJDYTqIXWeVMNVNRxfJs6ZAjaRTZjWO0xJ2qPHyijkgRPtw=
-  - secure: eVRAgmKLiJ1QQUX/PORXFZK3l/YN0QAc9sliKWTJLAscmCFsez4uDJwlFGsaPnzijDXAk/g0MVDTgqeWhhVsA98fIqlSSMO9eIhh0RZYKsVOfE4t6fctWCZXhqZAAfIZnxXIp67JZxCjvFqpXg1I15eF7IxdefgM7Tye9OqtbViIdXKHYBHW8Hdb8qC64w38T367r/q7bAUsuMoHGc4kEQMQ0ng1KLqOc71wLIAZLAbx+Ftjq1HWpCqMxHHpGanEXBnCMcNa/RtlzKWtmvBggVQHSuZXbaZ0taJpj9d6ptlJQHZeL9FPR7EL4Guvq+khmr9NnixcT+gZ1BryGyfjeUf0t4yDzlNwRnAqeS03jeUWegu2ivN9Hyy1oYBndKHubkEeTdkUBMkZhgR+F4fkhCha8S3FD2sjhspLsn8eh7In9TQCbHRSk3cmNRDI174ek62R1Ao7sdw9giLuMmYqni5QcccbXLMyAA5VZQLNDopC0nwY7yCbB2oWD9OAuwPBb2adSq8x7zqFRm9Te4QylkAgz6kh4IujIiipVJn+slKeSYkmi0kCuD1BOV0/YM6xTjrVlMCcO2H7wZZkWuqDmqrCAIo6+m8R0hrmNJfZdUo6nQ2uyps0xSKMnd7+NDP6T8V2DVHEHrJKhfQJIA370KD7WNgLbetDldytVYRW5x4=
-  - secure: 0JyLXPTWJTr2TVtktc0w/btdatoblG2QMQRvK67rWcjNBR8v2jEZZTtFBfSRvAkpE7N+1+K8pl0R1/+wfpzs88wgqat/8DR+547W8cHE9z7VTZKQLIY+TucsYANcp+GaHMf/KhZNTzH4dmVXqaaE376yD0caGfQAYKSTr45ZO5whhLBg9YCsTVuRdX4kAIa4dVX0XYi3uT1PhFro4W/UietcJImHB846nAphn2e1fT2wxD1qWq4eOsKYBjVFfg5RQMQLnmIBnT2js8+6T2ZQbqolErFk/9RBU8LVnY7pOqDnZN+71iwV58wC8VWRvjyKaaI/yhXy9TB5zwQHRsx4dLWCHe+Q577CQvhNtY3vwcnhYFtY5dWgCWQe1JX7YQeZ4xukneSRxABtVmncjcN3ow2zZOv+ucbfNbxc9uwX3QN7u6/mJclG/DsswdiaaZtgyVdi2c3iQfQZ5TlZnywGhGfWVsw4RvSHzxieHpdgOSGJzKzm4w/m6R5/IZEg55Wgdypz3iFJcPn5OxHOAakWocLtxZoFGHRRJ9xd0kyDHu5BT5mIMMrXYjjnL7tLELDmqU+b6/VFtetj7j5CKaQEXEQgGBlVbaXc4+XZXVhHFe4ztpeiJUC3l6Otmptz7FQsC3KU59sVO1ho0ioDObGXfGuryaD1Lqtg8nE7b4dLgpY=
-  - CF_ORG=atomist
+  - DOCKER_REGISTRY=atomist
+  - secure: VIDAqWMuqz4+TX8vtVz/blAU61Iw3Dd8wCgXTNEYjQahqd4mNlr6dGBA0Hri3EkVnBSf1AH4OwzkE48IOpr2+iGMfXTKIvhc5LGBhkuXl9zjBVik/T5weReHlVweYokrtvhZsa2wullnk5dHn/PxVOvqzqPm2v1ezVhkp6KlMW3b8rl3Q3vhsKlc6F3kjpdkah4kfOZ3RL7hB0TvUF09CDnciiIpohlvTPwAQWQ/elirD1rJo/SDpZXPCQR+DuffN0WvG/KUS9NNn5wr/kX5eETtf4/AfmwIwXs++MsCrQUiMQp/PPTjcNn8/lNDzvZw6BvszMiu4ynCWB8yhqvLUgnyPtTS2hkhdE7Pt91p5djSAmkVbm8TmdgUiXkXUGLG4Mhm70fSlidc9cLoy4/ptjDp1F4uhUJBgW+vYR7aVOusY1eASSz2iRDLVS3LUc6uxD2o3/RQ7DLV++E6oG7ubdkXy907qEZkDr1FzgXkeiIaU6gr1T1n3cyTNSTZpohEoSQAYCnGYQmVX936S6KDfN62IQc36V3BPBK3I4gEbfq6A3V+lSjRKQ+UgfBrfDF7OY/jrNlEDFIFh2Bg8cUcLH6m5so6dhOhPhGe+XzY8jMAcSAM/n7bVIE7CGuucgsveAxxEbPUiVTEu/8+lmN+9owFXuo6kK28wt2zrOiaMro=
+  - secure: sIJP4pJuAXqofCZ/o4BvBnjtQzG/oi9WK8C4t8vEOHKflDSbh/0+h6l2qvFl0cRrTaMM4LY0MR0fUakU7IT79l8L4LMnEyNMu12YTvHYaJfddsGJ9wVFk33d7k91/R3MGeluvewQOcsvSwjcq7auW0zItRTMMuYXiCUYKoDMEloMF642o+C04HIK/ZJbHEhpUAopRZDuRZTU227qVW51xxz2jutI/GjDXpe5hMv0/mxCx9+5+OhBPlFTK086eHBdfjofMlX1dmFntybd/S/YXUrEVDfGey3EL8WK/+HIUc4osUIGfu/nH8YY++GQGg/fPqaofxsXylOrxlEpwHXpFpjb/Ub535ZxjfhOHsSAPuYPS+f8IqiSAexeVCVj9yGHSN1qbp8nUkO84PbzuacYMb0NGs4VB4AQmTCJDMcfKHjLqiyqalaNjvI9ZM4gF128ExdfSqEXoA/K9/BQRACXnFeekBOq2G6w1Q9wZ6BA5+wvoKx8soycJ8w1cpWA5MbJp3V1tKZBMxu2HKvRQ3xINJYf+cLzZliVWId8qix+zR/tLtGI7hGW4GnZr1KBqpvL4FAxFhpj4IBr59+O/fXYba3aqosiKTDdRfTTG2QPjwUHrACMxvXRnx1tf1uL9dIfM/utxsaJ6icQq1UmNMDWu0n/Z1JUC1JA72MxpoGh4FI=
 before_install:
-- "rm -f $HOME/.npm/_logs/*-debug.log"
 - openssl aes-256-cbc -K $encrypted_bab9b497981d_key -iv $encrypted_bab9b497981d_iv
-  -in scripts/.npmrc.enc -out $HOME/.npmrc -d
+  -in .npmrc.enc -out .npmrc -d
 script: bash scripts/travis-build.bash
 notifications:
   email: false
@@ -38,7 +30,6 @@ notifications:
     on_error: always
 cache:
   directories:
-  - "$HOME/.npm"
   - "$HOME/.m2"
 before_deploy:
 - touch build/typedoc/.nojekyll

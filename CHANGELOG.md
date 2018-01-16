@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 [Unreleased]: https://github.com/atomist/spring-automation/compare/0.4.0...HEAD
 
+### Changed
+
+-   Migrated automated deployment from Cloud Foundry to k8
+
 ## [0.4.0][]
 
 [0.4.0]: https://github.com/atomist/spring-automation/compare/0.3.0...0.4.0

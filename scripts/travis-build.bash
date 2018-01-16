@@ -4,7 +4,7 @@
 set -o pipefail
 
 declare Pkg=travis-build-node
-declare Version=1.2.0
+declare Version=1.3.0
 
 # write message to standard out (stdout)
 # usage: msg MESSAGE
@@ -224,7 +224,11 @@ function docker-push () {
         return 0
     fi
 
-    if ! docker login -u "$DOCKER_USER" -p "$DOCKER_PASSWORD" "$DOCKER_REGISTRY"; then
+    local server=
+    if [[ $DOCKER_REGISTRY =~ [^a-zA-Z0-9] ]]; then
+        server=$DOCKER_REGISTRY
+    fi
+    if ! docker login -u "$DOCKER_USER" -p "$DOCKER_PASSWORD" $server; then
         err "failed to login to docker registry: $DOCKER_REGISTRY"
         return 1
     fi
@@ -341,7 +345,11 @@ function main () {
             err "failed to publish tag build: '$TRAVIS_TAG'"
             return 1
         fi
-        find . -type l -print0 | xargs -0 ls -l | awk '{ print $(NF-2), $(NF-1), $NF }'
+        msg "building and pushing Docker image"
+        if ! docker-push "$app" "$TRAVIS_TAG"; then
+            err "failed to build and push docker image"
+            return 1
+        fi
         msg "pushing app to Cloud Foundry"
         if ! cf-push "$app"; then
             err "failed to push '$app' to Cloud Foundry"
@@ -366,12 +374,12 @@ function main () {
             err "failed to publish version '$prerelease_version'"
             return 1
         fi
+        msg "building and pushing Docker image"
+        if ! docker-push "$app" "$prerelease_version"; then
+            err "failed to build and push docker image"
+            return 1
+        fi
         if [[ $TRAVIS_BRANCH == master ]]; then
-            msg "building and pushing Docker image"
-            if ! docker-push "$app" "$prerelease_version"; then
-                err "failed to build and push docker image"
-                return 1
-            fi
             local staging_app=$app-staging
             msg "pushing staging app to Cloud Foundry development space"
             if ! cf-push "$staging_app" development; then

@@ -9,6 +9,7 @@ export const appEnv = cfenv.getAppEnv();
 
 export const secrets = {
     github: null,
+    intercom: null,
     dashboard: null,
     logzio: null,
     mixpanel: null,
@@ -70,6 +71,7 @@ export const loadSecretsFromConfigServer = () => {
                     secrets.mixpanel = data.mixpanel;
                     secrets.oauth = data.oauth;
                     secrets.teams = data.teams;
+                    secrets.intercom = data.intercom;
                     secrets.applicationId = `k8.${process.env.HOSTNAME}`;
                     secrets.environmentId = `k8.${data.environmentId}`;
                     process.env.DOMAIN = `k8.${data.environmentId}`;
