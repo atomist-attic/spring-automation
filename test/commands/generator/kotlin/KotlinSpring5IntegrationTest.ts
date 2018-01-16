@@ -17,6 +17,7 @@
 import { HandleCommand } from "@atomist/automation-client";
 import { CommandResult, runCommand } from "@atomist/automation-client/action/cli/commandLine";
 import { HandlerContext } from "@atomist/automation-client/HandlerContext";
+import { GitHubTargetsParams } from "@atomist/automation-client/operations/common/params/GitHubTargetsParams";
 import { LocalProject } from "@atomist/automation-client/project/local/LocalProject";
 import { Project } from "@atomist/automation-client/project/Project";
 import { SlackMessage } from "@atomist/slack-messages/SlackMessages";
@@ -46,7 +47,7 @@ describe("Kotlin Spring5 generator integration test", () => {
         kgen.artifactId = "my-custom";
         kgen.groupId = "atomist";
         kgen.rootPackage = "com.the.smiths";
-        kgen.target.githubToken = process.env.GITHUB_TOKEN;
+        (kgen.target as any).githubToken = process.env.GITHUB_TOKEN;
         kgen.bindAndValidate();
         const ctx: any = {
             messageClient: {

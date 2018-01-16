@@ -12,6 +12,8 @@ import { springBootGenerator } from "../../../../src/commands/generator/spring/s
 import { SpringBootGeneratorParameters } from "../../../../src/commands/generator/spring/SpringBootProjectParameters";
 import { createdProject, localProjectPersister } from "./localProjectPersister";
 
+import { GitHubTargetsParams } from "@atomist/automation-client/operations/common/params/GitHubTargetsParams";
+import { GitHubRepoCreationParameters } from "@atomist/automation-client/operations/generate/GitHubRepoCreationParameters";
 import axios from "axios";
 import MockAdapter = require("axios-mock-adapter");
 
@@ -42,7 +44,7 @@ describe("spring generator integration test", () => {
         params.rootPackage = "com.the.smiths";
         params.target.owner = "johnsonr";
         params.target.repo = "foo";
-        params.target.githubToken = process.env.GITHUB_TOKEN;
+        (params.target as GitHubRepoCreationParameters).githubToken = process.env.GITHUB_TOKEN;
         return Promise.resolve(params.bindAndValidate())
             .then(() => {
                 return (gem as any).handle(fakeContext(), params)
