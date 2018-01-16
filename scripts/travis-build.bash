@@ -4,7 +4,7 @@
 set -o pipefail
 
 declare Pkg=travis-build-node
-declare Version=1.2.0
+declare Version=1.3.0
 
 # write message to standard out (stdout)
 # usage: msg MESSAGE
@@ -224,7 +224,11 @@ function docker-push () {
         return 0
     fi
 
-    if ! docker login -u "$DOCKER_USER" -p "$DOCKER_PASSWORD" "$DOCKER_REGISTRY"; then
+    local server=
+    if [[ $DOCKER_REGISTRY =~ [^a-zA-Z0-9] ]]; then
+        server=$DOCKER_REGISTRY
+    fi
+    if ! docker login -u "$DOCKER_USER" -p "$DOCKER_PASSWORD" $server; then
         err "failed to login to docker registry: $DOCKER_REGISTRY"
         return 1
     fi

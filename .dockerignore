@@ -1,0 +1,11 @@
+.dockerignore
+.git/
+.gitignore
+.npm*
+.travis.yml
+/C*.md
+/node_modules/
+/scripts/
+/src/
+/test/
+ts*.json
