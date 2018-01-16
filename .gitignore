@@ -5,7 +5,7 @@ node_modules/
 npm-debug.log
 *.d.ts
 *.js.map
-
+.npmrc
 .idea/
 *.iml
 .idea/workspace.xml
