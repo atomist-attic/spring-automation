@@ -4,7 +4,7 @@
 set -o pipefail
 
 declare Pkg=travis-build-node
-declare Version=1.4.1
+declare Version=1.4.2
 
 # write message to standard out (stdout)
 # usage: msg MESSAGE
@@ -212,12 +212,12 @@ function link-image () {
     fi
     shift
 
-    if [[ ! $SLACK_TEAM ]]; then
-        msg "no Slack team set"
+    if [[ ! $ATOMIST_TEAM ]]; then
+        msg "no Atomist team set"
         msg "not creating docker image-commit link"
         return 0
     fi
-    local url="https://webhook.atomist.com/atomist/link-image/teams/$SLACK_TEAM"
+    local url="https://webhook.atomist.com/atomist/link-image/teams/$ATOMIST_TEAM"
     local owner=${TRAVIS_REPO_SLUG%/*}
     local repo=${TRAVIS_REPO_SLUG#*/}
     local sha
@@ -227,8 +227,8 @@ function link-image () {
         sha=$TRAVIS_COMMIT
     fi
     local payload
-    printf -v payload '{"git":{"owner":"%s","repo":"%s","sha":"%s"},"docker":{"image":"%s"},"type":"link-image"}' "$owner" "$repo" "%sha" "$tag"
-    msg "posting image-link payload to Atomist"
+    printf -v payload '{"git":{"owner":"%s","repo":"%s","sha":"%s"},"docker":{"image":"%s"},"type":"link-image"}' "$owner" "$repo" "$sha" "$tag"
+    msg "posting image-link payload to '$url': '$payload'"
     if ! curl -s -f -X POST -H "Content-Type: application/json" --data-binary "$payload" "$url" > /dev/null 2>&1
     then
         err "failed to post payload '$payload' to '$url'"

@@ -11,7 +11,7 @@ branches:
   - "/^\\d+\\.\\d+\\.\\d+-\\d+$/"
 env:
   global:
-  - SLACK_TEAM=T29E48P34
+  - ATOMIST_TEAM=T29E48P34
   - NPM_REGISTRY=https://atomist.jfrog.io/atomist/api/npm/npm-dev-local
   - secure: 5e5EoOVbE116gJFdZo7QqRfgbDiOQpDBNohdXj5OBoOSJVTIOALIgOO4H/xkUDoda4JUBOhyr8R4NbI5IWiL5GuHqYhRmmihFfTrJcwxFB8StDIu6v+YhKO9W97DuEC1DcJazRbrIBEDFK2s9GvH8mcaEU2P8rLdvTQOFwcEUWQqo9BnTRiZSbk216a3RN9eGGYblu0Qmx5lr2m+2OABAkDbf+i92BlNWhgNPFNii1RzO++/dnMVD/Oudd1nMim5JlF0b627gtGIoHqWFSWSyXOEg5w1OLgj45uBGGXOrUTDE3PVpBY3Bp1/M92O8ojTYIXO6BxjZGrr5/wLgJXEvqoK3hB0xpcbTJT9oI7enB2LRiBCpNdFVsIw2672k3UPvkazeuW2BVUKZJpvUu5wBxsJvTNcznk5TuFpzW3AF24evtptNRgdfLMGueeDGfug5r6MxfC2NWPb3lcYZ+avcISbr7d17or5Wo8FYcC+TzKBLc6ztFLIAqDZOBBn4/txjOUJVpVOfJ7hJSos5obPPJNPYuFA9ctyBYQDnujMV5mIhNwoxantHXD3QvNip8REK+eu9oIc2YHIzGiIdMwEXq0J0itBHiPoVRJMwvqyJPKpMuRRc3PNJe1ngr8WHJDYTqIXWeVMNVNRxfJs6ZAjaRTZjWO0xJ2qPHyijkgRPtw=
   - DOCKER_REGISTRY=atomist
@@ -25,7 +25,7 @@ notifications:
   email: false
   webhooks:
     urls:
-    - "https://webhook.atomist.com/atomist/travis/teams/$SLACK_TEAM"
+    - "https://webhook.atomist.com/atomist/travis/teams/$ATOMIST_TEAM"
     on_success: always
     on_failure: always
     on_start: always
