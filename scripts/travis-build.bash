@@ -229,7 +229,7 @@ function link-image () {
     local payload
     printf -v payload '{"git":{"owner":"%s","repo":"%s","sha":"%s"},"docker":{"image":"%s"},"type":"link-image"}' "$owner" "$repo" "%sha" "$tag"
     msg "posting image-link payload to Atomist"
-    if ! curl -s -f -X POST -H "Content-Type: application/json" --data-binary "$payload" "$url"
+    if ! curl -s -f -X POST -H "Content-Type: application/json" --data-binary "$payload" "$url" > /dev/null 2>&1
     then
         err "failed to post payload '$payload' to '$url'"
         return 1
