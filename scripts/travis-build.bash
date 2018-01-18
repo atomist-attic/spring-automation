@@ -4,7 +4,7 @@
 set -o pipefail
 
 declare Pkg=travis-build-node
-declare Version=1.4.1
+declare Version=1.4.2
 
 # write message to standard out (stdout)
 # usage: msg MESSAGE
@@ -227,8 +227,8 @@ function link-image () {
         sha=$TRAVIS_COMMIT
     fi
     local payload
-    printf -v payload '{"git":{"owner":"%s","repo":"%s","sha":"%s"},"docker":{"image":"%s"},"type":"link-image"}' "$owner" "$repo" "%sha" "$tag"
-    msg "posting image-link payload to Atomist"
+    printf -v payload '{"git":{"owner":"%s","repo":"%s","sha":"%s"},"docker":{"image":"%s"},"type":"link-image"}' "$owner" "$repo" "$sha" "$tag"
+    msg "posting image-link payload to Atomist: '$payload'"
     if ! curl -s -f -X POST -H "Content-Type: application/json" --data-binary "$payload" "$url" > /dev/null 2>&1
     then
         err "failed to post payload '$payload' to '$url'"
