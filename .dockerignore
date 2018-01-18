@@ -7,7 +7,7 @@
 /scripts/
 /src/
 /test/
-ts*.json
+/ts*.json
 /build/typedoc/
 *.log
 *.txt
