@@ -4,7 +4,7 @@
 set -o pipefail
 
 declare Pkg=travis-build-node
-declare Version=1.3.0
+declare Version=1.4.0
 
 # write message to standard out (stdout)
 # usage: msg MESSAGE
@@ -202,6 +202,39 @@ function npm-publish-prerelease () {
     fi
 }
 
+# create a link between a docker image and a commit
+# usage: link-image DOCKER_TAG
+function link-image () {
+    local tag=$1
+    if [[ !$tag ]]; then
+        err "link-image: missing required argument: DOCKER_TAG"
+        return 10
+    fi
+
+    if [[ ! $SLACK_TEAM ]]; then
+        msg "no Slack team set"
+        msg "not creating docker image-commit link"
+        return 0
+    fi
+    local url="https://webhook.atomist.com/atomist/link-image/teams/$SLACK_TEAM"
+    local owner=${TRAVIS_REPO_SLUG%/*}
+    local repo=${TRAVIS_REPO_SLUG#*/}
+    local sha
+    if [[ $TRAVIS_PULL_REQUEST_SHA ]]; then
+        sha=$TRAVIS_PULL_REQUEST_SHA
+    else
+        sha=$TRAVIS_COMMIT
+    fi
+    local payload
+    printf -v payload '{"git":{"owner":"%s","repo":"%s","sha":"%s"},"docker":{"image":"%s"},"type":"link-image"}' "$owner" "$repo" "%sha" "$tag"
+    msg "posting image-link payload to Atomist"
+    if ! curl -s -f -X POST -H "Content-Type: application/json" --data-binary "$payload" "$url"
+    then
+        err "failed to post payload '$payload' to '$url'"
+        return 1
+    fi
+}
+
 # create and push a Docker image
 # usage: docker-push IMAGE VERSION
 function docker-push () {
@@ -244,9 +277,8 @@ function docker-push () {
         return 1
     fi
 
-    # github commit status requires an http(s) URL, so prepend tag with that
-    if ! git-status docker/atomist "Docker image tag" "https://$tag"; then
-        err "failed to create GitHub commit status for Docker image tag '$tag'"
+    if ! link-image "$tag"; then
+        err "failed to create link between commit and Docker image '$tag'"
         return 1
     fi
 }
