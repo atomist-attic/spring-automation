@@ -206,10 +206,11 @@ function npm-publish-prerelease () {
 # usage: link-image DOCKER_TAG
 function link-image () {
     local tag=$1
-    if [[ !$tag ]]; then
+    if [[ ! $tag ]]; then
         err "link-image: missing required argument: DOCKER_TAG"
         return 10
     fi
+    shift
 
     if [[ ! $SLACK_TEAM ]]; then
         msg "no Slack team set"
