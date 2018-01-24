@@ -7,7 +7,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][]
 
-[Unreleased]: https://github.com/atomist/spring-automation/compare/0.5.0...HEAD
+[Unreleased]: https://github.com/atomist/spring-automation/compare/0.6.0...HEAD
+
+## [0.6.0][]
+
+[0.6.0]: https://github.com/atomist/spring-automation/compare/0.5.0...0.6.0
+
+Seed release
+
+### Changed
+
+-   Update to @atomist/automation-client@0.6.5 to allow users to
+    provide generator seed parameters
+-   Various improvements to Travis build
 
 ## [0.5.0][]
 
