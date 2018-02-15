@@ -39,10 +39,7 @@ export class SpringBootGeneratorParameters extends JavaGeneratorParameters {
 
     constructor() {
         super();
-        this.source.owner = "spring-team";
-
-        // TODO should be this, need to change after demo
-        // this.source.owner = "atomist-seeds";
+        this.source.owner = "atomist-seeds";
         this.source.repo = "spring-rest-seed";
     }
 
