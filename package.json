@@ -19,7 +19,7 @@
     "spring"
   ],
   "dependencies": {
-    "@atomist/antlr": "0.1.4",
+    "@atomist/antlr": "0.2.0",
     "@atomist/automation-client": "^0.6.5",
     "@atomist/microgrammar": "^0.7.0",
     "@atomist/slack-messages": "^0.12.1",
