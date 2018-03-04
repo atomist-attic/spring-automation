@@ -35,6 +35,14 @@ describe("SpringBootProjectStructure: Java inference", () => {
         }).catch(done);
     });
 
+    it("infer application package and class when present, ignoring extraneous comment", done => {
+        SpringBootProjectStructure.inferFromJavaSource(GishProjectWithComment).then(structure => {
+            assert(structure.applicationPackage === "com.smashing.pumpkins");
+            assert(structure.appClassFile.path === GishPath);
+            done();
+        }).catch(done);
+    });
+
 });
 
 const javaSource =
@@ -74,6 +82,17 @@ export const GishProject: Project = InMemoryProject.from(
     {
         path: GishPath,
         content: javaSource,
+    }, {
+        path: "pom.xml",
+        content: SimplePom,
+    },
+);
+
+export const GishProjectWithComment: Project = InMemoryProject.from(
+    { owner: "smashing-pumpkins", repo: "gish" },
+    {
+        path: GishPath,
+        content: javaSource.replace("@SpringBootApplication", "@SpringBootApplication // ha ha trying to fool you"),
     }, {
         path: "pom.xml",
         content: SimplePom,

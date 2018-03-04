@@ -1,11 +1,14 @@
-
 import { logger } from "@atomist/automation-client/internal/util/logger";
 import { ProjectAsync } from "@atomist/automation-client/project/Project";
-import { saveFromFilesAsync } from "@atomist/automation-client/project/util/projectUtils";
-import { SPRING_BOOT_APP } from "./SpringGrammars";
 
 import { File } from "@atomist/automation-client/project/File";
 import { JavaPackageDeclaration } from "../java/JavaGrammars";
+import { findFileMatches } from "@atomist/automation-client/tree/ast/astUtils";
+import { JavaSourceFiles } from "../java/javaProjectUtils";
+import { JavaFileParser } from "@atomist/antlr/tree/ast/antlr/java/JavaFileParser";
+
+const SpringBootAppClass = `//typeDeclaration[/classDeclaration]
+                            [//annotation[@value='@SpringBootApplication']]`;
 
 /**
  * Represents the structure of a Spring Boot project,
@@ -19,26 +22,28 @@ export class SpringBootProjectStructure {
      * @param {ProjectAsync} p
      * @return {Promise<SpringBootProjectStructure>}
      */
-    public static inferFromJavaSource(p: ProjectAsync): Promise<SpringBootProjectStructure> {
-        return saveFromFilesAsync<File>(p, "src/main/**/*.java", f => {
-            return f.getContent()
-                .then(content => content.includes("@SpringBootApplication") ? f : undefined);
-        })
-            .then(appFiles => {
-                if (appFiles.length === 0) {
+    public static async inferFromJavaSource(p: ProjectAsync): Promise<SpringBootProjectStructure> {
+        return findFileMatches(p, JavaFileParser, JavaSourceFiles, SpringBootAppClass)
+            .then(fileHits => {
+                if (fileHits.length === 0) {
                     return null;
                 }
-                if (appFiles.length > 1) {
+                if (fileHits.length > 1) {
                     return null;
                 }
-                const f = appFiles[0];
-                const packageName = JavaPackageDeclaration.firstMatch(f.getContentSync());
-                const appClass = SPRING_BOOT_APP.firstMatch(f.getContentSync());
-                logger.debug(`Spring Boot inference: packageName '${packageName.name}', appClass '${appClass.name}'`);
+                const fh = fileHits[0];
+                const packageName = JavaPackageDeclaration.firstMatch(fh.file.getContentSync());
+                const appClass = fh.matches[0].$value;
 
-                return (packageName && appClass) ?
-                    new SpringBootProjectStructure(packageName.name, appClass.name, f) :
-                    null;
+                if (packageName && appClass) {
+                    logger.debug("Successful Spring Boot inference on %k: packageName '%s', '%s'",
+                        p.id, packageName.name, appClass);
+                    return new SpringBootProjectStructure(packageName.name, appClass, fh.file)
+                } else {
+                    logger.debug("Unsuccessful Spring Boot inference on %k: packageName '%s', '%s'",
+                        p.id, packageName.name, appClass);
+                    return null;
+                }
             });
     }
 
