@@ -1,14 +1,15 @@
 import { logger } from "@atomist/automation-client/internal/util/logger";
 import { ProjectAsync } from "@atomist/automation-client/project/Project";
 
-import { File } from "@atomist/automation-client/project/File";
-import { JavaPackageDeclaration } from "../java/JavaGrammars";
-import { findFileMatches } from "@atomist/automation-client/tree/ast/astUtils";
-import { JavaSourceFiles } from "../java/javaProjectUtils";
 import { JavaFileParser } from "@atomist/antlr/tree/ast/antlr/java/JavaFileParser";
+import { File } from "@atomist/automation-client/project/File";
+import { findFileMatches } from "@atomist/automation-client/tree/ast/astUtils";
+import { JavaPackageDeclaration } from "../java/JavaGrammars";
+import { JavaSourceFiles } from "../java/javaProjectUtils";
 
-const SpringBootAppClass = `//typeDeclaration[/classDeclaration]
-                            [//annotation[@value='@SpringBootApplication']]`;
+const SpringBootAppClass = `//typeDeclaration
+                                [//annotation[@value='@SpringBootApplication']]
+                                /classDeclaration//Identifier`;
 
 /**
  * Represents the structure of a Spring Boot project,
@@ -35,12 +36,14 @@ export class SpringBootProjectStructure {
                 const packageName = JavaPackageDeclaration.firstMatch(fh.file.getContentSync());
                 const appClass = fh.matches[0].$value;
 
+                console.log(JSON.stringify(fh.matches[0]));
+
                 if (packageName && appClass) {
-                    logger.debug("Successful Spring Boot inference on %k: packageName '%s', '%s'",
+                    logger.debug("Successful Spring Boot inference on %j: packageName '%s', '%s'",
                         p.id, packageName.name, appClass);
-                    return new SpringBootProjectStructure(packageName.name, appClass, fh.file)
+                    return new SpringBootProjectStructure(packageName.name, appClass, fh.file);
                 } else {
-                    logger.debug("Unsuccessful Spring Boot inference on %k: packageName '%s', '%s'",
+                    logger.debug("Unsuccessful Spring Boot inference on %j: packageName '%s', '%s'",
                         p.id, packageName.name, appClass);
                     return null;
                 }

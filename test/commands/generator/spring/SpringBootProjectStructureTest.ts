@@ -30,6 +30,8 @@ describe("SpringBootProjectStructure: Java inference", () => {
     it("infer application package and class when present", done => {
         SpringBootProjectStructure.inferFromJavaSource(GishProject).then(structure => {
             assert(structure.applicationPackage === "com.smashing.pumpkins");
+            assert(structure.applicationClass === "GishApplication",
+                `Expected name not to be ${structure.appClassFile.name}`);
             assert(structure.appClassFile.path === GishPath);
             done();
         }).catch(done);
@@ -78,7 +80,7 @@ const SimplePom = `<?xml version="1.0" encoding="UTF-8"?>
 
 export const GishPath = "src/main/java/com/smashing/pumpkins/Gish.java";
 export const GishProject: Project = InMemoryProject.from(
-    { owner: "smashing-pumpkins", repo: "gish" },
+    {owner: "smashing-pumpkins", repo: "gish"},
     {
         path: GishPath,
         content: javaSource,
@@ -89,7 +91,7 @@ export const GishProject: Project = InMemoryProject.from(
 );
 
 export const GishProjectWithComment: Project = InMemoryProject.from(
-    { owner: "smashing-pumpkins", repo: "gish" },
+    {owner: "smashing-pumpkins", repo: "gish"},
     {
         path: GishPath,
         content: javaSource.replace("@SpringBootApplication", "@SpringBootApplication // ha ha trying to fool you"),

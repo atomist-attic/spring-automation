@@ -1,3 +1,4 @@
+import { logger } from "@atomist/automation-client";
 import { ProjectAsync } from "@atomist/automation-client/project/Project";
 import { findMatches } from "@atomist/automation-client/project/util/parseUtils";
 import * as _ from "lodash";
@@ -18,12 +19,21 @@ export class JavaProjectStructure {
                     return undefined;
                 }
                 if (uniquePackages.length === 1) {
-                    return new JavaProjectStructure(uniquePackages[0]);
+                    const jps = new JavaProjectStructure(uniquePackages[0]);
+                    logger.debug("Successful JavaProjectStructure inference on %j: Sole package is %j",
+                        p.id, jps);
+                    return jps;
                 }
                 const longestPrefix = sharedStart(uniquePackages);
-                return !!longestPrefix ?
-                    new JavaProjectStructure(longestPrefix.replace(/\.$/, "")) :
-                    undefined;
+                if (!!longestPrefix) {
+                    const jps = new JavaProjectStructure(longestPrefix.replace(/\.$/, ""));
+                    logger.debug("Successful JavaProjectStructure inference on %j: Shortest path is %j",
+                        p.id, jps);
+                    return jps;
+                } else {
+                    logger.debug("Unsuccessful JavaProjectStructure inference on %j", p.id);
+                    return undefined;
+                }
             });
     }
 
@@ -45,6 +55,8 @@ function sharedStart(array: string[]): string {
     const a2 = A[A.length - 1];
     const L = a1.length;
     let i = 0;
-    while (i < L && a1.charAt(i) === a2.charAt(i)) { i++; }
+    while (i < L && a1.charAt(i) === a2.charAt(i)) {
+        i++;
+    }
     return a1.substring(0, i);
 }

@@ -44,6 +44,7 @@ describe("Spring Boot generation", () => {
         params.version = Version;
         params.artifactId = ArtId;
         params.rootPackage = "com.the.smiths";
+        params.bindAndValidate();
 
         const md = metadataFromInstance(sbs) as CommandHandlerMetadata;
         assert(md.name === "springBootGenerator");

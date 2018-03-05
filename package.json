@@ -1,6 +1,6 @@
 {
   "name": "@atomist/spring-automation",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "Atomist automations for Spring: Generators, reviewers and editors",
   "author": "Atomist",
   "license": "Apache-2.0",
@@ -20,7 +20,7 @@
   ],
   "dependencies": {
     "@atomist/antlr": "0.2.0",
-    "@atomist/automation-client": "^0.6.5",
+    "@atomist/automation-client": "https://r.atomist.com/rkNFt0T9OM",
     "@atomist/microgrammar": "^0.7.0",
     "@atomist/slack-messages": "^0.12.1",
     "@atomist/tree-path": "^0.1.8",
