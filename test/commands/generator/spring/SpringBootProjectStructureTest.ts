@@ -65,8 +65,8 @@ describe("SpringBootProjectStructure: Java inference", () => {
         SpringBootProjectStructure.inferFromJavaSource(
             InMemoryProject.of(
                 { path: "pom.xml", content: "<xml>"},
-                { path: "src/main/java/App.java", content: "@SpringBootApplication public class App {}"}
-            )
+                { path: "src/main/java/App.java", content: "@SpringBootApplication public class App {}"},
+            ),
         ).then(structure => {
             assert(!!structure);
             assert(structure.applicationPackage === "");

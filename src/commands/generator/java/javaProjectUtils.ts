@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 import { logger } from "@atomist/automation-client/internal/util/logger";
 import { ProjectAsync } from "@atomist/automation-client/project/Project";
 import { doWithFiles } from "@atomist/automation-client/project/util/projectUtils";
