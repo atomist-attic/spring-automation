@@ -7,6 +7,7 @@ import { toPromise } from "@atomist/automation-client/project/util/projectUtils"
 import { UnleashPhilParameters } from "../editor/spring/unleashPhil";
 import { GitHubTagRouter } from "./gitHubTagRouter";
 
+// TODO this shouldn't really be here
 export const nodeTagger = p => {
     return p.findFile("package.json")
         .then(f => f.getContent())
