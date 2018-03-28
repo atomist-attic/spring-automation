@@ -33,18 +33,19 @@ export class SpringBootProjectStructure {
                     return null;
                 }
                 const fh = fileHits[0];
-                const packageName = JavaPackageDeclaration.firstMatch(fh.file.getContentSync());
-                const appClass = fh.matches[0].$value;
 
-                console.log(JSON.stringify(fh.matches[0]));
+                // It's in the default package if no match found
+                const packageName: { name: string } = JavaPackageDeclaration.firstMatch(fh.file.getContentSync()) || { name: ""};
+
+                const appClass = fh.matches[0].$value;
 
                 if (packageName && appClass) {
                     logger.debug("Successful Spring Boot inference on %j: packageName '%s', '%s'",
                         p.id, packageName.name, appClass);
                     return new SpringBootProjectStructure(packageName.name, appClass, fh.file);
                 } else {
-                    logger.debug("Unsuccessful Spring Boot inference on %j: packageName '%s', '%s'",
-                        p.id, packageName.name, appClass);
+                    logger.debug("Unsuccessful Spring Boot inference on %j: packageName '%j', '%s'",
+                        p.id, packageName, appClass);
                     return null;
                 }
             });

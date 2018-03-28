@@ -45,6 +45,20 @@ describe("SpringBootProjectStructure: Java inference", () => {
         }).catch(done);
     });
 
+    it("infer application package in root package", done => {
+        SpringBootProjectStructure.inferFromJavaSource(
+            InMemoryProject.of(
+                { path: "pom.xml", content: "<xml>"},
+                { path: "src/main/java/App.java", content: "@SpringBootApplication public class App {}"}
+            )
+        ).then(structure => {
+            assert(!!structure);
+            assert(structure.applicationPackage === "");
+            assert(structure.appClassFile.path === "src/main/java/App.java");
+            done();
+        }).catch(done);
+    });
+
 });
 
 const javaSource =
