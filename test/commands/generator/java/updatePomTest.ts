@@ -33,7 +33,7 @@ describe("updatePom", () => {
                 })).then(done, done);
     });
 
-    it("should edit POM", done => {
+    it("should edit simple POM", done => {
         const p = InMemoryProject.from(
             { owner: "wicked", repo: "defying-gravity" },
             { path: "pom.xml", content: SimplePom },
@@ -53,6 +53,24 @@ describe("updatePom", () => {
                 assert(!newPom.includes("<groupId>com.example</groupId>"));
                 assert(!newPom.includes("<version>0.0.1-SNAPSHOT</version>"));
                 assert(!newPom.includes("<description>Demo project for Spring Boot</description>"));
+            }).then(done, done);
+    });
+
+    // TODO this should succeed
+    it.skip("should edit POM with second artifact and out of order", done => {
+        const p = InMemoryProject.from(
+            { owner: "wicked", repo: "defying-gravity" },
+            { path: "pom.xml", content: PomWithDualArtifact },
+        );
+        p.addFileSync("src/main/java/Foo.java", "public class Foo {}");
+        updatePom(p, "art", "group", "version", "desc")
+            .then(_ => {
+                const found = p.findFileSync("pom.xml");
+                const newPom = found.getContentSync();
+                console.log(newPom)
+                assert(newPom.includes("<artifactId>art</artifactId>"));
+                // Shouldn't have changed this one
+                assert(newPom.includes("<artifactId>maven-assembly-plugin</artifactId>"));
             }).then(done, done);
     });
 
@@ -79,3 +97,58 @@ export const SimplePom = `<?xml version="1.0" encoding="UTF-8"?>
     </parent>
 </project>
 `;
+
+export const PomWithDualArtifact = `<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>atomist</groupId>
+    <name>java-hello-world-maven</name>
+    <version>0.1.0-SNAPSHOT</version>
+    <url>http://maven.apache.org</url>
+    <packaging>jar</packaging>
+
+    <properties>
+        <java-version>1.8</java-version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <build>
+        <plugins>
+            <!-- Maven Assembly Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.4.1</version>
+                <configuration>
+
+                    <!-- get all project dependencies -->
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+
+                    <!-- MainClass in mainfest make a executable jar -->
+                    <archive>
+                        <manifest>
+                            <mainClass>com.myorganization.app.Main</mainClass>
+                        </manifest>
+                    </archive>
+
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <!-- bind to the packaging phase -->
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+    <artifactId>myapp</artifactId>
+</project>
+`;
+
