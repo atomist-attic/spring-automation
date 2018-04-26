@@ -22,10 +22,19 @@ import { File } from "@atomist/automation-client/project/File";
 import { findFileMatches } from "@atomist/automation-client/tree/ast/astUtils";
 import { JavaPackageDeclaration } from "../java/JavaGrammars";
 import { JavaSourceFiles } from "../java/javaProjectUtils";
+import { PathExpression } from "@atomist/tree-path/path/pathExpression";
+import { FileParserRegistry } from "@atomist/automation-client/tree/ast/FileParserRegistry";
+import { FileParser } from "@atomist/automation-client/tree/ast/FileParser";
+import { KotlinFileParser } from "@atomist/antlr/tree/ast/antlr/kotlin/KotlinFileParser";
+import { KotlinSourceFiles } from "../kotlin/kotlinUtils";
 
-const SpringBootAppClass = `//typeDeclaration
+export const SpringBootAppClassInJava = `//typeDeclaration
                                 [//annotation[@value='@SpringBootApplication']]
                                 /classDeclaration//Identifier`;
+
+export const SpringBootAppClassInKotlin = `//classDeclaration
+                                [//annotation[@value='@SpringBootApplication']]
+                                //Identifier`;
 
 /**
  * Represents the structure of a Spring Boot project,
@@ -40,31 +49,44 @@ export class SpringBootProjectStructure {
      * @return {Promise<SpringBootProjectStructure>}
      */
     public static async inferFromJavaSource(p: ProjectAsync): Promise<SpringBootProjectStructure> {
-        return findFileMatches(p, JavaFileParser, JavaSourceFiles, SpringBootAppClass)
-            .then(fileHits => {
-                if (fileHits.length === 0) {
-                    return null;
-                }
-                if (fileHits.length > 1) {
-                    return null;
-                }
-                const fh = fileHits[0];
+        return this.inferFromSourceWithJavaLikeImports(p, JavaFileParser, JavaSourceFiles, SpringBootAppClassInJava);
+    }
 
-                // It's in the default package if no match found
-                const packageName: { name: string } = JavaPackageDeclaration.firstMatch(fh.file.getContentSync()) || { name: ""};
+    public static async inferFromKotlinSource(p: ProjectAsync): Promise<SpringBootProjectStructure> {
+        return this.inferFromSourceWithJavaLikeImports(p, KotlinFileParser, KotlinSourceFiles, SpringBootAppClassInKotlin);
+    }
 
-                const appClass = fh.matches[0].$value;
+    public static async inferFromJavaOrKotlinSource(p: ProjectAsync): Promise<SpringBootProjectStructure> {
+        return await this.inferFromJavaSource(p) || this.inferFromKotlinSource(p);
+    }
 
-                if (packageName && appClass) {
-                    logger.debug("Successful Spring Boot inference on %j: packageName '%s', '%s'",
-                        p.id, packageName.name, appClass);
-                    return new SpringBootProjectStructure(packageName.name, appClass, fh.file);
-                } else {
-                    logger.debug("Unsuccessful Spring Boot inference on %j: packageName '%j', '%s'",
-                        p.id, packageName, appClass);
-                    return null;
-                }
-            });
+    private static async inferFromSourceWithJavaLikeImports(p: ProjectAsync,
+                                                            parserOrRegistry: FileParser | FileParserRegistry,
+                                                            globPattern: string, pathExpression: string | PathExpression): Promise<SpringBootProjectStructure> {
+        const fileHits = await findFileMatches(p, parserOrRegistry, globPattern, pathExpression);
+
+        if (fileHits.length === 0) {
+            return null;
+        }
+        if (fileHits.length > 1) {
+            return null;
+        }
+        const fh = fileHits[0];
+
+        // It's in the default package if no match found
+        const packageName: { name: string } = JavaPackageDeclaration.firstMatch(fh.file.getContentSync()) || {name: ""};
+
+        const appClass = fh.matches[0].$value;
+
+        if (packageName && appClass) {
+            logger.debug("Successful Spring Boot inference on %j: packageName '%s', '%s'",
+                p.id, packageName.name, appClass);
+            return new SpringBootProjectStructure(packageName.name, appClass, fh.file);
+        } else {
+            logger.debug("Unsuccessful Spring Boot inference on %j: packageName '%j', '%s'",
+                p.id, packageName, appClass);
+            return null;
+        }
     }
 
     /**

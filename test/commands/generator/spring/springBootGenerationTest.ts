@@ -24,7 +24,7 @@ import {
     springBootGenerator,
     springBootProjectEditor,
 } from "../../../../src/commands/generator/spring/springBootGenerator";
-import { GishPath, GishProject } from "./SpringBootProjectStructureTest";
+import { GishJavaPath, GishProject } from "./SpringBootProjectStructureTest";
 
 const GroupId = "group";
 const ArtId = "art";
@@ -34,7 +34,7 @@ describe("Spring Boot generation", () => {
 
     it("edits project and verifies package", done => {
         edit(GishProject).then(r => {
-            assert(!r.target.findFileSync(GishPath));
+            assert(!r.target.findFileSync(GishJavaPath));
             const f = r.target.findFileSync("src/main/java/com/the/smiths/MyCustom.java");
             assert(f);
             const content = f.getContentSync();
@@ -44,7 +44,7 @@ describe("Spring Boot generation", () => {
 
     it("edits project and verifies POM", done => {
         edit(GishProject).then(r => {
-            assert(!r.target.findFileSync(GishPath));
+            assert(!r.target.findFileSync(GishJavaPath));
             const f = r.target.findFileSync("pom.xml");
             assert(f);
             const content = f.getContentSync();

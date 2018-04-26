@@ -30,7 +30,6 @@ export const PACKAGE_OF_CLASS = /^[a-zA-Z0-9$.]+\./;
 export const JavaPackageDeclaration = Microgrammar.fromDefinitions<{name: string}>({
     _pkg: "package",
     name: PACKAGE_NAME,
-    _sc: ";",
 });
 
 export const PUBLIC_CLASS = Microgrammar.fromDefinitions<{name: string}>({
