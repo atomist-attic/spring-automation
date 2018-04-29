@@ -42,6 +42,27 @@ describe("package move", () => {
         }).catch(done);
     });
 
+    it("moves files working with Kotlin by default", done => {
+        const path = "src/main/kotlin/com/smashing/pumpkins/Gish.kt";
+        const p = InMemoryProject.of(
+            {
+                path,
+                content: kotlinSource,
+            },
+        );
+        inferFromKotlinSource(p).then(structure => {
+            assert(structure.applicationPackage === "com.smashing.pumpkins");
+            assert(structure.appClassFile.path === path);
+            return movePackage(p, structure.applicationPackage, "com.the.smiths")
+                .then(_ => {
+                    assert(!p.findFileSync(path));
+                    const newFile = p.findFileSync("src/main/kotlin/com/the/smiths/Gish.kt");
+                    assert(!!newFile);
+                    done();
+                });
+        }).catch(done);
+    });
+
 });
 
 const kotlinSource =

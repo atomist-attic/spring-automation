@@ -26,10 +26,9 @@ export const JavaTestFiles = "src/main/test/**/*.java";
 
 export const AllJavaAndKotlinFiles = "**/{*.java,*.kt}";
 
-
 /**
  * Move files from one package to another. Defaults to
- * working on all Java source. However, will work for Kotlin or Scala
+ * working on all Java and Kotlin source. Will work for Scala
  * if you pass in the appropriate glob pattern to select the files you want.
  *
  * @param project      project whose files should be moved
@@ -37,8 +36,9 @@ export const AllJavaAndKotlinFiles = "**/{*.java,*.kt}";
  * @param newPackage   name of package to move to
  * @param globPattern  glob to select files. Defaults to all Java files in the project
  */
-export function movePackage<P extends ProjectAsync>(project: P, oldPackage: string, newPackage: string,
-                                                    globPattern: string = AllJavaFiles): Promise<P> {
+export function movePackage<P extends ProjectAsync>(project: P,
+                                                    oldPackage: string, newPackage: string,
+                                                    globPattern: string = AllJavaAndKotlinFiles): Promise<P> {
     const pathToReplace = packageToPath(oldPackage);
     const newPath = packageToPath(newPackage);
     logger.debug("Replacing path '%s' with '%s', package '%s' with '%s'",
