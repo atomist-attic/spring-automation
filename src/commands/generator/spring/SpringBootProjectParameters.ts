@@ -69,7 +69,7 @@ export class SpringBootGeneratorParameters extends JavaGeneratorParameters {
 }
 
 export function inferSpringStructureAndRename(serviceClassName: string, p: Project): Promise<Project> {
-    return SpringBootProjectStructure.inferFromJavaSource(p)
+    return SpringBootProjectStructure.inferFromJavaOrKotlinSource(p)
         .then(structure => {
             if (structure) {
                 return renameClass(p, structure.applicationClassStem, serviceClassName);

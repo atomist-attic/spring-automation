@@ -36,6 +36,11 @@ import {
 } from "../java/JavaProjectParameters";
 import { inferSpringStructureAndRename, SpringBootGeneratorParameters } from "./SpringBootProjectParameters";
 
+/**
+ * Handle Java and Kotlin seeds
+ * @param {ProjectPersister} projectPersister
+ * @return {HandleCommand<SpringBootGeneratorParameters>}
+ */
 export function springBootGenerator(projectPersister: ProjectPersister = GitHubProjectPersister): HandleCommand<SpringBootGeneratorParameters> {
     return generatorHandler<SpringBootGeneratorParameters>(
         springBootProjectEditor,

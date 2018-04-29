@@ -21,11 +21,11 @@ import { Project } from "@atomist/automation-client/project/Project";
 import { SlackMessage } from "@atomist/slack-messages/SlackMessages";
 import * as assert from "power-assert";
 import {
-    kotlinSpring5Generator,
     KotlinSpring5Parameters,
 } from "../../../../src/commands/generator/spring/kotlinSpring5Generator";
 import { createdProject, localProjectPersister } from "../spring/localProjectPersister";
 import { GishPath } from "./kotlinSpringBootStructureInferenceTest";
+import { springBootGenerator } from "../../../../src/commands/generator/spring/springBootGenerator";
 
 describe("Kotlin Spring5 generator integration test", () => {
 
@@ -51,7 +51,7 @@ describe("Kotlin Spring5 generator integration test", () => {
                 query: async () => [],
             },
         } as any;
-        const h = kotlinSpring5Generator(localProjectPersister);
+        const h = springBootGenerator(localProjectPersister);
         return (h as any).handle(ctx, kgen)
             .then(() => createdProject);
     }
