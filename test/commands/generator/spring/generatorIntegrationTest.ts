@@ -96,6 +96,6 @@ function fakeContext(): HandlerContext {
         messageClient: new ConsoleMessageClient(),
         graphClient: {
             query: async () => [],
-        }
+        },
     } as any as HandlerContext;
 }
