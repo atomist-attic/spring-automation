@@ -18,7 +18,6 @@ import { MappedParameter, MappedParameters, Parameter } from "@atomist/automatio
 import { Parameters } from "@atomist/automation-client/decorators";
 import { BaseSeedDrivenGeneratorParameters } from "@atomist/automation-client/operations/generate/BaseSeedDrivenGeneratorParameters";
 import { Project } from "@atomist/automation-client/project/Project";
-import { deleteFiles } from "@atomist/automation-client/project/util/projectUtils";
 import { SmartParameters } from "@atomist/automation-client/SmartParameters";
 import { updateYamlDocument } from "@atomist/yaml-updater/Yaml";
 import { JavaProjectStructure } from "./JavaProjectStructure";

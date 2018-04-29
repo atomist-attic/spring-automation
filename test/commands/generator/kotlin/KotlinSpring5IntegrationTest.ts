@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-import { HandleCommand } from "@atomist/automation-client";
+import { logger } from "@atomist/automation-client";
 import { CommandResult, runCommand } from "@atomist/automation-client/action/cli/commandLine";
 import { HandlerContext } from "@atomist/automation-client/HandlerContext";
-import { GitHubTargetsParams } from "@atomist/automation-client/operations/common/params/GitHubTargetsParams";
 import { LocalProject } from "@atomist/automation-client/project/local/LocalProject";
 import { Project } from "@atomist/automation-client/project/Project";
 import { SlackMessage } from "@atomist/slack-messages/SlackMessages";
-import "mocha";
 import * as assert from "power-assert";
 import {
     kotlinSpring5Generator,
@@ -35,8 +33,7 @@ describe("Kotlin Spring5 generator integration test", () => {
     it("edits, verifies and compiles", done => {
         generate()
             .then(verifyAndCompile)
-            .then(cr => console.log(cr.stdout), e => {
-                console.log(`mvn compile failed:${JSON.stringify(e, null, 2)}`);
+            .then(cr => logger.debug(cr.stdout), e => {
                 assert(false);
             })
             .then(done, done);
@@ -56,7 +53,7 @@ describe("Kotlin Spring5 generator integration test", () => {
                 },
             },
         };
-        const h = kotlinSpring5Generator(localProjectPersister) as HandleCommand<KotlinSpring5Parameters>;
+        const h = kotlinSpring5Generator(localProjectPersister);
         return (h as any).handle(ctx as HandlerContext, kgen)
             .then(() => createdProject);
     }

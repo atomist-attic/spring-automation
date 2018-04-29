@@ -16,8 +16,6 @@
 
 import { logger } from "@atomist/automation-client/internal/util/logger";
 import {
-    EditResult,
-    ProjectEditor,
     SimpleProjectEditor,
 } from "@atomist/automation-client/operations/edit/projectEditor";
 import { doWithMatches } from "@atomist/automation-client/project/util/parseUtils";

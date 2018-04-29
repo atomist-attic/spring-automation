@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import "mocha";
 import * as assert from "power-assert";
 
 import { InMemoryProject } from "@atomist/automation-client/project/mem/InMemoryProject";

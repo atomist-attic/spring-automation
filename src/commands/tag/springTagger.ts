@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { HandleCommand } from "@atomist/automation-client";
+import { HandleCommand, logger } from "@atomist/automation-client";
 import { SpringBootStarter, SpringBootTaggerTags } from "../editor/spring/springConstants";
 
 import { DefaultTags, TagRouter } from "@atomist/automation-client/operations/tagger/Tagger";
@@ -45,7 +45,7 @@ export const springBootTagger = p => {
                 });
         })
         .catch(err => {
-            console.log("Tag error: " + err);
+            logger.warn("Tag error: " + err);
             return new DefaultTags(p.id, []);
         });
 };

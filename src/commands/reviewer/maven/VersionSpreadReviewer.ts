@@ -21,9 +21,8 @@ import { RepoFinder } from "@atomist/automation-client/operations/common/repoFin
 import { RepoLoader } from "@atomist/automation-client/operations/common/repoLoader";
 import { ProjectReviewer } from "@atomist/automation-client/operations/review/projectReviewer";
 import { reviewerHandler } from "@atomist/automation-client/operations/review/reviewerToCommand";
-import { clean, ProjectReview, ReviewResult } from "@atomist/automation-client/operations/review/ReviewResult";
+import { clean, ProjectReview } from "@atomist/automation-client/operations/review/ReviewResult";
 import { findMatches } from "@atomist/automation-client/project/util/parseUtils";
-import * as _ from "lodash";
 import { dependencyOfGrammar } from "../../../grammars/mavenGrammars";
 import { VersionedArtifact } from "../../../grammars/VersionedArtifact";
 import { SpringBootReviewerTags } from "../../editor/spring/springConstants";
@@ -90,25 +89,6 @@ const versionSpreadProjectReviewer: ProjectReviewer<VersionSpreadReviewerParamet
                 return Promise.resolve(clean(p.id) as VersionReportReview);
             });
     };
-
-function enrich(reviewResult: ReviewResult<VersionReportReview>): LibraryCheckReviewResult {
-    // Put in the aggregate version information
-    const allVersions = reviewResult.projectReviews
-        .map(r => r.version)
-        .filter(v => !!v);
-    const lrr = reviewResult as LibraryCheckReviewResult;
-    lrr.versions = _.uniq(allVersions).sort();
-    return lrr;
-}
-
-export interface LibraryCheckReviewResult extends ReviewResult<VersionReportReview> {
-
-    /**
-     * All the versions we found, without duplicates. Look at individual ProjectReviews for
-     * the version in each project.
-     */
-    versions: string[];
-}
 
 export interface VersionReportReview extends ProjectReview, VersionedArtifact {
 

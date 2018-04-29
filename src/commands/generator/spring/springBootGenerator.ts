@@ -48,7 +48,7 @@ export function springBootGenerator(projectPersister: ProjectPersister = GitHubP
             afterAction: (p, params: JavaGeneratorParameters) =>
                 springBootTagger(p)
                     .then(tags => {
-                        console.log("Tagging with " + tags.tags.join());
+                        logger.info("Tagging with " + tags.tags.join());
                         const edp: EditorOrReviewerParameters = {
                             targets: {
                                 owner: params.target.owner,

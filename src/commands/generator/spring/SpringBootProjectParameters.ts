@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Parameter } from "@atomist/automation-client";
+import { logger, Parameter } from "@atomist/automation-client";
 import { Parameters } from "@atomist/automation-client/decorators";
 import { Project } from "@atomist/automation-client/project/Project";
 import { camelize } from "tslint/lib/utils";
@@ -74,7 +74,7 @@ export function inferSpringStructureAndRename(serviceClassName: string, p: Proje
             if (structure) {
                 return renameClass(p, structure.applicationClassStem, serviceClassName);
             } else {
-                console.log("WARN: Spring Boot project structure not found");
+                logger.warn("Spring Boot project structure not found");
                 return p;
 
             }

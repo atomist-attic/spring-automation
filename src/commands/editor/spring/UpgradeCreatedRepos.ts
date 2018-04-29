@@ -16,7 +16,6 @@
 
 import { CommandHandler, HandleCommand, HandlerContext, HandlerResult, Parameter } from "@atomist/automation-client";
 import {
-    BaseEditorOrReviewerParameters,
     EditorOrReviewerParameters,
 } from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
 import { GitHubTargetsParams } from "@atomist/automation-client/operations/common/params/GitHubTargetsParams";
@@ -41,7 +40,7 @@ export class UpgradeCreatedRepos implements HandleCommand, EditorOrReviewerParam
 
     public targets: GitHubTargetsParams = new MappedRepoParameters();
 
-    constructor(private repoFinder: RepoFinder, private collaboratorToken: string) {
+    constructor(private readonly repoFinder: RepoFinder, private readonly collaboratorToken: string) {
     }
 
     public handle(context: HandlerContext, params: this): Promise<HandlerResult> {

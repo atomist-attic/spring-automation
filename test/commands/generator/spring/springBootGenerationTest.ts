@@ -18,7 +18,6 @@ import { metadataFromInstance } from "@atomist/automation-client/internal/metada
 import { CommandHandlerMetadata } from "@atomist/automation-client/metadata/automationMetadata";
 import { EditResult, toEditor } from "@atomist/automation-client/operations/edit/projectEditor";
 import { Project } from "@atomist/automation-client/project/Project";
-import "mocha";
 import * as assert from "power-assert";
 import {
     springBootGenerator,

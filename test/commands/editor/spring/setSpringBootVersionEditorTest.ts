@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import "mocha";
-
 import { InMemoryProject } from "@atomist/automation-client/project/mem/InMemoryProject";
 import * as assert from "power-assert";
 import { setSpringBootVersionEditor } from "../../../../src/commands/editor/spring/setSpringBootVersionEditor";
@@ -24,10 +22,9 @@ import { springBootPom } from "../../reviewer/maven/Poms";
 
 describe("setSpringBootVersionEditor", () => {
 
-    it("doesn't edit empty project", done => {
+    it("doesn't edit empty project", async () => {
         const p = new InMemoryProject();
-        setSpringBootVersionEditor("1.3.1")(p)
-            .then(() => done(), done);
+        await setSpringBootVersionEditor("1.3.1")(p);
     });
 
     it("actually edits Spring Boot project in memory", done => {
@@ -35,7 +32,7 @@ describe("setSpringBootVersionEditor", () => {
         setSpringBootVersionEditor("1.3.1")(p)
             .then(r => {
                 assert(p.findFileSync("pom.xml").getContentSync().includes("1.3.1"));
-            }).then(() => done(), done);
+            }).then(done, done);
     });
 
     it("actually edits Spring Boot project on disk", done => {
@@ -44,7 +41,7 @@ describe("setSpringBootVersionEditor", () => {
         setSpringBootVersionEditor("1.3.1")(p)
             .then(r => {
                 assert(p.findFileSync("pom.xml").getContentSync().includes("1.3.1"));
-            }).then(() => done(), done);
+            }).then(done, done);
     });
 
 });

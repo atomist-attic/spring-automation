@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import "mocha";
 import * as assert from "power-assert";
 
 import { InMemoryProject } from "@atomist/automation-client/project/mem/InMemoryProject";
@@ -67,7 +66,6 @@ describe("updatePom", () => {
             .then(_ => {
                 const found = p.findFileSync("pom.xml");
                 const newPom = found.getContentSync();
-                console.log(newPom)
                 assert(newPom.includes("<artifactId>art</artifactId>"));
                 // Shouldn't have changed this one
                 assert(newPom.includes("<artifactId>maven-assembly-plugin</artifactId>"));
@@ -97,6 +95,8 @@ export const SimplePom = `<?xml version="1.0" encoding="UTF-8"?>
     </parent>
 </project>
 `;
+
+/* tslint:disable */
 
 export const PomWithDualArtifact = `<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -151,4 +151,3 @@ export const PomWithDualArtifact = `<project xmlns="http://maven.apache.org/POM/
     <artifactId>myapp</artifactId>
 </project>
 `;
-

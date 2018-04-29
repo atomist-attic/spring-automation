@@ -21,7 +21,6 @@ import { CustomExecutionEditMode } from "@atomist/automation-client/operations/e
 import { EditResult, ProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
 import { InMemoryProject } from "@atomist/automation-client/project/mem/InMemoryProject";
 import { Project } from "@atomist/automation-client/project/Project";
-import "mocha";
 import * as assert from "power-assert";
 import {
     springBootVersionUpgrade,
@@ -104,7 +103,7 @@ class VerifyEditMode implements CustomExecutionEditMode {
 
     public message = "foo";
 
-    constructor(private assertions: (p: Project) => void) {
+    constructor(private readonly assertions: (p: Project) => void) {
 
     }
 

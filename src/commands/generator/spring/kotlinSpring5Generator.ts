@@ -15,8 +15,6 @@
  */
 
 import { HandleCommand } from "@atomist/automation-client";
-import { HandlerContext } from "@atomist/automation-client/Handlers";
-import { AnyProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
 import { generatorHandler } from "@atomist/automation-client/operations/generate/generatorToCommand";
 import { ProjectPersister } from "@atomist/automation-client/operations/generate/generatorUtils";
 import { GitHubProjectPersister } from "@atomist/automation-client/operations/generate/gitHubProjectPersister";

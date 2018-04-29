@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import "mocha";
 import { FromInitializr } from "./addStarterEditorTest";
 import { identification } from "./pomParser";
 

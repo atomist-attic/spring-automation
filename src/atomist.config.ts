@@ -46,6 +46,7 @@ const pj = require(`${appRoot.path}/package.json`);
 const token = secret("github.token", process.env.GITHUB_TOKEN);
 const notLocal = process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging";
 
+// tslint:disable-next-line:no-unused-variable
 const logzioOptions: LogzioOptions = {
     applicationId: secret("applicationId"),
     environmentId: secret("environmentId"),
@@ -62,15 +63,15 @@ export const configuration: Configuration = {
     commands: [
         () => removeUnnecessaryComponentScanCommand,
         () => removeAutowiredOnSoleConstructorCommand,
-        () => springBootGenerator(),
-        () => kotlinSpring5Generator(),
-        () => springBootVersionUpgrade(),
-        () => findNonSpecificMvcAnnotationsCommand(),
-        () => findUnnecessaryComponentScanReviewerCommand(),
-        () => findMutableInjectionsCommand(),
-        () => verifyPomCommand(),
-        () => springBootTaggerCommand(),
-        () => nodeTaggerCommand(),
+        springBootGenerator,
+        kotlinSpring5Generator,
+        springBootVersionUpgrade,
+        findNonSpecificMvcAnnotationsCommand,
+        findUnnecessaryComponentScanReviewerCommand,
+        findMutableInjectionsCommand,
+        verifyPomCommand,
+        springBootTaggerCommand,
+        nodeTaggerCommand,
         () => tagAllCommand,
         () => unleashPhilCommand,
         () => springBootVersionReviewerCommand(MessagingReviewRouter),

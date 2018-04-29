@@ -76,7 +76,7 @@ export function findMutableInjections(p: Project,
 }
 
 export function findMutableInjectionsCommand(reviewRouter: ReviewRouter<any> = MessagingReviewRouter): HandleCommand {
-    return reviewerHandler(() => p => findMutableInjections(p),
+    return reviewerHandler(() => findMutableInjections,
         BaseEditorOrReviewerParameters,
         "FindMutableInjections",
         {

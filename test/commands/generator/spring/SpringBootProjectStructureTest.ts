@@ -14,19 +14,17 @@
  * limitations under the License.
  */
 
+import { KotlinFileParser } from "@atomist/antlr/tree/ast/antlr/kotlin/KotlinFileParser";
 import { InMemoryProject } from "@atomist/automation-client/project/mem/InMemoryProject";
 import { Project } from "@atomist/automation-client/project/Project";
-import "mocha";
+import { findFileMatches } from "@atomist/automation-client/tree/ast/astUtils";
+import { evaluateExpression } from "@atomist/tree-path/path/expressionEngine";
 import * as assert from "power-assert";
+import { KotlinSourceFiles } from "../../../../src/commands/generator/kotlin/kotlinUtils";
 import {
     SpringBootAppClassInKotlin,
-    SpringBootProjectStructure
+    SpringBootProjectStructure,
 } from "../../../../src/commands/generator/spring/SpringBootProjectStructure";
-import { findFileMatches } from "@atomist/automation-client/tree/ast/astUtils";
-import { KotlinFileParser } from "@atomist/antlr/tree/ast/antlr/kotlin/KotlinFileParser";
-import { KotlinSourceFiles } from "../../../../src/commands/generator/kotlin/kotlinUtils";
-import { parsePathExpression } from "@atomist/tree-path/path/pathExpressionParser";
-import { evaluateExpression } from "@atomist/tree-path/path/expressionEngine";
 
 describe("SpringBootProjectStructure: Java inference", () => {
 
@@ -121,7 +119,7 @@ describe("SpringBootProjectStructure: Java inference", () => {
                 done();
             }).catch(done);
         });
-    })
+    });
 
 });
 

@@ -17,10 +17,6 @@
 import { InMemoryProject } from "@atomist/automation-client/project/mem/InMemoryProject";
 
 import * as assert from "power-assert";
-import {
-    findNonSpecificMvcAnnotations,
-    NonSpecificMvcAnnotation,
-} from "../../../../src/commands/editor/spring/findNonSpecificMvcAnnotations";
 import { verifyPom } from "../../../../src/commands/editor/spring/verifyPom";
 import { springBootPom } from "../../reviewer/maven/Poms";
 

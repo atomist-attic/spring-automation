@@ -17,7 +17,6 @@
 import { JavaFileParser } from "@atomist/antlr/tree/ast/antlr/java/JavaFileParser";
 import { HandleCommand } from "@atomist/automation-client";
 import { BaseEditorOrReviewerParameters } from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
-import { MappedRepoParameters } from "@atomist/automation-client/operations/common/params/MappedRepoParameters";
 import { SourceLocation } from "@atomist/automation-client/operations/common/SourceLocation";
 import { reviewerHandler, ReviewRouter } from "@atomist/automation-client/operations/review/reviewerToCommand";
 import { ProjectReview, ReviewComment, Severity } from "@atomist/automation-client/operations/review/ReviewResult";
@@ -60,7 +59,7 @@ export function findNonSpecificMvcAnnotations(p: Project,
 }
 
 export function findNonSpecificMvcAnnotationsCommand(reviewRouter: ReviewRouter<any> = MessagingReviewRouter): HandleCommand {
-    return reviewerHandler(() => p => findNonSpecificMvcAnnotations(p),
+    return reviewerHandler(() => findNonSpecificMvcAnnotations,
         BaseEditorOrReviewerParameters,
         "FindNonSpecificMvcAnnotations",
         {

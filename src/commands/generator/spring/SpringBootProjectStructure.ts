@@ -18,14 +18,14 @@ import { logger } from "@atomist/automation-client/internal/util/logger";
 import { ProjectAsync } from "@atomist/automation-client/project/Project";
 
 import { JavaFileParser } from "@atomist/antlr/tree/ast/antlr/java/JavaFileParser";
+import { KotlinFileParser } from "@atomist/antlr/tree/ast/antlr/kotlin/KotlinFileParser";
 import { File } from "@atomist/automation-client/project/File";
 import { findFileMatches } from "@atomist/automation-client/tree/ast/astUtils";
+import { FileParser } from "@atomist/automation-client/tree/ast/FileParser";
+import { FileParserRegistry } from "@atomist/automation-client/tree/ast/FileParserRegistry";
+import { PathExpression } from "@atomist/tree-path/path/pathExpression";
 import { JavaPackageDeclaration } from "../java/JavaGrammars";
 import { JavaSourceFiles } from "../java/javaProjectUtils";
-import { PathExpression } from "@atomist/tree-path/path/pathExpression";
-import { FileParserRegistry } from "@atomist/automation-client/tree/ast/FileParserRegistry";
-import { FileParser } from "@atomist/automation-client/tree/ast/FileParser";
-import { KotlinFileParser } from "@atomist/antlr/tree/ast/antlr/kotlin/KotlinFileParser";
 import { KotlinSourceFiles } from "../kotlin/kotlinUtils";
 
 export const SpringBootAppClassInJava = `//typeDeclaration
@@ -62,7 +62,8 @@ export class SpringBootProjectStructure {
 
     private static async inferFromSourceWithJavaLikeImports(p: ProjectAsync,
                                                             parserOrRegistry: FileParser | FileParserRegistry,
-                                                            globPattern: string, pathExpression: string | PathExpression): Promise<SpringBootProjectStructure> {
+                                                            globPattern: string,
+                                                            pathExpression: string | PathExpression): Promise<SpringBootProjectStructure> {
         const fileHits = await findFileMatches(p, parserOrRegistry, globPattern, pathExpression);
 
         if (fileHits.length === 0) {

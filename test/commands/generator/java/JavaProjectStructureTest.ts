@@ -15,7 +15,6 @@
  */
 
 import { InMemoryProject } from "@atomist/automation-client/project/mem/InMemoryProject";
-import "mocha";
 import * as assert from "power-assert";
 import { JavaProjectStructure } from "../../../../src/commands/generator/java/JavaProjectStructure";
 

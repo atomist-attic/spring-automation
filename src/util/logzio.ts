@@ -31,7 +31,6 @@ import {
     AutomationEventListenerSupport,
 } from "@atomist/automation-client/server/AutomationEventListener";
 import { Destination, MessageOptions } from "@atomist/automation-client/spi/message/MessageClient";
-import { SlackMessage } from "@atomist/slack-messages/SlackMessages";
 import * as appRoot from "app-root-path";
 import { createLogger } from "logzio-nodejs";
 import * as serializeError from "serialize-error";
@@ -40,6 +39,7 @@ import * as serializeError from "serialize-error";
 const logzioWinstonTransport = require("winston-logzio");
 const _assign = require("lodash.assign");
 const pj = require(`${appRoot.path}/package.json`);
+
 /* tslint:enable */
 
 export class LogzioAutomationEventListener extends AutomationEventListenerSupport
@@ -187,17 +187,16 @@ export class LogzioAutomationEventListener extends AutomationEventListenerSuppor
         };
         // create the logzio event logger
         this.logzio = createLogger(logzioOptions);
-
-        logzioWinstonTransport.prototype.log = function(level, msg, meta, callback) {
-
+        logzioWinstonTransport.prototype.log = function(level, pmsg, pmeta, callback) {
+            let [msg, meta] = [pmsg, pmeta];
             if (typeof msg !== "string" && typeof msg !== "object") {
-                msg = { message: this.safeToString(msg) };
+                msg = {message: this.safeToString(msg)};
             } else if (typeof msg === "string") {
-                msg = { message: msg };
+                msg = {message: msg};
             }
 
             if (meta instanceof Error) {
-                meta = { error: meta.stack || meta.toString() };
+                meta = {error: meta.stack || meta.toString()};
             }
 
             if (nsp && nsp.get()) {
@@ -220,7 +219,6 @@ export class LogzioAutomationEventListener extends AutomationEventListenerSuppor
             }
 
             this.logzioLogger.log(msg);
-
             callback(null, true);
         };
 

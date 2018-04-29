@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import "mocha";
 import { consolidate, VersionMapper } from "../../../../src/commands/reviewer/maven/VersionMapper";
 import { VersionedArtifact } from "../../../../src/grammars/VersionedArtifact";
 
@@ -33,7 +32,7 @@ class TestVersionMapper extends VersionMapper {
     private readonly rf: RepoFinder;
     private readonly rl: RepoLoader;
 
-    constructor(private repos: Project[]) {
+    constructor(public readonly repos: Project[]) {
         super();
         // Prevent querying of github
         this.rf = fromListRepoFinder(repos);

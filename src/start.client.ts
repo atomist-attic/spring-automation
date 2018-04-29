@@ -24,10 +24,10 @@ import {
 } from "./util/secrets";
 
 loadSecretsFromConfigServer()
-    .then(() => loadSecretsFromCloudFoundryEnvironment())
+    .then(loadSecretsFromCloudFoundryEnvironment)
     .then(() => {
         const configuration = enableDefaultScanning(findConfiguration());
         const node = automationClient(configuration);
-        node.run()
+        return node.run()
             .then(() => logger.info("Successfully completed startup of process '%s'", process.pid));
     });

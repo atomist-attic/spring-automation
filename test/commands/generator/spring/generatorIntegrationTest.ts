@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import "mocha";
 import * as assert from "power-assert";
 
 import { HandleCommand, HandlerContext } from "@atomist/automation-client";
@@ -23,12 +22,10 @@ import { ConsoleMessageClient } from "@atomist/automation-client/internal/messag
 import { LocalProject } from "@atomist/automation-client/project/local/LocalProject";
 import { Project } from "@atomist/automation-client/project/Project";
 
-import { SmartParameters } from "@atomist/automation-client/SmartParameters";
 import { springBootGenerator } from "../../../../src/commands/generator/spring/springBootGenerator";
 import { SpringBootGeneratorParameters } from "../../../../src/commands/generator/spring/SpringBootProjectParameters";
 import { createdProject, localProjectPersister } from "./localProjectPersister";
 
-import { GitHubTargetsParams } from "@atomist/automation-client/operations/common/params/GitHubTargetsParams";
 import { GitHubRepoCreationParameters } from "@atomist/automation-client/operations/generate/GitHubRepoCreationParameters";
 import axios from "axios";
 import MockAdapter = require("axios-mock-adapter");
@@ -37,7 +34,7 @@ export const GishPath = "src/main/java/com/smashing/pumpkins/Gish.java";
 
 describe("spring generator integration test", () => {
 
-    it("edits, verifies and compiles", done => {
+    it("edits, verifies and compiles", async () => {
         const mock = new MockAdapter(axios);
         mock.onPut(`https://api.github.com/repos/johnsonr/foo/topics`).replyOnce(200, {
             names: [
@@ -46,10 +43,8 @@ describe("spring generator integration test", () => {
                 "java",
             ],
         });
-
-        generate()
-            .then(verifyAndCompile)
-            .then(() => done(), done);
+        const generated = await generate();
+        await verifyAndCompile(generated);
     }).timeout(200000);
 
     function generate(): Promise<LocalProject> {
