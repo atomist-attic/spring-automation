@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { logger } from "@atomist/automation-client";
 import { CommandResult, runCommand } from "@atomist/automation-client/action/cli/commandLine";
 import { HandlerContext } from "@atomist/automation-client/HandlerContext";
 import { LocalProject } from "@atomist/automation-client/project/local/LocalProject";
@@ -30,13 +29,9 @@ import { GishPath } from "./kotlinSpringBootStructureInferenceTest";
 
 describe("Kotlin Spring5 generator integration test", () => {
 
-    it("edits, verifies and compiles", done => {
-        generate()
-            .then(verifyAndCompile)
-            .then(cr => logger.debug(cr.stdout), e => {
-                assert(false);
-            })
-            .then(done, done);
+    it("edits, verifies and compiles", async () => {
+        const generated = await generate();
+        await verifyAndCompile(generated);
     }).timeout(200000);
 
     function generate(): Promise<LocalProject> {
@@ -46,13 +41,16 @@ describe("Kotlin Spring5 generator integration test", () => {
         kgen.rootPackage = "com.the.smiths";
         (kgen.target as any).githubToken = process.env.GITHUB_TOKEN;
         kgen.bindAndValidate();
-        const ctx: any = {
+        const ctx: HandlerContext = {
             messageClient: {
                 respond(msg: string | SlackMessage) {
                     return Promise.resolve();
                 },
             },
-        };
+            graphClient: {
+                query: async () => [],
+            }
+        } as any;
         const h = kotlinSpring5Generator(localProjectPersister);
         return (h as any).handle(ctx as HandlerContext, kgen)
             .then(() => createdProject);
