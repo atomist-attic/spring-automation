@@ -18,9 +18,9 @@ import { logger } from "@atomist/automation-client";
 import { ProjectAsync } from "@atomist/automation-client/project/Project";
 import { findMatches } from "@atomist/automation-client/project/util/parseUtils";
 import * as _ from "lodash";
+import { KotlinSourceFiles } from "../kotlin/kotlinUtils";
 import { JavaPackageDeclaration } from "./JavaGrammars";
-import { AllJavaFiles, JavaSourceFiles } from "./javaProjectUtils";
-import { AllKotlinFiles, KotlinSourceFiles } from "../kotlin/kotlinUtils";
+import { JavaSourceFiles } from "./javaProjectUtils";
 
 /**
  * Represents Java project structure (nested packages following Java naming conventions)

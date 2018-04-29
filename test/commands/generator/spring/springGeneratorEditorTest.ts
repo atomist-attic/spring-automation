@@ -25,7 +25,6 @@ import {
 describe("springGeneratorEditor", () => {
     const sgen = springBootGenerator();
     const params = sgen.freshParametersInstance();
-    params.startersCsv = "web,security,foobar,baz";
     params.rootPackage = "com.foo.bar";
     params.serviceClassName = "MyApp";
     const editor: ProjectEditor = toEditor(springBootProjectEditor(params));
@@ -45,8 +44,7 @@ describe("springGeneratorEditor", () => {
         editor(p, null, null)
             .then(r => {
                 const content = r.target.findFileSync("pom.xml").getContentSync();
-                assert(content.includes("foobar"));
-                assert(content.includes("baz"));
+                assert(content.includes("org.springframework.boot"));
                 done();
             }).catch(done);
     });

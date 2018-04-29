@@ -23,9 +23,9 @@ import * as assert from "power-assert";
 import {
     KotlinSpring5Parameters,
 } from "../../../../src/commands/generator/spring/kotlinSpring5Generator";
+import { springBootGenerator } from "../../../../src/commands/generator/spring/springBootGenerator";
 import { createdProject, localProjectPersister } from "../spring/localProjectPersister";
 import { GishPath } from "./kotlinSpringBootStructureInferenceTest";
-import { springBootGenerator } from "../../../../src/commands/generator/spring/springBootGenerator";
 
 describe("Kotlin Spring5 generator integration test", () => {
 

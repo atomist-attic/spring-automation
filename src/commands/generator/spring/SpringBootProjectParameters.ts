@@ -40,19 +40,6 @@ export class SpringBootGeneratorParameters extends JavaGeneratorParameters {
     })
     public serviceClassName: string;
 
-    // TODO should be an array parameter
-    @Parameter({
-        displayName: "starters",
-        pattern: /.*/,
-        required: false,
-        // type: FreeChoices,
-    })
-    public startersCsv: string = "";
-
-    get starters(): string[] {
-        return this.startersCsv.split(",");
-    }
-
     constructor() {
         super();
         this.source.owner = "atomist-seeds";

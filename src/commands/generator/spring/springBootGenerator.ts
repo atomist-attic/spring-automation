@@ -16,9 +16,7 @@
 
 import { HandleCommand } from "@atomist/automation-client";
 import { logger } from "@atomist/automation-client/internal/util/logger";
-import {
-    EditorOrReviewerParameters,
-} from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
+import { EditorOrReviewerParameters } from "@atomist/automation-client/operations/common/params/BaseEditorOrReviewerParameters";
 import { AnyProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
 import { chainEditors } from "@atomist/automation-client/operations/edit/projectEditorOps";
 import { generatorHandler } from "@atomist/automation-client/operations/generate/generatorToCommand";
@@ -27,11 +25,12 @@ import { GitHubProjectPersister } from "@atomist/automation-client/operations/ge
 import { cleanReadMe } from "@atomist/automation-client/operations/generate/UniversalSeed";
 import { doWithRetry } from "@atomist/automation-client/util/retry";
 import { curry } from "@typed/curry";
-import { addSpringBootStarter } from "../../editor/spring/addStarterEditor";
 import { GitHubTagRouter } from "../../tag/gitHubTagRouter";
 import { springBootTagger } from "../../tag/springTagger";
 import {
-    cleanTravisBuildFiles, doUpdatePom, inferStructureAndMovePackage,
+    cleanTravisBuildFiles,
+    doUpdatePom,
+    inferStructureAndMovePackage,
     JavaGeneratorParameters,
 } from "../java/JavaProjectParameters";
 import { inferSpringStructureAndRename, SpringBootGeneratorParameters } from "./SpringBootProjectParameters";
@@ -76,13 +75,7 @@ export function springBootGenerator(projectPersister: ProjectPersister = GitHubP
         });
 }
 
-// TODO detyping here is nasty
-export function springBootProjectEditor(params: SpringBootGeneratorParameters): AnyProjectEditor<any> {
-    const starterEditors: Array<AnyProjectEditor<any>> =
-        params.starters.map(starter =>
-            addSpringBootStarter("spring-boot-starter-" + starter));
-    logger.debug("Starters: [%s]. Editor count=%d", params.starters.join(), starterEditors.length);
-
+export function springBootProjectEditor(params: SpringBootGeneratorParameters): AnyProjectEditor<SpringBootGeneratorParameters> {
     const editors: Array<AnyProjectEditor<SpringBootGeneratorParameters>> = [
         curry(cleanReadMe)(params.target.description),
         curry(cleanTravisBuildFiles)(slackTeamTravisWebhookUrl(params.slackTeam)),
@@ -90,9 +83,7 @@ export function springBootProjectEditor(params: SpringBootGeneratorParameters): 
         curry(inferStructureAndMovePackage)(params.rootPackage),
         curry(inferSpringStructureAndRename)(params.serviceClassName),
     ];
-    return chainEditors(
-        ...editors.concat(starterEditors),
-    );
+    return chainEditors(...editors);
 }
 
 function slackTeamTravisWebhookUrl(teamId: string): string {
