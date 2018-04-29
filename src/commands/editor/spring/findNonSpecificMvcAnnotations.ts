@@ -41,14 +41,14 @@ export class NonSpecificMvcAnnotation implements ReviewComment {
 
 const RequestMappingAnnotation = `//annotation[//annotationName[@value='RequestMapping']]`;
 
+const globPattern: string = JavaSourceFiles;
+
 /**
  * Find all non specific, old style @RequestMapping annotations
  * @param {Project} p project to search
- * @param {string} globPattern glob pattern, defaults to standard Maven
  * location of source tree.
  */
-export function findNonSpecificMvcAnnotations(p: Project,
-                                              globPattern: string = JavaSourceFiles): Promise<ProjectReview> {
+export function findNonSpecificMvcAnnotations(p: Project): Promise<ProjectReview> {
     return findMatches(p, JavaFileParser, globPattern, RequestMappingAnnotation)
         .then(fileHits => ({
             repoId: p.id,

@@ -25,8 +25,8 @@ import {
 
 loadSecretsFromConfigServer()
     .then(loadSecretsFromCloudFoundryEnvironment)
-    .then(() => {
-        const configuration = enableDefaultScanning(findConfiguration());
+    .then(async () => {
+        const configuration = enableDefaultScanning(await findConfiguration());
         const node = automationClient(configuration);
         return node.run()
             .then(() => logger.info("Successfully completed startup of process '%s'", process.pid));
