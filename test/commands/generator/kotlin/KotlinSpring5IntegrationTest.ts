@@ -49,10 +49,10 @@ describe("Kotlin Spring5 generator integration test", () => {
             },
             graphClient: {
                 query: async () => [],
-            }
+            },
         } as any;
         const h = kotlinSpring5Generator(localProjectPersister);
-        return (h as any).handle(ctx as HandlerContext, kgen)
+        return (h as any).handle(ctx, kgen)
             .then(() => createdProject);
     }
 
