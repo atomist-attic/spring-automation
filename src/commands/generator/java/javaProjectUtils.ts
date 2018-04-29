@@ -24,6 +24,9 @@ export const JavaSourceFiles = "src/main/java/**/*.java";
 
 export const JavaTestFiles = "src/main/test/**/*.java";
 
+export const AllJavaAndKotlinFiles = "**/{*.java,*.kt}";
+
+
 /**
  * Move files from one package to another. Defaults to
  * working on all Java source. However, will work for Kotlin or Scala
@@ -56,18 +59,20 @@ export function packageToPath(pkg: string): string {
 }
 
 /**
- * Rename all instances of a Java class.  This method is somewhat
+ * Rename all instances of a Java or Kotlin class.  This method is somewhat
  * surgical when replacing appearances in Java code but brutal when
  * replacing appearances elsewhere, i.e., it uses `Project.recordReplace()`.
+ * Does not change filename, which is necessary in Java.
  *
  * @param project    project whose Java classes should be renamed
  * @param oldClass   name of class to move from
  * @param newClass   name of class to move to
  */
 export function renameClass<P extends ProjectAsync>(project: P,
-                                                    oldClass: string, newClass: string): Promise<P> {
+                                                    oldClass: string,
+                                                    newClass: string): Promise<P> {
     logger.debug("Replacing old class stem '%s' with '%s'", oldClass, newClass);
-    return doWithFiles(project, AllJavaFiles, f => {
+    return doWithFiles(project, AllJavaAndKotlinFiles, f => {
         if (f.name.includes(oldClass)) {
             f.recordRename(f.name.replace(oldClass, newClass));
             f.recordReplaceAll(oldClass, newClass);

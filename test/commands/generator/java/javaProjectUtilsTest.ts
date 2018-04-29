@@ -16,7 +16,8 @@
 
 import { InMemoryProject } from "@atomist/automation-client/project/mem/InMemoryProject";
 import * as assert from "power-assert";
-import { movePackage } from "../../../../src/commands/generator/java/javaProjectUtils";
+import { movePackage, renameClass } from "../../../../src/commands/generator/java/javaProjectUtils";
+import { InMemoryFile } from "@atomist/automation-client/project/mem/InMemoryFile";
 
 describe("javaProjectUtils", () => {
 
@@ -100,6 +101,31 @@ describe("javaProjectUtils", () => {
                 assert(found.getContentSync() === "package com.something.else\npublic class Foo {}");
                 done();
             }).catch(done);
+    });
+
+    describe("renameClass", () => {
+
+        it("shouldn't do anything on empty project", async () => {
+            const p = new InMemoryProject();
+            await renameClass(p, "Foo", "Bar");
+            assert.equal(await p.totalFileCount(), 0);
+        });
+
+        it("rename Java in default package", async () => {
+            const p = InMemoryProject.of(new InMemoryFile("src/main/java/Thing.java", "public class Thing {}"));
+            await renameClass(p, "Thing", "OtherThing");
+            const renamed = await p.findFile("src/main/java/OtherThing.java");
+            assert(!!renamed);
+            assert.equal(renamed.getContentSync(), "public class OtherThing {}");
+        });
+
+        it("rename Kotlin in default package", async () => {
+            const p = InMemoryProject.of(new InMemoryFile("src/main/kotlin/Thing.kt", "public class Thing {}"));
+            await renameClass(p, "Thing", "OtherThing");
+            const renamed = await p.findFile("src/main/kotlin/OtherThing.kt");
+            assert(!!renamed);
+            assert.equal(renamed.getContentSync(), "public class OtherThing {}");
+        });
     });
 
 });
