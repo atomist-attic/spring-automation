@@ -22,7 +22,7 @@ import { ProjectPersister } from "@atomist/automation-client/operations/generate
 import { GitHubProjectPersister } from "@atomist/automation-client/operations/generate/gitHubProjectPersister";
 import { cleanReadMe } from "@atomist/automation-client/operations/generate/UniversalSeed";
 import { curry } from "@typed/curry";
-import { cleanTravisBuildFiles, doUpdatePom, inferStructureAndMovePackage, } from "../java/JavaProjectParameters";
+import { cleanTravisBuildFiles, doUpdatePom, inferStructureAndMovePackage } from "../java/JavaProjectParameters";
 import { inferSpringStructureAndRename, SpringBootGeneratorParameters } from "./SpringBootProjectParameters";
 
 /**
