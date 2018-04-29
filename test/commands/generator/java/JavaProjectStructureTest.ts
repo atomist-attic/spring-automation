@@ -54,6 +54,32 @@ describe("JavaProjectStructure", () => {
         }).catch(done);
     });
 
+    it("infer application package (Kotlin) when uniquely present", done => {
+        const p = InMemoryProject.of(
+            {
+                path: "src/main/kotlin/com/smashing/pumpkins/Gish.kt",
+                content: kotlinSource,
+            },
+        );
+        JavaProjectStructure.infer(p).then(structure => {
+            assert(structure.applicationPackage === "com.smashing.pumpkins");
+            done();
+        }).catch(done);
+    });
+
+    it("infer application package (Kotlin shortcut style) when uniquely present", done => {
+        const p = InMemoryProject.of(
+            {
+                path: "src/main/kotlin/Gish.kt",
+                content: kotlinSource,
+            },
+        );
+        JavaProjectStructure.infer(p).then(structure => {
+            assert(structure.applicationPackage === "com.smashing.pumpkins");
+            done();
+        }).catch(done);
+    });
+
     it("not infer application package when confusing parallels present", done => {
         const p = InMemoryProject.of(
             {
@@ -89,6 +115,24 @@ describe("JavaProjectStructure", () => {
         }).catch(done);
     });
 
+    it("infers shortest application package (Kotlin) when valid parallels present", done => {
+        const p = InMemoryProject.of(
+            {
+                path: "src/main/kotlin/com/bands/smashing/pumpkins/Gish.kt",
+                content: "package com.bands.smashing.pumpkins; public class Gish {}",
+            },
+            {
+                path: "src/main/kotlin/com/bands/nirvana/Thing.kt",
+                content: "package com.bands.nirvana; public class Thing {}",
+            },
+        );
+        JavaProjectStructure.infer(p).then(structure => {
+            assert(!!structure);
+            assert(structure.applicationPackage === "com.bands", structure.applicationPackage);
+            done();
+        }).catch(done);
+    });
+
 });
 
 const javaSource =
@@ -99,5 +143,12 @@ public class Gish {
     public static void main(String[] args) {
         System.out.print("2. Siva");
     }
+}
+`;
+
+const kotlinSource =
+    `package com.smashing.pumpkins;
+
+public class Gish {
 }
 `;

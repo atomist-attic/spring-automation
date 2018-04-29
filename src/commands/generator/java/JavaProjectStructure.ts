@@ -19,38 +19,45 @@ import { ProjectAsync } from "@atomist/automation-client/project/Project";
 import { findMatches } from "@atomist/automation-client/project/util/parseUtils";
 import * as _ from "lodash";
 import { JavaPackageDeclaration } from "./JavaGrammars";
-import { AllJavaFiles } from "./javaProjectUtils";
+import { AllJavaFiles, JavaSourceFiles } from "./javaProjectUtils";
+import { AllKotlinFiles, KotlinSourceFiles } from "../kotlin/kotlinUtils";
 
 /**
- * Represents the structure of a Java project,
- * which can be inferred from its contents.
+ * Represents Java project structure (nested packages following Java naming conventions)
+ * which can be inferred from project contents.
+ * Also works for Kotlin.
  */
 export class JavaProjectStructure {
 
-    public static infer(p: ProjectAsync): Promise<JavaProjectStructure> {
-        return findMatches(p, AllJavaFiles, JavaPackageDeclaration)
-            .then(packages => {
-                const uniquePackages = _.uniq(packages.map(pack => pack.name));
-                if (uniquePackages.length === 0) {
-                    return undefined;
-                }
-                if (uniquePackages.length === 1) {
-                    const jps = new JavaProjectStructure(uniquePackages[0]);
-                    logger.debug("Successful JavaProjectStructure inference on %j: Sole package is %j",
-                        p.id, jps);
-                    return jps;
-                }
-                const longestPrefix = sharedStart(uniquePackages);
-                if (!!longestPrefix) {
-                    const jps = new JavaProjectStructure(longestPrefix.replace(/\.$/, ""));
-                    logger.debug("Successful JavaProjectStructure inference on %j: Shortest path is %j",
-                        p.id, jps);
-                    return jps;
-                } else {
-                    logger.debug("Unsuccessful JavaProjectStructure inference on %j", p.id);
-                    return undefined;
-                }
-            });
+    /**
+     * Find root Java or Kotlin package
+     * @param {ProjectAsync} p
+     * @return {Promise<JavaProjectStructure>}
+     */
+    public static async infer(p: ProjectAsync): Promise<JavaProjectStructure> {
+        // Treat Java and Kotlin as one
+        const packages = (await findMatches(p, JavaSourceFiles, JavaPackageDeclaration))
+            .concat(await findMatches(p, KotlinSourceFiles, JavaPackageDeclaration));
+        const uniquePackages = _.uniq(packages.map(pack => pack.name));
+        if (uniquePackages.length === 0) {
+            return undefined;
+        }
+        if (uniquePackages.length === 1) {
+            const jps = new JavaProjectStructure(uniquePackages[0]);
+            logger.debug("Successful JavaProjectStructure inference on %j: Sole package is %j",
+                p.id, jps);
+            return jps;
+        }
+        const longestPrefix = sharedStart(uniquePackages);
+        if (!!longestPrefix) {
+            const jps = new JavaProjectStructure(longestPrefix.replace(/\.$/, ""));
+            logger.debug("Successful JavaProjectStructure inference on %j: Shortest path is %j",
+                p.id, jps);
+            return jps;
+        } else {
+            logger.debug("Unsuccessful JavaProjectStructure inference on %j", p.id);
+            return undefined;
+        }
     }
 
     /**

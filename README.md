@@ -6,6 +6,9 @@
 This repository contains Atomist automations for Spring Boot:
 generators, editors and reviewers.
 
+Supports both Java and Kotlin. Many types such as `JavaProjectStructure` work
+for both languages.
+
 ## Prerequisites
 
 Below are brief instructions on how to get started running this
