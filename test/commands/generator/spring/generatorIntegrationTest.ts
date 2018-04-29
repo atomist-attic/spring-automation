@@ -94,5 +94,8 @@ describe("spring generator integration test", () => {
 function fakeContext(): HandlerContext {
     return {
         messageClient: new ConsoleMessageClient(),
+        graphClient: {
+            query: async () => [],
+        }
     } as any as HandlerContext;
 }
