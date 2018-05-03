@@ -43,7 +43,7 @@ export function verifyPom(p: Project): Promise<ProjectReview> {
             const parser = new xml2js.Parser();
             return promisify(parser.parseString)(content)
                 .then(parsed => {
-                    const parent = _.get<any>(parsed, "project.parent");
+                    const parent = _.get(parsed, "project.parent");
                     if (JSON.stringify(parent).includes(SpringBootStarter)) {
                         return clean(p.id);
                     }

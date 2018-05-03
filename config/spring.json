@@ -1,9 +1,0 @@
-{
-  "endpoints": {
-    "api": "https://automation.atomist.com/registration",
-    "graphql": "https://automation.atomist.com/graphql/team"
-  },
-  "teamIds": [
-    "T5964N9B7"
-  ]
-}

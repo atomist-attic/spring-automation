@@ -1,0 +1,84 @@
+{
+  "spec": {
+    "template": {
+      "spec": {
+        "containers": [
+          {
+            "env": [
+              {
+                "name": "NODE_ENV",
+                "valueFrom": {
+                  "fieldRef": {
+                    "fieldPath": "metadata.namespace"
+                  }
+                }
+              },
+              {
+                "name": "ATOMIST_CONFIG",
+                "valueFrom": {
+                  "secretKeyRef": {
+                    "name": "atm-global",
+                    "key": "config"
+                  }
+                }
+              },
+              {
+                "name": "ATOMIST_CONFIG_PATH",
+                "value": "/opt/atm/atomist-config.json"
+              }
+            ],
+            "livenessProbe": {
+              "httpGet": {
+                "path": "/health",
+                "port": "http",
+                "scheme": "HTTP"
+              },
+              "initialDelaySeconds": 20,
+              "timeoutSeconds": 3,
+              "periodSeconds": 20,
+              "successThreshold": 1,
+              "failureThreshold": 3
+            },
+            "readinessProbe": {
+              "httpGet": {
+                "path": "/health",
+                "port": "http",
+                "scheme": "HTTP"
+              },
+              "initialDelaySeconds": 20,
+              "timeoutSeconds": 3,
+              "periodSeconds": 20,
+              "successThreshold": 1,
+              "failureThreshold": 3
+            },
+            "resources": {
+              "limits": {
+                "cpu": "500m",
+                "memory": "512Mi"
+              },
+              "requests": {
+                "cpu": "100m",
+                "memory": "384Mi"
+              }
+            },
+            "volumeMounts": [
+              {
+                "name": "automation",
+                "mountPath": "/opt/atm",
+                "readOnly": true
+              }
+            ]
+          }
+        ],
+        "volumes": [
+          {
+            "name": "automation",
+            "secret": {
+              "secretName": "automation"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

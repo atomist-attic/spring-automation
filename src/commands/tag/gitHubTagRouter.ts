@@ -22,7 +22,7 @@ import axios, { AxiosRequestConfig } from "axios";
 
 import { TokenCredentials } from "@atomist/automation-client/operations/common/ProjectOperationCredentials";
 import { TagRouter } from "@atomist/automation-client/operations/tagger/Tagger";
-import * as _ from "underscore";
+import * as _ from "lodash";
 
 /**
  * Persist tags to GitHub
@@ -42,9 +42,9 @@ export const GitHubTagRouter: TagRouter = (tags, params) => {
             headers: {
                 ...authHeaders((params.targets.credentials as TokenCredentials).token).headers,
                 Accept: "application/vnd.github.mercy-preview+json",
-                },
             },
-        )
+        },
+    )
         .then(x => successOn(tags));
 };
 

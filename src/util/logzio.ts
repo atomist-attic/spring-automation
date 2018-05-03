@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,9 +15,11 @@
  */
 
 import {
+    Configuration,
     EventFired,
     HandlerContext,
     HandlerResult,
+    logger,
 } from "@atomist/automation-client";
 import { CommandInvocation } from "@atomist/automation-client/internal/invoker/Payload";
 import {
@@ -25,27 +27,30 @@ import {
     EventIncoming,
 } from "@atomist/automation-client/internal/transport/RequestProcessor";
 import * as nsp from "@atomist/automation-client/internal/util/cls";
-import { logger } from "@atomist/automation-client/internal/util/logger";
 import {
     AutomationEventListener,
     AutomationEventListenerSupport,
 } from "@atomist/automation-client/server/AutomationEventListener";
 import { Destination, MessageOptions } from "@atomist/automation-client/spi/message/MessageClient";
-import * as appRoot from "app-root-path";
+
+import * as _ from "lodash";
 import { createLogger } from "logzio-nodejs";
+import * as os from "os";
 import * as serializeError from "serialize-error";
+import logzioWinstonTransport = require("winston-logzio");
 
-/* tslint:disable */
-const logzioWinstonTransport = require("winston-logzio");
-const _assign = require("lodash.assign");
-const pj = require(`${appRoot.path}/package.json`);
-
-/* tslint:enable */
+export interface LogzioOptions {
+    token: string;
+    name: string;
+    version: string;
+    environment: string;
+    application: string;
+}
 
 export class LogzioAutomationEventListener extends AutomationEventListenerSupport
     implements AutomationEventListener {
 
-    private logzio;
+    private logzio: any;
 
     constructor(options: LogzioOptions) {
         super();
@@ -177,30 +182,33 @@ export class LogzioAutomationEventListener extends AutomationEventListenerSuppor
             protocol: "https",
             bufferSize: 10,
             extraFields: {
-                "service": pj.name,
-                "artifact": pj.name,
-                "version": pj.version,
-                "environment": options.environmentId,
-                "application-id": options.applicationId,
+                "service": options.name,
+                "artifact": options.name,
+                "version": options.version,
+                "environment": options.environment,
+                "application-id": options.application,
                 "process-id": process.pid,
+                "host": os.hostname(),
             },
         };
         // create the logzio event logger
         this.logzio = createLogger(logzioOptions);
-        logzioWinstonTransport.prototype.log = function(level, pmsg, pmeta, callback) {
-            let [msg, meta] = [pmsg, pmeta];
+
+        // tslint:disable:no-parameter-reassignment
+        logzioWinstonTransport.prototype.log = function(level: any, msg: any, meta: any, callback: any) {
+
             if (typeof msg !== "string" && typeof msg !== "object") {
-                msg = {message: this.safeToString(msg)};
+                msg = { message: this.safeToString(msg) };
             } else if (typeof msg === "string") {
-                msg = {message: msg};
+                msg = { message: msg };
             }
 
             if (meta instanceof Error) {
-                meta = {error: meta.stack || meta.toString()};
+                meta = { error: meta.stack || meta.toString() };
             }
 
             if (nsp && nsp.get()) {
-                _assign(msg, {
+                _.assign(msg, {
                     level,
                     "meta": meta,
                     "operation-name": nsp.get().operation,
@@ -212,13 +220,14 @@ export class LogzioAutomationEventListener extends AutomationEventListenerSuppor
                     "invocation-id": nsp.get().invocationId,
                 });
             } else {
-                _assign(msg, {
+                _.assign(msg, {
                     level,
                     meta,
                 });
             }
 
             this.logzioLogger.log(msg);
+
             callback(null, true);
         };
 
@@ -228,10 +237,20 @@ export class LogzioAutomationEventListener extends AutomationEventListenerSuppor
     }
 }
 
-export interface LogzioOptions {
-
-    token: string;
-    environmentId: string;
-    applicationId: string;
-
+/**
+ * Configure logzio logging if token exists in configuration.
+ */
+export function configureLogzio(configuration: Configuration): Promise<Configuration> {
+    if (_.get(configuration, "custom.logzio.token")) {
+        logger.debug(`adding logzio listener`);
+        const options: LogzioOptions = {
+            token: configuration.custom.logzio.token,
+            name: configuration.name,
+            version: configuration.version,
+            environment: configuration.environment,
+            application: configuration.application,
+        };
+        configuration.listeners.push(new LogzioAutomationEventListener(options));
+    }
+    return Promise.resolve(configuration);
 }
