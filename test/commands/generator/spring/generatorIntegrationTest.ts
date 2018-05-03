@@ -82,7 +82,7 @@ describe("spring generator integration test", () => {
 
     // Use Maven to compile the project
     function compile(p: LocalProject): Promise<CommandResult> {
-        return runCommand("./mvnw compile", {
+        return runCommand("mvn compile", {
             cwd: p.baseDir,
             // Maven can generate reams of output...don't fall over on this
             maxBuffer: 1024 * 1000,
