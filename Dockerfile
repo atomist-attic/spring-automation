@@ -22,8 +22,6 @@ ENTRYPOINT ["dumb-init", "node", "--trace-warnings", "--expose_gc", "--optimize_
 
 CMD ["node_modules/@atomist/automation-client/start.client.js"]
 
-RUN  git config --global user.email "bot@atomist.com" && git config --global user.name "Atomist Bot"
-
 RUN npm install -g npm@6.0.0
 
 COPY package.json package-lock.json ./
@@ -31,3 +29,5 @@ COPY package.json package-lock.json ./
 RUN npm ci --only=production
 
 COPY . .
+
+RUN  git config --global user.email "bot@atomist.com" && git config --global user.name "Atomist Bot"
