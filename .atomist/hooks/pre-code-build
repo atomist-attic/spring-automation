@@ -1,6 +1,54 @@
 #!/bin/bash
 
-apt-get -yqq update && apt-get install -yqq \
-    unzip \
-    default-jdk \
-    maven
+declare Pkg=pre-code-build
+declare Version=0.1.0
+
+function msg () {
+    echo "$Pkg: $*"
+}
+
+function err () {
+    msg "$*" 1>&2
+}
+
+function main () {
+    local packages=
+    if ! type java > /dev/null 2>&1; then
+        packages="$packages default-jdk"
+    fi
+    if ! type maven > /dev/null 2>&1; then
+        packages="$packages maven"
+    fi
+    if ! type unzip > /dev/null 2>&1; then
+        packages="$packages unzip"
+    fi
+    if [[ $packages ]]; then
+        local os=$(uname -s)
+        if [[ os != Linux ]]; then
+            err "unsupported operating system: $os"
+            err "unable to continue"
+            return 1
+        fi
+        if type apt-get > /dev/null 2>&1; then
+            if ! apt-get -yqq update && apt-get install $packages; then
+                err "failed to install packages: $packages"
+                err "unable to continue"
+                return 1
+            fi
+        elif type yum > /dev/null 2>&1; then
+            packages=$(echo "$packages" | sed 's/default-jdk/java-1.8.0-openjdk/')
+            if ! yum -yq install $packages; then
+                err "failed to install packages: $packages"
+                err "unable to continue"
+                return 1
+            fi
+        else
+            err "failed to find apt-get or yum, cannot install needed packages: $packages"
+            err "unable to continue"
+            return 1
+        fi
+    fi
+}
+
+main "$@" || exit 1
+exit 0
