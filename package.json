@@ -20,7 +20,7 @@
   ],
   "dependencies": {
     "@atomist/antlr": "0.2.0",
-    "@atomist/automation-client": "^0.14.1",
+    "@atomist/automation-client": "https://r.atomist.com/rJE1M9O6AG",
     "@atomist/microgrammar": "^0.7.0",
     "@atomist/slack-messages": "^0.12.1",
     "@atomist/tree-path": "^0.1.8",
@@ -30,6 +30,7 @@
     "axios": "^0.17.1",
     "lodash": "^4.17.10",
     "logzio-nodejs": "^0.4.10",
+    "npm": "^6.0.1",
     "promise-retry": "^1.1.1",
     "serialize-error": "^2.1.0",
     "ts-node": "^3.3.0",
@@ -64,7 +65,6 @@
     "test": "test"
   },
   "scripts": {
-    "autostart": "nodemon --watch src --ext ts --exec ts-node -- node_modules/@atomist/automation-client/start.client.js",
     "autotest": "supervisor --watch src,test --extensions ts --no-restart-on exit --quiet --exec npm -- test",
     "build": "npm-run-all lint compile test typedoc",
     "clean": "npm-run-all clean:js clean:build",
@@ -84,7 +84,6 @@
     "gql:gen": "atomist gql-gen --no-install \"{graphql,src}/**/*.graphql\"",
     "lint": "tslint --format verbose --project . --exclude \"{build,node_modules}/**\" \"**/*.ts\"",
     "lint:fix": "npm run lint -- --fix",
-    "start": "atomist start --no-install --no-compile",
     "test": "mocha --require espower-typescript/guess \"test/**/*.ts\"",
     "test:one": "mocha --require espower-typescript/guess \"test/**/${TEST:-*.ts}\"",
     "typedoc": "typedoc --mode modules --excludeExternals --out build/typedoc src"
