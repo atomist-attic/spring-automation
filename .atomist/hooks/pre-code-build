@@ -24,7 +24,7 @@ function main () {
     fi
     if [[ $packages ]]; then
         local os=$(uname -s)
-        if [[ os != Linux ]]; then
+        if [[ $os != Linux ]]; then
             err "unsupported operating system: $os"
             err "unable to continue"
             return 1
