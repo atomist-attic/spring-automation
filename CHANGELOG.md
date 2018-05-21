@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 [Unreleased]: https://github.com/atomist/spring-automation/compare/0.6.0...HEAD
 
+### Added
+
+-   Kotlin support
+
+### Removed
+
+-   Spring Java and Kotlin generators, generators now live in SDMs
+-   Dockerfile, this is now a pure NPM package
+
 ## [0.6.0][]
 
 [0.6.0]: https://github.com/atomist/spring-automation/compare/0.5.0...0.6.0

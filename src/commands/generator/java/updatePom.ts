@@ -21,6 +21,7 @@ import { doWithFiles } from "@atomist/automation-client/project/util/projectUtil
  * Record change to POM. Project will subsequently need flushing
  *
  * @param {Project} project
+ * @param name desired name
  * @param {string} artifactId
  * @param {string} groupId
  * @param {string} version
@@ -29,6 +30,7 @@ import { doWithFiles } from "@atomist/automation-client/project/util/projectUtil
  */
 export function updatePom<P extends ProjectAsync>(
     project: P,
+    name: string,
     artifactId: string,
     groupId: string,
     version: string,
@@ -37,7 +39,7 @@ export function updatePom<P extends ProjectAsync>(
 
     return doWithFiles(project, "pom.xml", f => {
         f.recordReplace(/<artifactId>[\S\s]*?<\/artifactId>/, `<artifactId>${artifactId}</artifactId>`)
-            .recordReplace(/<name>[\S\s]*?<\/name>/, `<name>${project.name}</name>`)
+            .recordReplace(/<name>[\S\s]*?<\/name>/, `<name>${name}</name>`)
             .recordReplace(/<groupId>[\S\s]*?<\/groupId>/, `<groupId>${groupId}</groupId>`)
             .recordReplace(/<version>[\S\s]*?<\/version>/, `<version>${version}</version>`)
             .recordReplace(/<description>[\S\s]*?<\/description>/, `<description>${description}</description>`);

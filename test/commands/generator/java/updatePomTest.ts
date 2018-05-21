@@ -24,7 +24,7 @@ describe("updatePom", () => {
     it("should not error on no POM", done => {
         const p = new InMemoryProject();
         p.addFileSync("src/main/java/Foo.java", "public class Foo {}");
-        updatePom(p, "art", "group", "version", "desc").then(_ =>
+        updatePom(p, p.name, "art", "group", "version", "desc").then(_ =>
             p.flush()
                 .then(() => {
                     const found = p.findFileSync("src/main/java/Foo.java");
@@ -38,7 +38,7 @@ describe("updatePom", () => {
             { path: "pom.xml", content: SimplePom },
         );
         p.addFileSync("src/main/java/Foo.java", "public class Foo {}");
-        updatePom(p, "art", "group", "version", "desc")
+        updatePom(p, p.name, "art", "group", "version", "desc")
             .then(_ => {
                 const found = p.findFileSync("pom.xml");
                 const newPom = found.getContentSync();
@@ -62,7 +62,7 @@ describe("updatePom", () => {
             { path: "pom.xml", content: PomWithDualArtifact },
         );
         p.addFileSync("src/main/java/Foo.java", "public class Foo {}");
-        updatePom(p, "art", "group", "version", "desc")
+        updatePom(p, p.name, "art", "group", "version", "desc")
             .then(_ => {
                 const found = p.findFileSync("pom.xml");
                 const newPom = found.getContentSync();
