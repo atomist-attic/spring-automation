@@ -1,7 +1,6 @@
 # @atomist/spring-automation
 
 [![npm version](https://badge.fury.io/js/%40atomist%2Fspring-automation.svg)](https://badge.fury.io/js/%40atomist%2Fspring-automation)
-[![Build Status](https://travis-ci.org/atomist/spring-automation.svg?branch=master)](https://travis-ci.org/atomist/spring-automation)
 
 This repository contains Atomist automations for Spring Boot:
 generators, editors and reviewers.
@@ -166,27 +165,15 @@ $ curl -v -X POST \
 
 ### Release
 
-To create a new release of the project, simply push a tag of the form
-`M.N.P` where `M`, `N`, and `P` are integers that form the next
-appropriate [semantic version][semver] for release.  The version in
-the package.json must be the same as the tag.  For example:
+Releases are managed by the [Atomist SDM][atomist-sdm].  Press the
+"Release" button in the Atomist dashboard or Slack.
 
-[semver]: http://semver.org
-
-```
-$ git tag -a 1.2.3
-$ git push --tags
-```
-
-The Travis CI build (see badge at the top of this page) will publish
-the NPM module and automatically create a GitHub release using the tag
-name for the release and the comment provided on the annotated tag as
-the contents of the release notes.
+[atomist-sdm]: https://github.com/atomist/atomist-sdm (Atomist Software Delivery Machine)
 
 ---
 
 Created by [Atomist][atomist].
 Need Help?  [Join our Slack team][slack].
 
-[atomist]: https://atomist.com/ (Atomist - Development Automation)
+[atomist]: https://atomist.com/ (Atomist - How Teams Deliver Software)
 [slack]: https://join.atomist.com (Atomist Community Slack)

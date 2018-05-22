@@ -14,47 +14,17 @@
  * limitations under the License.
  */
 
-import { logger, Parameter } from "@atomist/automation-client";
-import { Parameters } from "@atomist/automation-client/decorators";
+import { logger } from "@atomist/automation-client";
 import { Project } from "@atomist/automation-client/project/Project";
-import { camelize } from "tslint/lib/utils";
-import { JavaGeneratorParameters } from "../java/JavaProjectParameters";
 import { renameClass } from "../java/javaProjectUtils";
 import { SpringBootProjectStructure } from "./SpringBootProjectStructure";
 
 /**
- * Spring Boot seed parameters.
+ * Infer the Spring Boot structure and rename the class.
+ * @param {string} serviceClassName
+ * @param {Project} p
+ * @return {Promise<Project>}
  */
-@Parameters()
-export class SpringBootGeneratorParameters extends JavaGeneratorParameters {
-
-    @Parameter({
-        displayName: "Class Name",
-        description: "name for the service class",
-        pattern: /^.*$/,
-        validInput: "a valid Java class name, which contains only alphanumeric characters, $ and _" +
-        " and does not start with a number",
-        minLength: 1,
-        maxLength: 50,
-        required: false,
-    })
-    public serviceClassName: string;
-
-    constructor() {
-        super();
-        this.source.owner = "atomist-seeds";
-        this.source.repo = "spring-rest-seed";
-    }
-
-    public bindAndValidate() {
-        super.bindAndValidate();
-        this.serviceClassName = !!this.serviceClassName ?
-            toInitialCap(this.serviceClassName) :
-            toInitialCap(camelize(this.artifactId));
-    }
-
-}
-
 export function inferSpringStructureAndRename(serviceClassName: string, p: Project): Promise<Project> {
     return SpringBootProjectStructure.inferFromJavaOrKotlinSource(p)
         .then(structure => {
@@ -66,8 +36,4 @@ export function inferSpringStructureAndRename(serviceClassName: string, p: Proje
 
             }
         });
-}
-
-function toInitialCap(s: string) {
-    return s.charAt(0).toUpperCase() + s.substr(1);
 }

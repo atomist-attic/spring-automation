@@ -15,8 +15,9 @@
  */
 
 import { logger } from "@atomist/automation-client/internal/util/logger";
-import { ProjectAsync } from "@atomist/automation-client/project/Project";
+import { Project, ProjectAsync } from "@atomist/automation-client/project/Project";
 import { doWithFiles } from "@atomist/automation-client/project/util/projectUtils";
+import { JavaProjectStructure } from "./JavaProjectStructure";
 
 export const AllJavaFiles = "**/*.java";
 
@@ -78,4 +79,18 @@ export function renameClass<P extends ProjectAsync>(project: P,
             f.recordReplaceAll(oldClass, newClass);
         }
     });
+}
+
+/**
+ * Infer the root package and move it to the new root package
+ * @param {string} rootPackage new root package
+ * @param {Project} p
+ * @return {Promise<Project>}
+ */
+export function inferStructureAndMovePackage(rootPackage: string, p: Project): Promise<Project> {
+    return JavaProjectStructure.infer(p)
+        .then(structure =>
+            (structure) ?
+                movePackage(p, structure.applicationPackage, rootPackage) :
+                p);
 }
