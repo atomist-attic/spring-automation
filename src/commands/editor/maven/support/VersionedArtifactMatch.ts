@@ -15,8 +15,8 @@
  */
 
 import { PatternMatch } from "@atomist/microgrammar/PatternMatch";
-import { XmlTag } from "../../support/xml/xmlGrammars";
 import { VersionedArtifact } from "../../../../grammars/VersionedArtifact";
+import { XmlTag } from "../../support/xml/xmlGrammars";
 
 export type ReleaseType = "major" | "minor" | "patch";
 

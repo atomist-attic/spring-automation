@@ -1,10 +1,9 @@
-import "mocha";
-import * as assert from "power-assert";
-import * as xml from "fast-xml-parser";
-import { addDependencyEditor } from "../../../../src/commands/editor/maven/addDependencyEditor";
+import { InMemoryFile } from "@atomist/automation-client/project/mem/InMemoryFile";
 import { InMemoryProject } from "@atomist/automation-client/project/mem/InMemoryProject";
 import { Project } from "@atomist/automation-client/project/Project";
-import { InMemoryFile } from "@atomist/automation-client/project/mem/InMemoryFile";
+import * as xml from "fast-xml-parser";
+import * as assert from "power-assert";
+import { addDependencyEditor } from "../../../../src/commands/editor/maven/addDependencyEditor";
 
 describe("DependencyAdditionEditor", () => {
 
@@ -14,7 +13,7 @@ describe("DependencyAdditionEditor", () => {
             artifact: "software",
             version: "2.0.0",
         };
-        //const pom = PomWithReplaceMe.replace("replaceMe", "");
+        // const pom = PomWithReplaceMe.replace("replaceMe", "");
         const p = InMemoryProject.of();
         await addDependencyEditor(dae)(p);
         assert(!(await p.getFile("pom.xml")));
@@ -30,7 +29,7 @@ describe("DependencyAdditionEditor", () => {
         const p = projectOfPom(pom);
         await addDependencyEditor(dae)(p);
         const newPomContent = p.findFileSync("pom.xml").getContentSync();
-        console.log(newPomContent);
+        // console.log(newPomContent);
         assert(xml.validate(newPomContent));
         assert(newPomContent.indexOf(dae.group) !== -1);
         assert(newPomContent.indexOf(dae.artifact) !== -1);
@@ -90,20 +89,20 @@ const PomWithReplaceMe =
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.5</version>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<plugins>
 			<plugin>

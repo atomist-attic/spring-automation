@@ -29,7 +29,7 @@ import { NonSpringPom } from "./Poms";
 
 describe("VersionSpreadReviewer", () => {
 
-    // TODO need to re-enable these tests...probably need a different function approach
+    // TODO need to re-enable these tests...probably need a different functional approach
 
     const fakeContext: HandlerContext = {
         messageClient: {

@@ -1,8 +1,8 @@
+import { MatchingLogic } from "@atomist/microgrammar/Matchers";
 import { PatternMatch } from "@atomist/microgrammar/PatternMatch";
 import { PathAwareXmlMatchingMachine } from "../../support/xml/PathAwareXmlMatchingMachine";
 import { XML_TAG_WITH_SIMPLE_VALUE, XmlTag } from "../../support/xml/xmlGrammars";
 import { VersionedArtifactMatch } from "./VersionedArtifactMatch";
-import { MatchingLogic } from "@atomist/microgrammar/Matchers";
 
 /**
  * Single use matching machine that looks for dependencies,

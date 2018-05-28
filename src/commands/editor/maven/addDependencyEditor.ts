@@ -1,5 +1,5 @@
-import { VersionedArtifact } from "../../../grammars/VersionedArtifact";
 import { SimpleProjectEditor } from "@atomist/automation-client/operations/edit/projectEditor";
+import { VersionedArtifact } from "../../../grammars/VersionedArtifact";
 import { DependencyFinder } from "./support/DependencyFinder";
 
 import * as _ from "lodash";
@@ -7,7 +7,8 @@ import { indent } from "../support/indent";
 
 /**
  * Add the given dependency to projects. It's not an error
- * if the projects don't have a POM.
+ * if the project doesn't have a POM. The editor will do nothing
+ * in this case.
  * @param {VersionedArtifact} va
  * @return {SimpleProjectEditor}
  */
@@ -18,7 +19,7 @@ export function addDependencyEditor(va: VersionedArtifact): SimpleProjectEditor 
             const df = new DependencyFinder();
             const content = await pom.getContent();
             df.consume(content);
-            if (_.findIndex(df.dependencies, d => d.group === va.group && d.artifact === va.artifact) < 0) {
+            if (_.findIndex<VersionedArtifact>(df.dependencies, d => d.group === va.group && d.artifact === va.artifact) < 0) {
                 const depVersion = (va.version) ? `\n    <version>${va.version}</version>` : "";
                 const toInsert = indent(`
 <dependency>

@@ -2,24 +2,14 @@
 
 [![npm version](https://badge.fury.io/js/%40atomist%2Fspring-automation.svg)](https://badge.fury.io/js/%40atomist%2Fspring-automation)
 
-This repository contains Atomist automations for Spring Boot:
-generators, editors and reviewers.
+This repository contains Atomist support functions and classes for Spring Boot and Maven:
+generators, editors and reviewers. It is intended to be use as a
+Node module in Atomist Software Delivery Machine implementations.
 
 Supports both Java and Kotlin. Many types such as `JavaProjectStructure` work
 for both languages.
 
-## Prerequisites
-
-Below are brief instructions on how to get started running this
-project yourself.  If you just want to use the functionality this
-project provides, see the [Atomist documentation][docs].  For more
-detailed information on developing automations, see
-the [Atomist Developer Guide][dev].
-
-[docs]: https://docs.atomist.com/ (Atomist User Guide)
-[dev]: https://docs.atomist.com/developer/ (Atomist Developer Guide)
-
-### Node.js
+## Node.js
 
 You will need to have [Node.js][node] installed.  To verify that the
 right versions are installed, please run:
@@ -36,7 +26,7 @@ be 5 or greater.
 
 [node]: https://nodejs.org/ (Node.js)
 
-### Cloning the repository and installing dependencies
+## Cloning the repository and installing dependencies
 
 To get started run the following commands:
 
@@ -47,123 +37,7 @@ $ npm install
 $ npm run build
 ```
 
-### Configuring your environment
-
-If this is the first time you will be running an Atomist API client
-locally, you should first configure your system using the `atomist`
-script:
-
-```
-$ `npm bin`/atomist config
-```
-
-The script does two things: records what Slack team you want your
-automations running in and creates
-a [GitHub personal access token][token] with "repo" and "read:org"
-scopes.
-
-The script will prompt you for you Slack team ID, or you can supply it
-using the `--slack-team TEAM_ID` command-line option.  You must run
-the automations in a Slack team of which you are a member.  You can
-get the Slack team ID by typing `team` in a DM to the Atomist bot.
-
-The script will prompt you for your GitHub credentials.  It needs them
-to create the GitHub personal access token.  Atomist does not store
-your credentials and only writes the generated token to your local
-machine.
-
-The Atomist API client authenticates using a GitHub personal access
-token.  The Atomist API uses the token to confirm you are who you say
-you are and are in a GitHub organization connected to the Slack team
-in which you are running the automations.  In addition, it uses the
-token when performing any operations that access the GitHub API.
-
-[token]: https://github.com/settings/tokens (GitHub Personal Access Tokens)
-
-## Starting up the automation-client
-
-To start the client, run the following command:
-
-```
-$ npm run autostart
-```
-
-## Support
-
-General support questions should be discussed in the `#support`
-channel in our community Slack team
-at [atomist-community.slack.com][slack].
-
-If you find a problem, please create an [issue][].
-
-[issue]: https://github.com/atomist/spring-automation/issues
-
-## Development
-
-You will need to install [node][] to build and test this project.
-
-### Build and Test
-
-Command | Reason
-------- | ------
-`npm install` | install all the required packages
-`npm run build` | lint, compile, and test
-`npm start` | start the Atomist automation client
-`npm run autostart` | run the client, refreshing when files change
-`npm run lint` | run tslint against the TypeScript
-`npm run compile` | compile all TypeScript into JavaScript
-`npm test` | run tests and ensure everything is working
-`npm run autotest` | run tests continuously
-`npm run clean` | remove stray compiled JavaScript files and build directory
-
-You can test the local REST endpoint for generating projects with a
-command like the following, replacing `TOKEN` with your GitHub
-personal access token with "repo", "read:org", and "user" scopes (both
-places), `OWNER` with either your GitHub.com user name or one of your
-GitHub organizations, and `TEAMID` with your Slack team ID.
-
-```
-$ curl -v -X POST \
-    http://localhost:2866/command/spring-boot-generator \
-    -H 'Authorization: bearer TOKEN' \
-    -H 'Content-Type: application/json' \
-    -d '{
-  "name": "springBootGenerator",
-  "corrid": "local-test-from-me-0",
-  "parameters": [{
-    "name": "target.repo",
-    "value": "my-spring-test-0"
-  }, {
-    "name": "groupId",
-    "value": "com.atomist"
-  }, {
-    "name": "artifactId",
-    "value": "demo-test"
-  }, {
-    "name": "version",
-    "value": "0.1.0-SNAPSHOT"
-  }, {
-    "name": "rootPackage",
-    "value": "com.atomist"
-  }, {
-    "name": "target.description",
-    "value": "this is only a test"
-  }],
-  "mapped_parameters": [{
-    "name": "target.owner",
-    "value": "OWNER"
-  }, {
-    "name": "slackTeam",
-    "value": "TEAMID"
-  }],
-  "secrets": [{
-    "name": "github://user_token?scopes=repo,user",
-    "value": "TOKEN"
-  }]
-}'
-```
-
-### Release
+## Release
 
 Releases are managed by the [Atomist SDM][atomist-sdm].  Press the
 "Release" button in the Atomist dashboard or Slack.

@@ -1,9 +1,8 @@
-import "mocha";
-import * as assert from "power-assert";
 import { Microgrammar } from "@atomist/microgrammar/Microgrammar";
+import * as assert from "power-assert";
 import { DependencyFinder } from "../../../../../src/commands/editor/maven/support/DependencyFinder";
-import { springBootPom } from "../../../reviewer/maven/Poms";
 import { XmlTag } from "../../../../../src/commands/editor/support/xml/xmlGrammars";
+import { springBootPom } from "../../../reviewer/maven/Poms";
 
 describe("DependencyFinder", () => {
 
@@ -40,4 +39,3 @@ describe("DependencyFinder", () => {
         assert(updatedPom.indexOf(newGroup) !== -1);
     });
 });
-

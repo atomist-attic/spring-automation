@@ -2,6 +2,10 @@
 import { Microgrammar } from "@atomist/microgrammar/Microgrammar";
 import { optional } from "@atomist/microgrammar/Ops";
 
+/**
+ * Pattern for a legal XML element name
+ * @type {RegExp}
+ */
 export const ELEMENT_NAME = /^[a-zA-Z_.0-9\-]+/;
 
 export const ELEMENT_CONTENT = /^[a-zA-Z_.0-9\-]+/;

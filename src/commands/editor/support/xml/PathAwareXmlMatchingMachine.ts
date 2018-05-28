@@ -1,7 +1,7 @@
-import { MatchingMachine } from "@atomist/microgrammar/Microgrammar";
-import { OPEN_OR_CLOSE_TAG } from "./xmlGrammars";
-import { PatternMatch } from "@atomist/microgrammar/PatternMatch";
 import { MatchingLogic } from "@atomist/microgrammar/Matchers";
+import { MatchingMachine } from "@atomist/microgrammar/Microgrammar";
+import { PatternMatch } from "@atomist/microgrammar/PatternMatch";
+import { OPEN_OR_CLOSE_TAG } from "./xmlGrammars";
 
 /**
  * Convenient matching engine superclass for matching an XML document, keeping
@@ -16,7 +16,7 @@ export abstract class PathAwareXmlMatchingMachine extends MatchingMachine {
      * Track element paths above the current path
      * @type {Array}
      */
-    private elementStack: string[] = [];
+    private readonly elementStack: string[] = [];
 
     /**
      * Pass in whatever we want to match within the document. We can query path state.
@@ -63,12 +63,16 @@ export abstract class PathAwareXmlMatchingMachine extends MatchingMachine {
      * Subclasses can override to add custom processing on the opening of this element
      * @param tag
      */
-    protected onOpenTag(tag: { name: string } & PatternMatch): void {}
+    protected onOpenTag(tag: { name: string } & PatternMatch): void {
+        // empty default
+    }
 
     /**
      * Subclasses can override to add custom processing on the closing of this element
      * @param tag
      */
-    protected onCloseTag(tag: { name: string } & PatternMatch): void {}
+    protected onCloseTag(tag: { name: string } & PatternMatch): void {
+        // empty default
+    }
 
 }

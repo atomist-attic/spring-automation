@@ -19,27 +19,21 @@ import {
     atLeastOne,
     zeroOrMore,
 } from "@atomist/microgrammar/Rep";
+import { ELEMENT_NAME, XmlTag } from "../commands/editor/support/xml/xmlGrammars";
 import { VersionedArtifact } from "./VersionedArtifact";
-
-export const ElementName = /^[a-zA-Z_.0-9\-]+/;
 
 export const ElementContent = /^[a-zA-Z_.0-9\-]+/;
 
 export const XmlTagWithSimpleValueGrammar = {
     _l: "<",
-    name: ElementName,
+    name: ELEMENT_NAME,
     _r: ">",
     value: ElementContent,
     _l2: "</",
-    _close: ElementName,
+    _close: ELEMENT_NAME,
     _ok: ctx => ctx._close === ctx.name,
     _r2: ">",
 };
-
-export interface XmlTag {
-    name: string;
-    value: string;
-}
 
 /**
  * GAV can be in any order in Maven POMs, so this grammar is more
@@ -108,11 +102,11 @@ export function dependencyOfGrammar(group: string, artifact: string) {
 
 const property = {
     _gt: "<",
-    name: ElementName,
+    name: ELEMENT_NAME,
     _close: ">",
     value: /^[^<]+/,
     _gt2: "</",
-    _closing: ElementName,
+    _closing: ELEMENT_NAME,
     _done: ">",
 };
 
