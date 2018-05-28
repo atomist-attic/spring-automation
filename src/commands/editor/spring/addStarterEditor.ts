@@ -17,6 +17,7 @@
 import { logger } from "@atomist/automation-client/internal/util/logger";
 import { Project } from "@atomist/automation-client/project/Project";
 import { doWithFiles } from "@atomist/automation-client/project/util/projectUtils";
+import { indent } from "../support/indent";
 
 // TODO this is naive as it doesn't allow for dependency management block
 export function addSpringBootStarter(artifact: string,
@@ -45,16 +46,4 @@ function dependencyStanza(artifact: string, group: string = "org.springframework
     <groupId>${group}</groupId>
     <artifactId>${artifact}</artifactId>
 </dependency>`;
-}
-
-function indent(what: string, indentToUse: string, n: number): string {
-    return what.split("\n")
-        .map(line => {
-            let pad = "";
-            for (let i = 0; i < n; i++) {
-                pad += indentToUse;
-            }
-            return pad + line;
-        })
-        .join("\n");
 }
