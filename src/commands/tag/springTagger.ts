@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+//JESS: Moved
+
 import { HandleCommand, logger } from "@atomist/automation-client";
 import { SpringBootStarter, SpringBootTaggerTags } from "../editor/spring/springConstants";
 
@@ -24,6 +26,7 @@ import { UnleashPhilParameters } from "../editor/spring/unleashPhil";
 import { AllJavaFiles } from "../generator/java/javaProjectUtils";
 import { GitHubTagRouter } from "./gitHubTagRouter";
 
+// JESS: moved this function
 export const springBootTagger = p => {
     return p.findFile("pom.xml")
         .then(f => f.getContent())

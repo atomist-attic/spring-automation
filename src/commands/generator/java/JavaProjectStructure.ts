@@ -22,6 +22,7 @@ import { KotlinSourceFiles } from "../kotlin/kotlinUtils";
 import { JavaPackageDeclaration } from "./JavaGrammars";
 import { JavaSourceFiles } from "./javaProjectUtils";
 
+// JESS: MOVED
 /**
  * Represents Java project structure (nested packages following Java naming conventions)
  * which can be inferred from project contents.

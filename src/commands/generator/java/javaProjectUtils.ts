@@ -19,6 +19,8 @@ import { Project, ProjectAsync } from "@atomist/automation-client/project/Projec
 import { doWithFiles } from "@atomist/automation-client/project/util/projectUtils";
 import { JavaProjectStructure } from "./JavaProjectStructure";
 
+// JESS: MOVED
+
 export const AllJavaFiles = "**/*.java";
 
 export const JavaSourceFiles = "src/main/java/**/*.java";

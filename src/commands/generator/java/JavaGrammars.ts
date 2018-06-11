@@ -18,6 +18,8 @@ import { JavaParenthesizedExpression } from "@atomist/microgrammar/matchers/lang
 import { Microgrammar } from "@atomist/microgrammar/Microgrammar";
 import { Opt } from "@atomist/microgrammar/Ops";
 
+// JESS: MOVED
+
 export const CLASS_NAME = /^[a-zA-Z_$][a-zA-Z0-9_$]+/;
 export const PACKAGE_NAME = /^[a-zA-Z0-9$.]+/;
 
