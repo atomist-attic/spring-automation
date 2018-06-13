@@ -19,9 +19,9 @@
     "spring"
   ],
   "dependencies": {
-    "@atomist/antlr": "0.2.0",
-    "@atomist/automation-client": "https://r.atomist.com/rJE1M9O6AG",
-    "@atomist/microgrammar": "^0.7.0",
+    "@atomist/antlr": "https://r.atomist.com/rJEEER0ClX",
+    "@atomist/automation-client": "^0.17.2-20180613153815",
+    "@atomist/microgrammar": "^0.7.0-20180528084001",
     "@atomist/slack-messages": "^0.12.1",
     "@atomist/tree-path": "^0.1.8",
     "@atomist/yaml-updater": "^0.3.0",
