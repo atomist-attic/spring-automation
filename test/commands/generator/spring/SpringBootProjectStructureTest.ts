@@ -25,7 +25,7 @@ import {
     SpringBootAppClassInKotlin,
     SpringBootProjectStructure,
 } from "../../../../src/commands/generator/spring/SpringBootProjectStructure";
-
+// JESS: Moved from spring-automation to sdm-pack-spring
 describe("SpringBootProjectStructure: Java inference", () => {
 
     describe("java support", () => {

@@ -28,6 +28,8 @@ import { JavaPackageDeclaration } from "../java/JavaGrammars";
 import { JavaSourceFiles } from "../java/javaProjectUtils";
 import { KotlinSourceFiles } from "../kotlin/kotlinUtils";
 
+// JESS: MOVED from spring-automation to sdm-pack-spring
+
 export const SpringBootAppClassInJava = `//typeDeclaration
                                 [//annotation[@value='@SpringBootApplication']]
                                 /classDeclaration//Identifier`;

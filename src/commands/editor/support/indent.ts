@@ -1,3 +1,5 @@
+// moved (into another file)
+
 export function indent(what: string, indentToUse: string, n: number): string {
     return what.split("\n")
         .map(line => {

@@ -20,6 +20,8 @@ import { setSpringBootVersionEditor } from "../../../../src/commands/editor/spri
 import { tempProject } from "../../../util/tempProject";
 import { springBootPom } from "../../reviewer/maven/Poms";
 
+// JESS: Moved from spring-automation to sdm-pack-spring
+
 describe("setSpringBootVersionEditor", () => {
 
     it("doesn't edit empty project", async () => {

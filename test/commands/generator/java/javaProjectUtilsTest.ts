@@ -18,7 +18,7 @@ import { InMemoryFile } from "@atomist/automation-client/project/mem/InMemoryFil
 import { InMemoryProject } from "@atomist/automation-client/project/mem/InMemoryProject";
 import * as assert from "power-assert";
 import { movePackage, renameClass } from "../../../../src/commands/generator/java/javaProjectUtils";
-
+// JESS: Moved from spring-automation to sdm-pack-spring
 describe("javaProjectUtils", () => {
 
     it("should not refactor on no match", done => {

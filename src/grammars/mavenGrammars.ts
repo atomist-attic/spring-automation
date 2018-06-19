@@ -22,6 +22,8 @@ import {
 import { ELEMENT_NAME, XmlTag } from "../commands/editor/support/xml/xmlGrammars";
 import { VersionedArtifact } from "./VersionedArtifact";
 
+// JESS: MOVED
+
 export const ElementContent = /^[a-zA-Z_.0-9\-]+/;
 
 export const XmlTagWithSimpleValueGrammar = {

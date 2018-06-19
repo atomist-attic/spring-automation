@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+// JESS: MOVED
+
 export interface IdentifiedArtifact {
 
     group: string;

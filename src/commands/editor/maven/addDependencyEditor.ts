@@ -5,6 +5,8 @@ import { DependencyFinder } from "./support/DependencyFinder";
 import * as _ from "lodash";
 import { indent } from "../support/indent";
 
+// JESS: Moved to sdm-pack-spring
+
 /**
  * Add the given dependency to projects. It's not an error
  * if the project doesn't have a POM. The editor will do nothing

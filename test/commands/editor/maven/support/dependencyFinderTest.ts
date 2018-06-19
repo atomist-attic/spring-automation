@@ -4,6 +4,8 @@ import { DependencyFinder } from "../../../../../src/commands/editor/maven/suppo
 import { XmlTag } from "../../../../../src/commands/editor/support/xml/xmlGrammars";
 import { springBootPom } from "../../../reviewer/maven/Poms";
 
+// JESS: Moved from spring-automation to sdm-pack-spring
+
 describe("DependencyFinder", () => {
 
     it("should find no dependencies in invalid pom", () => {

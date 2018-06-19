@@ -3,6 +3,9 @@ import { MatchingMachine } from "@atomist/microgrammar/Microgrammar";
 import { PatternMatch } from "@atomist/microgrammar/PatternMatch";
 import { OPEN_OR_CLOSE_TAG } from "./xmlGrammars";
 
+
+// moved
+
 /**
  * Convenient matching engine superclass for matching an XML document, keeping
  * track of the current path.
@@ -15,7 +18,7 @@ export abstract class PathAwareXmlMatchingMachine extends MatchingMachine {
     /**
      * Track element paths above the current path
      * @type {Array}
-     */
+     */no
     private readonly elementStack: string[] = [];
 
     /**

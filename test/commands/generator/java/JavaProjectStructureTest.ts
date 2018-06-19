@@ -18,6 +18,8 @@ import { InMemoryProject } from "@atomist/automation-client/project/mem/InMemory
 import * as assert from "power-assert";
 import { JavaProjectStructure } from "../../../../src/commands/generator/java/JavaProjectStructure";
 
+// JESS: Moved from spring-automation to sdm-pack-spring
+
 describe("JavaProjectStructure", () => {
 
     it("infer not a Java project", done => {

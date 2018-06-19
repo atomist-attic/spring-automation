@@ -22,7 +22,7 @@ import { KotlinSourceFiles } from "../kotlin/kotlinUtils";
 import { JavaPackageDeclaration } from "./JavaGrammars";
 import { JavaSourceFiles } from "./javaProjectUtils";
 
-// JESS: MOVED
+// JESS: Moved from spring-automation to sdm-pack-spring
 /**
  * Represents Java project structure (nested packages following Java naming conventions)
  * which can be inferred from project contents.

@@ -22,6 +22,8 @@ import { doWithMatches } from "@atomist/automation-client/project/util/parseUtil
 import { parentStanzaOfGrammar } from "../../../grammars/mavenGrammars";
 import { SpringBootStarter } from "./springConstants";
 
+// JESS: MOVED
+
 /**
  * Set the Spring Boot version to
  * @param {string} desiredBootVersion

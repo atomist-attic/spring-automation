@@ -2,6 +2,8 @@
 import { Microgrammar } from "@atomist/microgrammar/Microgrammar";
 import { optional } from "@atomist/microgrammar/Ops";
 
+// JESS: MOVED from spring-automation to sdm-pack-spring
+
 /**
  * Pattern for a legal XML element name
  * @type {RegExp}

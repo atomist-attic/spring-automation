@@ -19,7 +19,7 @@ import { Project, ProjectAsync } from "@atomist/automation-client/project/Projec
 import { doWithFiles } from "@atomist/automation-client/project/util/projectUtils";
 import { JavaProjectStructure } from "./JavaProjectStructure";
 
-// JESS: MOVED
+// JESS: Moved from spring-automation to sdm-pack-spring
 
 export const AllJavaFiles = "**/*.java";
 

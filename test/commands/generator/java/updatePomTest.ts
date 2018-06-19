@@ -19,6 +19,8 @@ import * as assert from "power-assert";
 import { InMemoryProject } from "@atomist/automation-client/project/mem/InMemoryProject";
 import { updatePom } from "../../../../src/commands/generator/java/updatePom";
 
+// JESS: Moved from spring-automation to sdm-pack-spring
+
 describe("updatePom", () => {
 
     it("should not error on no POM", done => {
